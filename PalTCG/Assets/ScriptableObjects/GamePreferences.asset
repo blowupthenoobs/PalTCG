@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: GamePreferences
   m_EditorClassIdentifier: 
   barTransTime: 0
-  spacing: 10
-  cardMoveSpeed: 0
+  spacing: 100
+  cardMoveSpeed: 100

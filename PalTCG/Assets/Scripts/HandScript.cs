@@ -75,9 +75,9 @@ public class HandScript : MonoBehaviour
 
     public void CenterCards()
     {
-        float spacing = Preferences.spacing;
+        float spacing = Preferences.spacing * ScreenCalculations.GetScale(gameObject);
 
-        float speed = Preferences.cardMoveSpeed;
+        float speed = Preferences.cardMoveSpeed * ScreenCalculations.GetScale(gameObject);
 
         for(int i = 0; i < Hand.Count; i++)
         {
