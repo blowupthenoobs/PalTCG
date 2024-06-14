@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[CreateAssetMenu(menuName = "Card/PalCard")]
 public class PalCard : CardData
 {
     public UnityEvent<GameObject> OnDestroy;

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ea0bd05b26ca6846ac9061bed0f0c7b, type: 3}
+  m_Name: PalCardTest
+  m_EditorClassIdentifier: 
+  CardType: 
+  CardName: 
+  cardart: {fileID: 0}
+  Cost: 0
+  Ability: 
+  image: {fileID: 0}
+  gameObject: {fileID: 0}
+  OnDestroy:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlay:
+    m_PersistentCalls:
+      m_Calls: []
+  ActivateAbility:
+    m_PersistentCalls:
+      m_Calls: []

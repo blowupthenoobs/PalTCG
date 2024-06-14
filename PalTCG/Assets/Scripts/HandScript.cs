@@ -9,7 +9,7 @@ public class HandScript : MonoBehaviour
 
     public static HandScript Instance;
 
-    private GameObject selected;
+    public GameObject selected;
     private GameObject target;
 
     public new List<GameObject> Hand = new List<GameObject>();

@@ -6,15 +6,37 @@ using UnityEngine.UI;
 public class CardScript : MonoBehaviour
 {
     [SerializeField] CardData cardData;
+    private bool cancelSelect;
+    public Color normalColor;
+    public Color selectColor;
+    private Image image;
     // Start is called before the first frame update
     protected virtual void Awake()
     {
+        cardData.gameObject = gameObject;
         cardData.Awake();
+        image = cardData.image;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Select()
     {
-        
+        if(!cancelSelect)
+        {
+            image.color = selectColor;
+            HandScript.Instance.Select(gameObject);
+        }
+    }
+
+    public virtual void Deselect()
+    {
+        cancelSelect = true;
+        image.color = normalColor;
+        StartCoroutine(ReAvaliablity());
+    }
+
+    public virtual IEnumerator ReAvaliablity()
+    {
+        yield return new WaitForSeconds(.15f);
+        cancelSelect = false;
     }
 }
