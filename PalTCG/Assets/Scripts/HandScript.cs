@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class HandScript : MonoBehaviour
 {
-    public GamePreferences Preferences;
+    [SerializeField] GamePreferences Preferences;
 
     public static HandScript Instance;
 
-    public GameObject selected;
+    private GameObject selected;
     private GameObject target;
 
     public new List<GameObject> Hand = new List<GameObject>();

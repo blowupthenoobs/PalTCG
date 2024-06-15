@@ -15,6 +15,7 @@ public abstract class CardData : ScriptableObject
     public UnityEngine.UI.Image image;
     public GameObject gameObject;
 
+    
     public virtual void Awake()
     {
         image = gameObject.GetComponent<UnityEngine.UI.Image>();
