@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PalScript : CardScript
 {
-    // Start is called before the first frame update
+    [SerializeField] Resources.StatusEffects statuses;
     void Start()
     {
         
