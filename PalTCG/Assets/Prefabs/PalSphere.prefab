@@ -133,3 +133,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e96130d38fdfc043bcf6f871bce3fd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardPrefab: {fileID: 2608142742448742569, guid: def5710fa1ea5d84092d2431f3ff57d1, type: 3}
+  heldCard: {fileID: 0}
