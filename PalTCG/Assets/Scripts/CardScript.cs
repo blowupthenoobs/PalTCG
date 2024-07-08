@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CardScript : MonoBehaviour
 {
-    [SerializeField] CardData cardData;
+    public CardData cardData;
     private bool cancelSelect;
     public Color normalColor;
     public Color selectColor;

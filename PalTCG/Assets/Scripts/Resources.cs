@@ -14,8 +14,5 @@ public class Resources : MonoBehaviour
         public int burning;
         public int poisoned;
     }
-    public struct Traits{
-        public int HandyWork;
-        public int Gardening;
-    }
+    public enum Traits{HandyWork, Gardening}
 }

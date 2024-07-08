@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public class PalCardData : CardData
 {
     [SerializeField] Resources.Element element;
-    [SerializeField] Resources.Traits traits;
+    [SerializeField] List<Resources.Traits> traits = new List<Resources.Traits>();
     public UnityEvent<GameObject> OnDestroy;
     public UnityEvent<GameObject> OnPlay;
     public UnityEvent<GameObject> PalSkill;

@@ -2,17 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PalCardScript : CardScript
+public class PalCardScript : MonoBehaviour
 {
     [SerializeField] Resources.StatusEffects statuses;
-    void Start()
-    {
-        
-    }
+    public CardData cardData;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
