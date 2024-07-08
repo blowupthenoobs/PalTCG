@@ -6,7 +6,6 @@ using UnityEngine.Events;
 
 public abstract class CardData : ScriptableObject
 {
-    //First Script
     public string CardType;
     public string CardName;
     public Sprite cardart;
