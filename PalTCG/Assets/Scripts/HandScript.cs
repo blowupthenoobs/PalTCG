@@ -28,7 +28,11 @@ public class HandScript : MonoBehaviour
         CenterCards();
 
         if(Input.GetButtonDown("Fire1"))
-            Click();
+        {
+            if(selected != null)
+                StartCoroutine(Click());
+        }
+        
     }
     public void Select(GameObject card)
     {
@@ -49,13 +53,13 @@ public class HandScript : MonoBehaviour
     //             UseSkill(clicked);
     // }
 
-    public void Click()
+    public IEnumerator Click()
     {
-        if(selected != null)
-        {
+        yield return new WaitForSeconds(.15f);
+        Debug.Log("waited");
+
             selected.SendMessage("Deselect");
             selected = null;
-        }
     }
 
     // public void Attack(GameObject target)
