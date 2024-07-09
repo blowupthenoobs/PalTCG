@@ -9,7 +9,7 @@ public class PalSphereScript : MonoBehaviour
 
     public void CheckForCard()
     {
-        if(HandScript.Instance.selected != null)
+        if(HandScript.Instance.selected != null && heldCard == null)
         {
             if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
                 PlaceCard(HandScript.Instance.selected.GetComponent<CardScript>().cardData);
