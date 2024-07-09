@@ -56,10 +56,12 @@ public class HandScript : MonoBehaviour
     public IEnumerator Click()
     {
         yield return new WaitForSeconds(.15f);
-        Debug.Log("waited");
 
-            selected.SendMessage("Deselect");
-            selected = null;
+            if(selected != null)
+            {
+                selected.SendMessage("Deselect");
+                selected = null;
+            }
     }
 
     // public void Attack(GameObject target)

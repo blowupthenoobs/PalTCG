@@ -11,7 +11,6 @@ public class PalSphereScript : MonoBehaviour
     {
         if(HandScript.Instance.selected != null)
         {
-            Debug.Log("passed");
             if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
                 PlaceCard(HandScript.Instance.selected.GetComponent<CardScript>().cardData);
         }
@@ -23,5 +22,8 @@ public class PalSphereScript : MonoBehaviour
         heldCard.transform.SetParent(transform);
 
         heldCard.GetComponent<PalCardScript>().cardData = data;
+
+        HandScript.Instance.Hand.RemoveAt(HandScript.Instance.Hand.IndexOf(HandScript.Instance.selected));
+        Destroy(HandScript.Instance.selected);
     }
 }
