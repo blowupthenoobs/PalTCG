@@ -1,18 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class HandScript : MonoBehaviour
+public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] GamePreferences Preferences;
 
     public static HandScript Instance;
 
+    //Hand Stuff
     public GameObject selected;
     private GameObject target;
 
     public new List<GameObject> Hand = new List<GameObject>();
+
+    //Moving stuff
+    private Vector3 originalPos;
+    private Vector3 duckPos;
+    private Vector3 targetPos;
+    public float duckAmount;
+    public float moveSpeed;
 
     void Awake()
     {
@@ -20,6 +29,9 @@ public class HandScript : MonoBehaviour
             Instance=this;
         else
             Destroy(gameObject);
+        
+        originalPos = transform.position;
+        duckPos = new Vector3(originalPos.x, originalPos.y - duckAmount * ScreenCalculations.GetScale(gameObject), originalPos.z);
     }
 
     void Update()
@@ -32,11 +44,14 @@ public class HandScript : MonoBehaviour
             if(selected != null)
                 StartCoroutine(Click());
         }
+
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * ScreenCalculations.GetScale(gameObject) * Time.deltaTime);
         
     }
     public void Select(GameObject card)
     {
         selected = card;
+        Duck();
     }
 
     // public void TargetEnemy(GameObject clicked)
@@ -114,5 +129,25 @@ public class HandScript : MonoBehaviour
             if(Hand[i] == null)
                 Hand.RemoveAt(i);
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Raise();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Duck();
+    }
+
+    private void Duck()
+    {
+        targetPos = duckPos;
+    }
+
+    private void Raise()
+    {
+        targetPos = originalPos;
     }
 }
