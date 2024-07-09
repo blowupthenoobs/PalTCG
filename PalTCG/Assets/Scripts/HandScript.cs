@@ -32,6 +32,8 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         
         originalPos = transform.position;
         duckPos = new Vector3(originalPos.x, originalPos.y - duckAmount * ScreenCalculations.GetScale(gameObject), originalPos.z);
+        targetPos = duckPos;
+        transform.position = targetPos;
     }
 
     void Update()
