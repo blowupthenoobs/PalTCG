@@ -72,12 +72,22 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public IEnumerator Click()
     {
+        var originalSelect = selected;
+
         yield return new WaitForSeconds(.15f);
 
             if(selected != null)
             {
-                selected.SendMessage("Deselect");
-                selected = null;
+                if(originalSelect == selected)
+                {
+                    selected.SendMessage("Deselect");
+                    selected = null;
+                }
+                else
+                {
+                    originalSelect.SendMessage("Deselect");
+                }
+                
             }
     }
 
