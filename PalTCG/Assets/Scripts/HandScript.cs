@@ -91,21 +91,6 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             }
     }
 
-    // public void Attack(GameObject target)
-    // {
-    //     selected.SendMessage("Effect", target);
-
-    //     Hand.Remove(selected);
-    //     selected.SendMessage("Discard");
-    // }
-
-    // public void UseSkill(GameObject target)
-    // {
-    //     selected.SendMessage("Effect", target);
-        
-    //     selected.SendMessage("Discard");
-    // }
-
     public void CenterCards()
     {
         float spacing = Preferences.spacing * ScreenCalculations.GetScale(gameObject);
