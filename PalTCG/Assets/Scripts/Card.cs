@@ -9,7 +9,6 @@ public abstract class CardData : ScriptableObject
     public string CardType;
     public string CardName;
     public Sprite cardart;
-    [SerializeField] List<object> Cost = new List<object>();
     public string Ability;
     public UnityEngine.UI.Image image;
     public GameObject gameObject;

@@ -12,18 +12,39 @@ public class PalSphereScript : MonoBehaviour
         if(HandScript.Instance.selected != null && heldCard == null)
         {
             if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
-                PlaceCard(HandScript.Instance.selected.GetComponent<CardScript>().cardData);
+            {
+                PlaceCard((PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData);
+            }
         }
     }
 
-    void PlaceCard(CardData data)
+    void PlaceCard(PalCardData data)
     {
-        heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
-        heldCard.transform.SetParent(transform);
+        HandScript.Instance.buildingPay = true;
 
-        heldCard.GetComponent<PalCardScript>().cardData = data;
+        if(PayCost(data))
+        {
+            heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
+            heldCard.transform.SetParent(transform);
 
-        HandScript.Instance.Hand.RemoveAt(HandScript.Instance.Hand.IndexOf(HandScript.Instance.selected));
-        Destroy(HandScript.Instance.selected);
+            heldCard.GetComponent<PalCardScript>().cardData = data;
+
+            HandScript.Instance.Hand.RemoveAt(HandScript.Instance.Hand.IndexOf(HandScript.Instance.selected));
+            Destroy(HandScript.Instance.selected);
+        }
+        
+    }
+
+    bool PayCost(PalCardData data)
+    {
+        Debug.Log("called");
+        var cost = data.cost;
+
+        // while(HandScript.Instance.payment != cost)
+        // {
+        //     Debug.Log("waiting");
+        // }
+
+        return true;
     }
 }

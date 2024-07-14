@@ -16,6 +16,10 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public new List<GameObject> Hand = new List<GameObject>();
 
+    //Card Stuff
+    public bool buildingPay;
+    public List<GameObject> payment = new List<GameObject>();
+
     //Moving stuff
     private Vector3 originalPos;
     private Vector3 duckPos;
@@ -43,7 +47,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         if(Input.GetButtonDown("Fire1"))
         {
-            if(selected != null)
+            if(selected != null && !buildingPay)
                 StartCoroutine(Click());
         }
 
@@ -52,23 +56,17 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     }
     public void Select(GameObject card)
     {
-        selected = card;
-        Duck();
+        if(!buildingPay)
+        {
+            selected = card;
+            Duck();
+        }
+        else
+        {
+            if(selected != card)
+                payment.Add(card);
+        }
     }
-
-    // public void TargetEnemy(GameObject clicked)
-    // {
-    //     if(selected != null)
-    //         if(selected.GetComponent<ManaCardScript>().targetEnemy)
-    //             Attack(clicked);
-    // }
-
-    // public void TargetTeam(GameObject clicked)
-    // {
-    //     if(selected != null)
-    //         if(!selected.GetComponent<ManaCardScript>().targetEnemy)
-    //             UseSkill(clicked);
-    // }
 
     public IEnumerator Click()
     {
