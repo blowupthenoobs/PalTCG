@@ -7,8 +7,8 @@ public class ConfirmationButtons : MonoBehaviour
 {
    public static ConfirmationButtons Instance;
 
-   public UnityEvent Confirmed;
-   public UnityEvent Denied;
+   public UnityAction Confirmed;
+   public UnityAction Denied;
 
     void Awake()
     {

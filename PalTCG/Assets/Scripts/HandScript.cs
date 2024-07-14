@@ -63,7 +63,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else
         {
-            if(selected != card)
+            if(card != selected)
                 payment.Add(card);
         }
     }
@@ -74,7 +74,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         yield return new WaitForSeconds(.15f);
 
-            if(selected != null)
+            if(selected != null && !buildingPay)
             {
                 if(originalSelect == selected)
                 {

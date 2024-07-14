@@ -9,42 +9,42 @@ public class PalSphereScript : MonoBehaviour
 
     public void CheckForCard()
     {
-        if(HandScript.Instance.selected != null && heldCard == null)
+        if(HandScript.Instance.selected != null && heldCard == null && !HandScript.Instance.buildingPay)
         {
             if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
             {
-                PlaceCard((PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData);
+                Debug.Log("asking");
+                HandScript.Instance.buildingPay = true;
+                ConfirmationButtons.Instance.Confirmed += PlaceCard;
+                ConfirmationButtons.Instance.Denied += Disengage;
             }
         }
     }
 
-    void PlaceCard(PalCardData data)
+    void PlaceCard()
     {
-        HandScript.Instance.buildingPay = true;
+        ConfirmationButtons.Instance.Confirmed -= PlaceCard;
 
-        if(PayCost(data))
-        {
-            heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
-            heldCard.transform.SetParent(transform);
+        var data = (PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
 
-            heldCard.GetComponent<PalCardScript>().cardData = data;
+        heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
+        heldCard.transform.SetParent(transform);
 
-            HandScript.Instance.Hand.RemoveAt(HandScript.Instance.Hand.IndexOf(HandScript.Instance.selected));
-            Destroy(HandScript.Instance.selected);
-        }
-        
+        heldCard.GetComponent<PalCardScript>().cardData = data;
+
+        HandScript.Instance.Hand.RemoveAt(HandScript.Instance.Hand.IndexOf(HandScript.Instance.selected));
+        Destroy(HandScript.Instance.selected);
+        HandScript.Instance.buildingPay = false;
     }
 
-    bool PayCost(PalCardData data)
+    void Disengage()
     {
-        Debug.Log("called");
-        var cost = data.cost;
+        ConfirmationButtons.Instance.Confirmed -= PlaceCard;
+        ConfirmationButtons.Instance.Confirmed -= Disengage;
 
-        // while(HandScript.Instance.payment != cost)
-        // {
-        //     Debug.Log("waiting");
-        // }
+        HandScript.Instance.selected.SendMessage("Deselect");
+        HandScript.Instance.selected = null;
 
-        return true;
+        HandScript.Instance.buildingPay = false;
     }
 }
