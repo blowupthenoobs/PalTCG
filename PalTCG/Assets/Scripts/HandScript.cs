@@ -117,6 +117,12 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         rectTransform.localPosition = newPosition;
     }
 
+    public void Discard(GameObject card)
+    {
+        Hand.RemoveAt(Hand.IndexOf(card));
+        Destroy(card);
+    }
+
     private void RemoveIndexes()
     {
         for(int i = 0; i < Hand.Count; i++)

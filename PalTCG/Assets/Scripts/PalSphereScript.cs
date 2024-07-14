@@ -34,6 +34,14 @@ public class PalSphereScript : MonoBehaviour
 
         HandScript.Instance.Hand.RemoveAt(HandScript.Instance.Hand.IndexOf(HandScript.Instance.selected));
         Destroy(HandScript.Instance.selected);
+
+        while(HandScript.Instance.payment.Count > 0)
+        {
+            var cardToDiscard = HandScript.Instance.payment[0];
+            HandScript.Instance.payment.RemoveAt(0);
+            HandScript.Instance.Discard(cardToDiscard);
+        }  
+
         HandScript.Instance.buildingPay = false;
     }
 
