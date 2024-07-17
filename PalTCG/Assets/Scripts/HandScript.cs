@@ -20,7 +20,6 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public bool buildingPay;
     public List<GameObject> payment = new List<GameObject>();
     [SerializeField] GameObject cardPrefab;
-    public CardData newData;
 
     //Moving stuff
     private Vector3 originalPos;
@@ -40,8 +39,6 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         duckPos = new Vector3(originalPos.x, originalPos.y - duckAmount * ScreenCalculations.GetScale(gameObject), originalPos.z);
         targetPos = duckPos;
         transform.position = targetPos;
-
-        Draw(newData);
     }
 
     void Update()
