@@ -1521,8 +1521,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 697560220}
   - {fileID: 443061727}
+  - {fileID: 697560220}
   - {fileID: 1550641724}
   - {fileID: 1344314726}
   m_Father: {fileID: 723833787}
@@ -2117,12 +2117,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42f520698355d5e40ab5683b40297425, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Confirmed:
-    m_PersistentCalls:
-      m_Calls: []
-  Denied:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &1359723113
 GameObject:
   m_ObjectHideFlags: 0

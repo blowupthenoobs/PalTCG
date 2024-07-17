@@ -1,9 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    # region CardDraw
+    public List<CardScript> deck = new List<CardScript>();
+    public Transform[] cardSlots;
+    public bool[] availableSlots;
+
+    public Text deckSizeText;
+
+    public void DrawCard()
+    {
+        if(deck.Count >= 1)
+        {
+            CardScript randCard = deck[Random.Range(0, deck.Count)];
+
+            for (int i = 0; i < availableSlots.Length; i++)
+            {
+                if(availableSlots[i] == true)
+                {
+                    randCard.gameObject.SetActive(true);
+                    randCard.transform.position = cardSlots[i].position;
+                    availableSlots[i] = false;
+                    deck.Remove(randCard);
+                    return;
+                }
+            }
+        }
+    }
+    #endregion
+
     #region Singleton
     // Make sure only one instance of the Game Manager exists.
     private static GameManager _instance;
@@ -45,8 +74,8 @@ public class GameManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        deckSizeText.text = deck.Count.ToString();
     }
 }
