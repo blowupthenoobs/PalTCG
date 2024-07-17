@@ -6,8 +6,7 @@ public class DiscardPileScript : MonoBehaviour
 {
     public static DiscardPileScript Instance;
     public DrawPileScript drawPile;
-    public new List<GameObject> discardPile = new List<GameObject>();
-    public new List<string> cardData = new List<string>();
+    public new List<CardData> discardPile = new List<CardData>();
 
     void Awake()
     {
@@ -19,15 +18,15 @@ public class DiscardPileScript : MonoBehaviour
     
     public void Restock()
     {
-        while(discardPile.Count > 0)
-        {
-            int index = Random.Range(0, discardPile.Count);
+        // while(discardPile.Count > 0)
+        // {
+        //     int index = Random.Range(0, discardPile.Count);
 
-            drawPile.drawPile.Add(discardPile[index]);
-            drawPile.cardData.Add(cardData[index]);
+        //     drawPile.drawPile.Add(discardPile[index]);
+        //     drawPile.cardData.Add(cardData[index]);
 
-            discardPile.RemoveAt(index);
-            cardData.RemoveAt(index);
-        }
+        //     discardPile.RemoveAt(index);
+        //     cardData.RemoveAt(index);
+        // }
     }
 }

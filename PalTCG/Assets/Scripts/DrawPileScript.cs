@@ -4,23 +4,16 @@ using UnityEngine;
 
 public class DrawPileScript : MonoBehaviour
 {
-    public new List<GameObject> drawPile = new List<GameObject>();
-    public new List<string> cardData = new List<string>();
+    public new List<CardData> currentDeck = new List<CardData>();
 
     public void Draw()
     {
-        if(drawPile.Count > 0)
+        if(currentDeck.Count > 0)
         {
-            GameObject newCard = Instantiate(drawPile[0], transform.position, transform.rotation);
-            newCard.SendMessage("SetPrefab", drawPile[0]);
-
-            HandScript.Instance.Draw(newCard);
-            newCard.SendMessage("DecomposeData", cardData[0]);
-
-            drawPile.RemoveAt(0);
-            cardData.RemoveAt(0);
+            HandScript.Instance.Draw(currentDeck[0]);
+            currentDeck.RemoveAt(0);
         }
         else
-            Debug.Log("Draw pile empty");
+            Debug.Log("out of cards");
     }
 }
