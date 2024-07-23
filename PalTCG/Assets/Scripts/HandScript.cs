@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -20,6 +21,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public bool buildingPay;
     public List<GameObject> payment = new List<GameObject>();
     [SerializeField] GameObject cardPrefab;
+    public UnityAction updatePayment;
 
     //Moving stuff
     private Vector3 originalPos;
@@ -73,6 +75,8 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                     payment.RemoveAt(payment.IndexOf(card));
                     card.SendMessage("Deselect");
                 }
+
+                updatePayment.Invoke();
             }
         }
     }

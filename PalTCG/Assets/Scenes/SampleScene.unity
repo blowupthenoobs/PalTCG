@@ -2194,6 +2194,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42f520698355d5e40ab5683b40297425, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  confirmButton: {fileID: 569076146}
+  denyButton: {fileID: 88663261}
+  greyValue: 0.45
 --- !u!1 &1359723113
 GameObject:
   m_ObjectHideFlags: 0

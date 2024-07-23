@@ -36,7 +36,7 @@ public class ConfirmationButtons : MonoBehaviour
         Denied.Invoke();
     }
 
-    public void Confirmable(bool input)
+    public void AllowConfirmation(bool input)
     {
         canConfirm = input;
 
@@ -48,9 +48,9 @@ public class ConfirmationButtons : MonoBehaviour
         }
         else
         {
-            // Color newColor = confirmButton.GetComponent<Image>().color;
-            // newColor.a = 255;
-            // confirmButton.GetComponent<Image>().color = newColor;
+            Color newColor = confirmButton.GetComponent<Image>().color;
+            newColor.a = 1;
+            confirmButton.GetComponent<Image>().color = newColor;
         }
     }
 }

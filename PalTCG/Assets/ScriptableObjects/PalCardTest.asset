@@ -18,6 +18,7 @@ MonoBehaviour:
   Ability: 
   image: {fileID: 0}
   gameObject: {fileID: 0}
+  cost: 1
   element: 0
   traits: 0000000001000000
   OnDestroy:

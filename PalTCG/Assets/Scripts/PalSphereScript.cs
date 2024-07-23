@@ -14,14 +14,18 @@ public class PalSphereScript : MonoBehaviour
             if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
             {
                 HandScript.Instance.buildingPay = true;
+                HandScript.Instance.updatePayment += VerifyButtons;
                 ConfirmationButtons.Instance.Confirmed += PlaceCard;
                 ConfirmationButtons.Instance.Denied += Disengage;
+
+                VerifyButtons();
             }
         }
     }
 
     void PlaceCard()
     {
+        HandScript.Instance.updatePayment -= VerifyButtons;
         ConfirmationButtons.Instance.Confirmed -= PlaceCard;
         ConfirmationButtons.Instance.Denied -= Disengage;
 
@@ -47,6 +51,7 @@ public class PalSphereScript : MonoBehaviour
 
     void Disengage()
     {
+        HandScript.Instance.updatePayment -= VerifyButtons;
         ConfirmationButtons.Instance.Confirmed -= PlaceCard;
         ConfirmationButtons.Instance.Denied -= Disengage;
 
@@ -54,6 +59,11 @@ public class PalSphereScript : MonoBehaviour
         HandScript.Instance.selected = null;
 
         HandScript.Instance.buildingPay = false;
+    }
+
+    void VerifyButtons()
+    {
+        ConfirmationButtons.Instance.AllowConfirmation(PaymentIsCorrect());
     }
 
     bool PaymentIsCorrect()
