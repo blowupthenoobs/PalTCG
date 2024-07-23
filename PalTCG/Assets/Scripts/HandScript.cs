@@ -65,7 +65,15 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         else
         {
             if(card != selected)
-                payment.Add(card);
+            {
+                if(!payment.Contains(card))
+                    payment.Add(card);
+                else
+                {
+                    payment.RemoveAt(payment.IndexOf(card));
+                    card.SendMessage("Deselect");
+                }
+            }
         }
     }
 

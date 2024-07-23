@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 
 public class ConfirmationButtons : MonoBehaviour
@@ -9,6 +10,12 @@ public class ConfirmationButtons : MonoBehaviour
 
    public UnityAction Confirmed;
    public UnityAction Denied;
+   private bool canConfirm;
+
+   [SerializeField] GameObject confirmButton;
+   [SerializeField] GameObject denyButton;
+
+   [SerializeField] float greyValue;
 
     void Awake()
     {
@@ -20,11 +27,30 @@ public class ConfirmationButtons : MonoBehaviour
 
     public void Confirm()
     {
-        Confirmed.Invoke();
+        if(canConfirm)
+            Confirmed.Invoke();
     }
 
     public void Deny()
     {
         Denied.Invoke();
+    }
+
+    public void Confirmable(bool input)
+    {
+        canConfirm = input;
+
+        if(!canConfirm)
+        {
+            Color newColor = confirmButton.GetComponent<Image>().color;
+            newColor.a = greyValue;
+            confirmButton.GetComponent<Image>().color = newColor;
+        }
+        else
+        {
+            // Color newColor = confirmButton.GetComponent<Image>().color;
+            // newColor.a = 255;
+            // confirmButton.GetComponent<Image>().color = newColor;
+        }
     }
 }
