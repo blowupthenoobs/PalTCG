@@ -13,6 +13,12 @@ public class Resources : MonoBehaviour
     public struct StatusEffects{
         public int burning;
         public int poisoned;
+        public GameObject shocked;
     }
-    public enum Traits{HandyWork, Gardening}
+    public struct Traits
+    {
+        int HandyWork;
+        int Gardening;
+        int mining;
+    }
 }

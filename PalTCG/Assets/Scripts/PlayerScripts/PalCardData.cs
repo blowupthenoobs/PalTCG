@@ -9,6 +9,7 @@ public class PalCardData : CardData
     public int cost;
     public Resources.Element element;
     public List<Resources.Traits> traits = new List<Resources.Traits>();
+    public int size;
     public UnityEvent<GameObject> OnDestroy;
     public UnityEvent<GameObject> OnPlay;
     public UnityEvent<GameObject> PalSkill;
