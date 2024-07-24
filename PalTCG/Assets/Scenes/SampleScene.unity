@@ -774,7 +774,7 @@ GameObject:
   - component: {fileID: 409336395}
   - component: {fileID: 409336394}
   m_Layer: 5
-  m_Name: BoardBackground
+  m_Name: Board
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1489,7 +1489,7 @@ GameObject:
   - component: {fileID: 723833785}
   - component: {fileID: 723833784}
   m_Layer: 5
-  m_Name: Board
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
