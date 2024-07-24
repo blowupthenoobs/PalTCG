@@ -5,77 +5,29 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    # region CardDraw
-    public List<CardScript> deck = new List<CardScript>();
-    public Transform[] cardSlots;
-    public bool[] availableSlots;
+    public static GameManager Instance;
 
-    public Text deckSizeText;
 
-    public void DrawCard()
+    //Visuals and Confirmation
+    public GameObject ConfirmationButtons;
+
+    void Awake()
     {
-        if(deck.Count >= 1)
-        {
-            CardScript randCard = deck[Random.Range(0, deck.Count)];
-
-            for (int i = 0; i < availableSlots.Length; i++)
-            {
-                if(availableSlots[i] == true)
-                {
-                    randCard.gameObject.SetActive(true);
-                    randCard.transform.position = cardSlots[i].position;
-                    availableSlots[i] = false;
-                    deck.Remove(randCard);
-                    return;
-                }
-            }
-        }
-    }
-    #endregion
-
-    #region Singleton
-    // Make sure only one instance of the Game Manager exists.
-    private static GameManager _instance;
-
-    // Make access limited when loading.
-    public static GameManager Instance
-    {
-        get 
-        { 
-            if (_instance == null)
-            {
-                Debug.LogError("GameManager is NULL.");
-            }
-            return _instance; 
-        }
-    }
-
-    // Check to see if another Game Manager exists. If another exists, destory the Game Object.
-    private void Awake()
-    {
-        if (_instance)
-        {
-            Destroy(gameObject);
-        }
+        if(Instance == null)
+            Instance = this;
         else
-        {
-            _instance = this;
-        }
+            Destroy(gameObject);
 
-        // If no other exists, don't destory the original.
-        DontDestroyOnLoad(this);
-    }
-    #endregion
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+        HideConfirmationButtons();
     }
 
-    // Update is called once per frame
-    private void Update()
+    public void HideConfirmationButtons()
     {
-        deckSizeText.text = deck.Count.ToString();
+        ConfirmationButtons.SetActive(false);
+    }
+
+    public void ShowConfirmationButtons()
+    {
+        ConfirmationButtons.SetActive(true);
     }
 }

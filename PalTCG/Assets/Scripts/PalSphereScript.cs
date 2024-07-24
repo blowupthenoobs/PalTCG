@@ -13,6 +13,7 @@ public class PalSphereScript : MonoBehaviour
         {
             if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
             {
+                GameManager.Instance.ShowConfirmationButtons();
                 HandScript.Instance.buildingPay = true;
                 HandScript.Instance.updatePayment += VerifyButtons;
                 ConfirmationButtons.Instance.Confirmed += PlaceCard;
@@ -28,6 +29,7 @@ public class PalSphereScript : MonoBehaviour
         HandScript.Instance.updatePayment -= VerifyButtons;
         ConfirmationButtons.Instance.Confirmed -= PlaceCard;
         ConfirmationButtons.Instance.Denied -= Disengage;
+        GameManager.Instance.HideConfirmationButtons();
 
         var data = (PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
 
@@ -54,6 +56,7 @@ public class PalSphereScript : MonoBehaviour
         HandScript.Instance.updatePayment -= VerifyButtons;
         ConfirmationButtons.Instance.Confirmed -= PlaceCard;
         ConfirmationButtons.Instance.Denied -= Disengage;
+        GameManager.Instance.ShowConfirmationButtons();
 
         HandScript.Instance.selected.SendMessage("Deselect");
         HandScript.Instance.selected = null;
