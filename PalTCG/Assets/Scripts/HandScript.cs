@@ -157,12 +157,12 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         Duck();
     }
 
-    private void Duck()
+    public void Duck()
     {
         targetPos = duckPos;
     }
 
-    private void Raise()
+    public void Raise()
     {
         targetPos = originalPos;
     }
