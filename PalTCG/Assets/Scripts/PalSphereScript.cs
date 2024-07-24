@@ -57,7 +57,7 @@ public class PalSphereScript : MonoBehaviour
         HandScript.Instance.updatePayment -= VerifyButtons;
         ConfirmationButtons.Instance.Confirmed -= PlaceCard;
         ConfirmationButtons.Instance.Denied -= Disengage;
-        GameManager.Instance.ShowConfirmationButtons();
+        GameManager.Instance.HideConfirmationButtons();
 
         HandScript.Instance.selected.SendMessage("Deselect");
         HandScript.Instance.selected = null;
