@@ -24,7 +24,7 @@ public class DefaultUnitData : MonoBehaviour
 
     public DefaultPal lamball = new DefaultPal
     (
-        cost: 0,
+        cost: 1,
         element: Resources.Element.Basic,
         traits: new Resources.Traits
         (
