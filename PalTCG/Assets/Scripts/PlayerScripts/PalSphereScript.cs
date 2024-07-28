@@ -34,8 +34,12 @@ public class PalSphereScript : MonoBehaviour
 
         var data = (PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
 
-        heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
-        heldCard.transform.SetParent(transform);
+        if(data.size <= 1)
+        {
+            heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
+            heldCard.transform.SetParent(transform);
+        }
+        
 
         heldCard.GetComponent<PalCardScript>().cardData = data;
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +12,15 @@ public class GameManager : MonoBehaviour
     //Visuals and Confirmation
     public GameObject ConfirmationButtons;
 
+    public UnityAction StartPlayerTurn;
+    public UnityAction StartEnemyTurn;
+    public UnityAction StartPlayerAttack;
+    public UnityAction StartEnemyAttack;
+    public UnityAction EndPlayerTurn;
+    public UnityAction EndEnemyTurn;
+
+    public string phase;
+
     void Awake()
     {
         if(Instance == null)
@@ -19,6 +29,11 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
 
         HideConfirmationButtons();
+
+        StartPlayerTurn += PlayerPhase;
+        StartEnemyTurn += EnemyPhase;
+        StartPlayerAttack += PlayerAttackPhase;
+        StartEnemyAttack += EnemyAttackPhase;
     }
 
     public void HideConfirmationButtons()
@@ -30,4 +45,27 @@ public class GameManager : MonoBehaviour
     {
         ConfirmationButtons.SetActive(true);
     }
+
+
+#region GameStates
+    void PlayerPhase()
+    {
+        phase = "PlayerTurn";
+    }
+
+    void EnemyPhase()
+    {
+        phase = "EnemyTurn";
+    }
+
+    void PlayerAttackPhase()
+    {
+        phase = "PlayerAttack";
+    }
+
+    void EnemyAttackPhase()
+    {
+        phase = "EnemyAttack";
+    }
+#endregion
 }
