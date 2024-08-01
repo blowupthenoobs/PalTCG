@@ -9,15 +9,15 @@ public class PalSphereScript : MonoBehaviour
 
     public void CheckForCard()
     {
-        if(HandScript.Instance.selected != null && heldCard == null && !HandScript.Instance.buildingPay)
+        if(HandScript.Instance.selected != null && heldCard == null && HandScript.Instance.state != "buildingPay")
         {
             if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
             {
                 GameManager.Instance.ShowConfirmationButtons();
-                HandScript.Instance.buildingPay = true;
+                HandScript.Instance.state = "buildingPay";
                 HandScript.Instance.Raise();
-                HandScript.Instance.updatePayment += VerifyButtons;
-                ConfirmationButtons.Instance.Confirmed += PlaceCard;
+                HandScript.Instance.updateSelection += VerifyButtons;
+                ConfirmationButtons.Instance.Confirmed += PayForCard;
                 ConfirmationButtons.Instance.Denied += Disengage;
 
                 VerifyButtons();
@@ -25,10 +25,17 @@ public class PalSphereScript : MonoBehaviour
         }
     }
 
-    void PlaceCard()
+    void PlaceCard(GameObject card)
     {
-        HandScript.Instance.updatePayment -= VerifyButtons;
-        ConfirmationButtons.Instance.Confirmed -= PlaceCard;
+        heldCard = card;
+        heldCard.transform.SetParent(transform);
+        heldCard.transform.position = transform.position;
+    }
+
+    void PayForCard()
+    {
+        HandScript.Instance.updateSelection -= VerifyButtons;
+        ConfirmationButtons.Instance.Confirmed -= PayForCard;
         ConfirmationButtons.Instance.Denied -= Disengage;
         GameManager.Instance.HideConfirmationButtons();
 
@@ -37,7 +44,8 @@ public class PalSphereScript : MonoBehaviour
         if(data.size <= 1)
         {
             heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
-            heldCard.transform.SetParent(transform);
+            
+            PlaceCard(heldCard);
         }
         
 
@@ -46,27 +54,27 @@ public class PalSphereScript : MonoBehaviour
         HandScript.Instance.Hand.RemoveAt(HandScript.Instance.Hand.IndexOf(HandScript.Instance.selected));
         Destroy(HandScript.Instance.selected);
 
-        while(HandScript.Instance.payment.Count > 0)
+        while(HandScript.Instance.selection.Count > 0)
         {
-            var cardToDiscard = HandScript.Instance.payment[0];
-            HandScript.Instance.payment.RemoveAt(0);
+            var cardToDiscard = HandScript.Instance.selection[0];
+            HandScript.Instance.selection.RemoveAt(0);
             HandScript.Instance.Discard(cardToDiscard);
         }  
 
-        HandScript.Instance.buildingPay = false;
+        HandScript.Instance.state = "default";
     }
 
     void Disengage()
     {
-        HandScript.Instance.updatePayment -= VerifyButtons;
-        ConfirmationButtons.Instance.Confirmed -= PlaceCard;
+        HandScript.Instance.updateSelection -= VerifyButtons;
+        ConfirmationButtons.Instance.Confirmed -= PayForCard;
         ConfirmationButtons.Instance.Denied -= Disengage;
         GameManager.Instance.HideConfirmationButtons();
 
         HandScript.Instance.selected.SendMessage("Deselect");
         HandScript.Instance.selected = null;
 
-        HandScript.Instance.buildingPay = false;
+        HandScript.Instance.state = "default";
     }
 
     void VerifyButtons()
@@ -79,7 +87,7 @@ public class PalSphereScript : MonoBehaviour
         var data = (PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
         var costAmount = data.cost;
 
-        if(data.element == Resources.Element.Basic && HandScript.Instance.payment.Count == costAmount)
+        if(data.element == Resources.Element.Basic && HandScript.Instance.selection.Count == costAmount)
             return true;
         else
             return false;

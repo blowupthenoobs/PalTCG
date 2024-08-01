@@ -18,10 +18,10 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public new List<GameObject> Hand = new List<GameObject>();
 
     //Card Stuff
-    public bool buildingPay;
-    public List<GameObject> payment = new List<GameObject>();
+    public string state = "default";
+    public List<GameObject> selection = new List<GameObject>();
     [SerializeField] GameObject cardPrefab;
-    public UnityAction updatePayment;
+    public UnityAction updateSelection;
 
     //Moving stuff
     private Vector3 originalPos;
@@ -50,7 +50,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         if(Input.GetButtonDown("Fire1"))
         {
-            if(selected != null && !buildingPay)
+            if(selected != null && state == "default")
                 StartCoroutine(Click());
         }
 
@@ -59,7 +59,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     }
     public void Select(GameObject card)
     {
-        if(!buildingPay)
+        if(state == "default")
         {
             selected = card;
             Duck();
@@ -68,15 +68,15 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             if(card != selected)
             {
-                if(!payment.Contains(card))
-                    payment.Add(card);
+                if(!selection.Contains(card))
+                    selection.Add(card);
                 else
                 {
-                    payment.RemoveAt(payment.IndexOf(card));
+                    selection.RemoveAt(selection.IndexOf(card));
                     card.SendMessage("Deselect");
                 }
 
-                updatePayment.Invoke();
+                updateSelection.Invoke();
             }
         }
     }
@@ -87,7 +87,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         yield return new WaitForSeconds(.15f);
 
-            if(selected != null && !buildingPay)
+            if(selected != null && state == "default")
             {
                 if(originalSelect == selected)
                 {

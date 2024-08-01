@@ -26,10 +26,31 @@ public class WaitingSpace : MonoBehaviour
     {
         int size = data.size;
 
-        if(size == 0)
+        if(size <= 1)
         {
-            
+            var heldCard = Instantiate(cardPrefab, readyspot.transform.position, transform.rotation);
+            heldCard.transform.SetParent(readyspot.transform);
+            readyCards.Add(heldCard);
         }
+        else if(size == 2)
+        {
+            var heldCard = Instantiate(cardPrefab, waiting1.transform.position, transform.rotation);
+            heldCard.transform.SetParent(waiting1.transform);
+            TurnsTillReady1.Add(heldCard);
+        }
+        else if(size == 3)
+        {
+            var heldCard = Instantiate(cardPrefab, waiting2.transform.position, transform.rotation);
+            heldCard.transform.SetParent(waiting2.transform);
+            TurnsTillReady2.Add(heldCard);
+        }
+        else if(size == 4)
+        {
+            var heldCard = Instantiate(cardPrefab, waiting3.transform.position, transform.rotation);
+            heldCard.transform.SetParent(waiting3.transform);
+            TurnsTillReady3.Add(heldCard);
+        }
+
     }
 
     void MoveWaitlist()
@@ -52,4 +73,76 @@ public class WaitingSpace : MonoBehaviour
             TurnsTillReady3.RemoveAt(0);
         }
     }
+
+    public void CheckForCard()
+    {
+        if(HandScript.Instance.selected != null && HandScript.Instance.state == "default")
+        {
+            if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
+            {
+                GameManager.Instance.ShowConfirmationButtons();
+                HandScript.Instance.state = "buildingPay";
+                HandScript.Instance.Raise();
+                HandScript.Instance.updateSelection += VerifyButtons;
+                ConfirmationButtons.Instance.Confirmed += PlaceCard;
+                ConfirmationButtons.Instance.Denied += Disengage;
+
+                VerifyButtons();
+            }
+        }
+    }
+
+    void PlaceCard()
+    {
+        HandScript.Instance.updateSelection -= VerifyButtons;
+        ConfirmationButtons.Instance.Confirmed -= PlaceCard;
+        ConfirmationButtons.Instance.Denied -= Disengage;
+        GameManager.Instance.HideConfirmationButtons();
+
+        var data = (PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
+
+        AddToWaitlist(data);
+
+        HandScript.Instance.Hand.RemoveAt(HandScript.Instance.Hand.IndexOf(HandScript.Instance.selected));
+        Destroy(HandScript.Instance.selected);
+
+        while(HandScript.Instance.selection.Count > 0)
+        {
+            var cardToDiscard = HandScript.Instance.selection[0];
+            HandScript.Instance.selection.RemoveAt(0);
+            HandScript.Instance.Discard(cardToDiscard);
+        }  
+
+        HandScript.Instance.state = "default";
+    }
+
+    void Disengage()
+    {
+        HandScript.Instance.updateSelection -= VerifyButtons;
+        ConfirmationButtons.Instance.Confirmed -= PlaceCard;
+        ConfirmationButtons.Instance.Denied -= Disengage;
+        GameManager.Instance.HideConfirmationButtons();
+
+        HandScript.Instance.selected.SendMessage("Deselect");
+        HandScript.Instance.selected = null;
+
+        HandScript.Instance.state = "default";
+    }
+
+    void VerifyButtons()
+    {
+        ConfirmationButtons.Instance.AllowConfirmation(PaymentIsCorrect());
+    }
+
+    bool PaymentIsCorrect()
+    {
+        var data = (PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
+        var costAmount = data.cost;
+
+        if(data.element == Resources.Element.Basic && HandScript.Instance.selection.Count == costAmount)
+            return true;
+        else
+            return false;
+    }
+
 }
