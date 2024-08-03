@@ -64,7 +64,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             selected = card;
             Duck();
         }
-        else
+        else if(state == "buildingPay")
         {
             if(card != selected)
             {
@@ -77,6 +77,14 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 }
 
                 updateSelection.Invoke();
+            }
+        }
+        else if(state == "lookingForSphere")
+        {
+            if(card.GetComponent<PalSphereScript>() != null)
+            {
+                selection.Clear();
+                selection.Add(card);
             }
         }
     }

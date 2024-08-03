@@ -9,7 +9,7 @@ public class PalSphereScript : MonoBehaviour
 
     public void CheckForCard()
     {
-        if(HandScript.Instance.selected != null && heldCard == null && HandScript.Instance.state != "buildingPay")
+        if(HandScript.Instance.selected != null && heldCard == null && HandScript.Instance.state == "default")
         {
             if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
             {
@@ -22,6 +22,10 @@ public class PalSphereScript : MonoBehaviour
 
                 VerifyButtons();
             }
+        }
+        else if(HandScript.Instance.state == "lookingForSphere")
+        {
+            HandScript.Instance.Select(gameObject);
         }
     }
 

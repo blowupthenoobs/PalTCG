@@ -31,6 +31,7 @@ public class WaitingSpace : MonoBehaviour
             var heldCard = Instantiate(cardPrefab, readyspot.transform.position, transform.rotation);
             heldCard.transform.SetParent(readyspot.transform);
             readyCards.Add(heldCard);
+            heldCard.SendMessage("ReadyToBePlaced");
         }
         else if(size == 2)
         {

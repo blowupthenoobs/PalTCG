@@ -13,8 +13,13 @@ public class PalCardScript : MonoBehaviour
     {
         button = GetComponent<Button>();
     }
+    
+    public void PlaceOnPalSphere()
+    {
+        var palSphere = HandScript.Instance.selection[0];
 
-
+        palSphere.SendMessage("PlaceCard", gameObject);
+    }
 
     public void ReadyToBePlaced()
     {
@@ -24,12 +29,43 @@ public class PalCardScript : MonoBehaviour
 
     void LookForPalSphere()
     {
+        if(HandScript.Instance.state == "default")
+        {
+            GameManager.Instance.ShowConfirmationButtons();
+            HandScript.Instance.state = "lookingForSphere";
+            HandScript.Instance.Duck();
+            HandScript.Instance.updateSelection += VerifyButtons;                
+            ConfirmationButtons.Instance.Confirmed += PlaceOnPalSphere;
+            ConfirmationButtons.Instance.Denied += StopLookingForSphere;
 
+            VerifyButtons();
+        }
     }
-    
-    public void PlaceOnPalSphere()
-    {
 
+    void StopLookingForSphere()
+    {
+        HandScript.Instance.updateSelection -= VerifyButtons;
+        ConfirmationButtons.Instance.Confirmed -= PlaceOnPalSphere;
+        ConfirmationButtons.Instance.Denied -= StopLookingForSphere;
+        GameManager.Instance.HideConfirmationButtons();
+
+        HandScript.Instance.state = "default";
+    }
+
+    void VerifyButtons()
+    {
+        ConfirmationButtons.Instance.AllowConfirmation(SphereSelected());
+    }
+
+    bool SphereSelected()
+    {
+        var data = (PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
+        var costAmount = data.cost;
+
+        if(HandScript.Instance.selection.Count == 1)
+            return true;
+        else
+            return false;
     }
 
 }
