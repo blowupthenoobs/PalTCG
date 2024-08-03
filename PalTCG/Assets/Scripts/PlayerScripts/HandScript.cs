@@ -85,6 +85,8 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             {
                 selection.Clear();
                 selection.Add(card);
+
+                updateSelection.Invoke();
             }
         }
     }

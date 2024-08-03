@@ -59,9 +59,6 @@ public class PalCardScript : MonoBehaviour
 
     bool SphereSelected()
     {
-        var data = (PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
-        var costAmount = data.cost;
-
         if(HandScript.Instance.selection.Count == 1)
             return true;
         else
