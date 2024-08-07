@@ -52,4 +52,15 @@ public class Resources : MonoBehaviour
             this.bird = bird;
         }
     }
+
+    public static bool PaymentIsCorrect()
+    {
+        var data = (PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
+        var costAmount = data.cost;
+
+        if(data.element == Resources.Element.Basic && HandScript.Instance.selection.Count == costAmount)
+            return true;
+        else
+            return false;
+    }
 }

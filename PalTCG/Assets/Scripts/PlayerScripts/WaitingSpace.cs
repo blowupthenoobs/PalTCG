@@ -136,18 +136,7 @@ public class WaitingSpace : MonoBehaviour
 
     void VerifyButtons()
     {
-        ConfirmationButtons.Instance.AllowConfirmation(PaymentIsCorrect());
-    }
-
-    bool PaymentIsCorrect()
-    {
-        var data = (PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
-        var costAmount = data.cost;
-
-        if(data.element == Resources.Element.Basic && HandScript.Instance.selection.Count == costAmount)
-            return true;
-        else
-            return false;
+        ConfirmationButtons.Instance.AllowConfirmation(Resources.PaymentIsCorrect());
     }
 
 }
