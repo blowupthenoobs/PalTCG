@@ -19,7 +19,7 @@ MonoBehaviour:
   gameObject: {fileID: 0}
   cost: 1
   element: 0
-  size: 0
+  size: 1
   OnDestroy:
     m_PersistentCalls:
       m_Calls: []

@@ -58,18 +58,22 @@ public class WaitingSpace : MonoBehaviour
     {
         while(TurnsTillReady1.Count > 0)
         {
+            TurnsTillReady1[0].transform.SetParent(readyspot.transform);
+            TurnsTillReady1[0].SendMessage("ReadyToBePlaced");
             readyCards.Add(TurnsTillReady1[0]);
             TurnsTillReady1.RemoveAt(0);
         }
 
         while(TurnsTillReady2.Count > 0)
         {
+            TurnsTillReady2[0].transform.SetParent(waiting1.transform);
             TurnsTillReady1.Add(TurnsTillReady2[0]);
             TurnsTillReady2.RemoveAt(0);
         }
 
         while(TurnsTillReady3.Count > 0)
         {
+            TurnsTillReady3[0].transform.SetParent(waiting2.transform);
             TurnsTillReady2.Add(TurnsTillReady3[0]);
             TurnsTillReady3.RemoveAt(0);
         }

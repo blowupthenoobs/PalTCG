@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PalSphereScript : MonoBehaviour
 {
+    [SerializeField] GameObject waitingSpace;
     [SerializeField] GameObject cardPrefab;
     public GameObject heldCard;
 
@@ -50,10 +51,15 @@ public class PalSphereScript : MonoBehaviour
             heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
             
             PlaceCard(heldCard);
+
+            heldCard.GetComponent<PalCardScript>().cardData = data;
+        }
+        else
+        {
+            waitingSpace.SendMessage("AddToWaitlist", data);
         }
         
 
-        heldCard.GetComponent<PalCardScript>().cardData = data;
 
         HandScript.Instance.Hand.RemoveAt(HandScript.Instance.Hand.IndexOf(HandScript.Instance.selected));
         Destroy(HandScript.Instance.selected);

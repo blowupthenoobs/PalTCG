@@ -36,6 +36,12 @@ public class GameManager : MonoBehaviour
         StartEnemyAttack += EnemyAttackPhase;
     }
 
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space)) //For Testing Purposes
+            StartPlayerTurn.Invoke();
+    }
+
     public void HideConfirmationButtons()
     {
         ConfirmationButtons.SetActive(false);

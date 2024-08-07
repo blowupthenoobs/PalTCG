@@ -19,6 +19,7 @@ public class PalCardScript : MonoBehaviour
         var palSphere = HandScript.Instance.selection[0];
 
         palSphere.SendMessage("PlaceCard", gameObject);
+        GameManager.Instance.HideConfirmationButtons();
     }
 
     public void ReadyToBePlaced()

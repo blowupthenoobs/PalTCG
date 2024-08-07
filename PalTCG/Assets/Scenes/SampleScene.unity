@@ -211,6 +211,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3110401272640994159, guid: c25b88f57ebb9fc4699e812d42cdb5da, type: 3}
+      propertyPath: waitingSpace
+      value: 
+      objectReference: {fileID: 1375381342}
     - target: {fileID: 8017676101420941317, guid: c25b88f57ebb9fc4699e812d42cdb5da, type: 3}
       propertyPath: m_Name
       value: PalSphere (1)
@@ -1590,8 +1594,8 @@ MonoBehaviour:
   Preferences: {fileID: 11400000, guid: cad9882abfdb98548a5f553189451724, type: 2}
   selected: {fileID: 0}
   Hand: []
-  buildingPay: 0
-  payment: []
+  state: default
+  selection: []
   cardPrefab: {fileID: 8127651943919447807, guid: 81464f85c0f3f9c4e8a358520fec5a17, type: 3}
   duckAmount: 120
   moveSpeed: 500
@@ -1871,6 +1875,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3110401272640994159, guid: c25b88f57ebb9fc4699e812d42cdb5da, type: 3}
+      propertyPath: waitingSpace
+      value: 
+      objectReference: {fileID: 1375381342}
     - target: {fileID: 8017676101420941317, guid: c25b88f57ebb9fc4699e812d42cdb5da, type: 3}
       propertyPath: m_Name
       value: PalSphere (3)
@@ -1978,7 +1986,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1348966687
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2370,6 +2378,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3110401272640994159, guid: c25b88f57ebb9fc4699e812d42cdb5da, type: 3}
+      propertyPath: waitingSpace
+      value: 
+      objectReference: {fileID: 1375381342}
     - target: {fileID: 8017676101420941317, guid: c25b88f57ebb9fc4699e812d42cdb5da, type: 3}
       propertyPath: m_Name
       value: PalSphere (2)
@@ -2472,6 +2484,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3110401272640994159, guid: c25b88f57ebb9fc4699e812d42cdb5da, type: 3}
+      propertyPath: waitingSpace
+      value: 
+      objectReference: {fileID: 1375381342}
     - target: {fileID: 8017676101420941317, guid: c25b88f57ebb9fc4699e812d42cdb5da, type: 3}
       propertyPath: m_Name
       value: PalSphere (4)
@@ -2879,6 +2895,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3110401272640994159, guid: c25b88f57ebb9fc4699e812d42cdb5da, type: 3}
+      propertyPath: waitingSpace
+      value: 
+      objectReference: {fileID: 1375381342}
     - target: {fileID: 8017676101420941317, guid: c25b88f57ebb9fc4699e812d42cdb5da, type: 3}
       propertyPath: m_Name
       value: PalSphere
