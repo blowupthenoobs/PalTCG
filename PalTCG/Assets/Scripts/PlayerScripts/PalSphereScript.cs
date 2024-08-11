@@ -89,7 +89,7 @@ public class PalSphereScript : MonoBehaviour
 
     void VerifyButtons()
     {
-        ConfirmationButtons.Instance.AllowConfirmation(Resources.PaymentIsCorrect());
+        ConfirmationButtons.Instance.AllowConfirmation(Resources.PalPaymentIsCorrect());
     }
 
 }

@@ -136,7 +136,7 @@ public class WaitingSpace : MonoBehaviour
 
     void VerifyButtons()
     {
-        ConfirmationButtons.Instance.AllowConfirmation(Resources.PaymentIsCorrect());
+        ConfirmationButtons.Instance.AllowConfirmation(Resources.PalPaymentIsCorrect());
     }
 
 }

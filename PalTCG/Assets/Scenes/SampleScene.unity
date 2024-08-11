@@ -666,10 +666,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentDeck:
   - {fileID: 11400000, guid: 2363165239332ca45a59dd77c5aaae22, type: 2}
-  - {fileID: 11400000, guid: 2363165239332ca45a59dd77c5aaae22, type: 2}
-  - {fileID: 11400000, guid: 2363165239332ca45a59dd77c5aaae22, type: 2}
-  - {fileID: 11400000, guid: 2363165239332ca45a59dd77c5aaae22, type: 2}
-  - {fileID: 11400000, guid: 2363165239332ca45a59dd77c5aaae22, type: 2}
+  - {fileID: 11400000, guid: 1bd33343ef2da8c4ba2fbcf81733f6a6, type: 2}
+  - {fileID: 11400000, guid: 1bd33343ef2da8c4ba2fbcf81733f6a6, type: 2}
+  - {fileID: 11400000, guid: 5e4b4785b02b2b44db84abea6dc3d046, type: 2}
+  - {fileID: 11400000, guid: 5e4b4785b02b2b44db84abea6dc3d046, type: 2}
 --- !u!1 &409336392
 GameObject:
   m_ObjectHideFlags: 0

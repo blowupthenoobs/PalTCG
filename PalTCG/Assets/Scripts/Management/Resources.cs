@@ -53,13 +53,29 @@ public class Resources : MonoBehaviour
         }
     }
 
-    public static bool PaymentIsCorrect()
+    public static bool PalPaymentIsCorrect()
     {
         var data = (PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
         var costAmount = data.cost;
 
-        if(data.element == Resources.Element.Basic && HandScript.Instance.selection.Count == costAmount)
+        if(data.element == Element.Basic && HandScript.Instance.selection.Count == costAmount)
             return true;
+        else if(HandScript.Instance.selection.Count == costAmount)
+        {
+            var typesAreCorrect = true;
+            var cardColor = ((PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData).element;
+
+            for(int i = 0; i < HandScript.Instance.selection.Count; i++)
+            {
+                var paymentColor = ((PalCardData)HandScript.Instance.selection[i].GetComponent<CardScript>().cardData).element;
+
+                if(cardColor != paymentColor && paymentColor != Element.Basic)
+                    typesAreCorrect = false;
+
+            }
+
+            return typesAreCorrect;
+        }
         else
             return false;
     }
