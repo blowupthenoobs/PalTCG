@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3849574782218595291}
   - component: {fileID: 3937924490681677439}
   - component: {fileID: 405571712329972750}
+  - component: {fileID: -2598723900738669565}
   - component: {fileID: 5833905384239227366}
   m_Layer: 5
   m_Name: EnemyPalSphere
@@ -76,6 +77,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &-2598723900738669565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7890789124495758920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf58d9ea73b120749bb7041a0c079bf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardPrefab: {fileID: 3607679034451322415, guid: 979d1c1f96e181b4a8543ed23ce7226b, type: 3}
+  heldCard: {fileID: 0}
 --- !u!114 &5833905384239227366
 MonoBehaviour:
   m_ObjectHideFlags: 0
