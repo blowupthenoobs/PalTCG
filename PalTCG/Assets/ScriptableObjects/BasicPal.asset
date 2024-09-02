@@ -20,6 +20,8 @@ MonoBehaviour:
   cost: 1
   element: 0
   size: 1
+  maxHp: 0
+  currentHp: 0
   OnDestroy:
     m_PersistentCalls:
       m_Calls: []

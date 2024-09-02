@@ -42,6 +42,14 @@ public class GameManager : MonoBehaviour
             StartPlayerTurn.Invoke();
     }
 
+    void TestModes()
+    {
+        if(phase == "default")
+            StartPlayerTurn.Invoke();
+        else
+            StartEnemyAttack.Invoke();
+    }
+
     public void HideConfirmationButtons()
     {
         ConfirmationButtons.SetActive(false);

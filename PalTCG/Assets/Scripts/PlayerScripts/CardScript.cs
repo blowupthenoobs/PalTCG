@@ -10,7 +10,7 @@ public class CardScript : MonoBehaviour
     public Color normalColor;
     public Color selectColor;
     private Image image;
-    // Start is called before the first frame update
+    
     protected virtual void Awake()
     {
         cardData.gameObject = gameObject;

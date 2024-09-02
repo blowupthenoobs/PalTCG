@@ -10,6 +10,8 @@ public class PalCardData : CardData
     public Resources.Element element;
     public Resources.Traits traits;
     public int size;
+    public int maxHp;
+    public int currentHp;
     public UnityEvent<GameObject> OnDestroy;
     public UnityEvent<GameObject> OnPlay;
     public UnityEvent<GameObject> PalSkill;
