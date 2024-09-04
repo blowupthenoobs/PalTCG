@@ -10,23 +10,26 @@ public class PalSphereScript : MonoBehaviour
 
     public void CheckForCard()
     {
-        if(HandScript.Instance.selected != null && heldCard == null && HandScript.Instance.state == "default")
+        if(GameManager.Instance.phase == "PlayerTurn")
         {
-            if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
+            if(HandScript.Instance.selected != null && heldCard == null && HandScript.Instance.state == "default")
             {
-                GameManager.Instance.ShowConfirmationButtons();
-                HandScript.Instance.state = "buildingPay";
-                HandScript.Instance.Raise();
-                HandScript.Instance.updateSelection += VerifyButtons;
-                ConfirmationButtons.Instance.Confirmed += PayForCard;
-                ConfirmationButtons.Instance.Denied += Disengage;
+                if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
+                {
+                    GameManager.Instance.ShowConfirmationButtons();
+                    HandScript.Instance.state = "buildingPay";
+                    HandScript.Instance.Raise();
+                    HandScript.Instance.updateSelection += VerifyButtons;
+                    ConfirmationButtons.Instance.Confirmed += PayForCard;
+                    ConfirmationButtons.Instance.Denied += Disengage;
 
-                VerifyButtons();
+                    VerifyButtons();
+                }
             }
-        }
-        else if(HandScript.Instance.state == "lookingForSphere")
-        {
-            HandScript.Instance.Select(gameObject);
+            else if(HandScript.Instance.state == "lookingForSphere")
+            {
+                HandScript.Instance.Select(gameObject);
+            }
         }
     }
 

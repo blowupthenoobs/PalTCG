@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     public UnityAction EndPlayerTurn;
     public UnityAction EndEnemyTurn;
 
-    public string phase;
+    public string phase = "PlayerTurn";
 
     void Awake()
     {
@@ -39,15 +39,15 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space)) //For Testing Purposes
-            StartPlayerTurn.Invoke();
+            TestModes();
     }
 
     void TestModes()
     {
-        if(phase == "default")
-            StartPlayerTurn.Invoke();
+        if(phase == "PlayerTurn")
+            StartPlayerAttack.Invoke();
         else
-            StartEnemyAttack.Invoke();
+            StartPlayerTurn.Invoke();
     }
 
     public void HideConfirmationButtons()
@@ -64,22 +64,28 @@ public class GameManager : MonoBehaviour
 #region GameStates
     void PlayerPhase()
     {
+        HandScript.Instance.state = "default";
         phase = "PlayerTurn";
+        Debug.Log(phase);
     }
 
     void EnemyPhase()
     {
         phase = "EnemyTurn";
+        HandScript.Instance.state = "";
+        Debug.Log(phase);
     }
 
     void PlayerAttackPhase()
     {
         phase = "PlayerAttack";
+        Debug.Log(phase);
     }
 
     void EnemyAttackPhase()
     {
         phase = "EnemyAttack";
+        Debug.Log(phase);
     }
 #endregion
 }
