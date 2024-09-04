@@ -18,7 +18,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public new List<GameObject> Hand = new List<GameObject>();
 
     //Card Stuff
-    public string state = "default";
+    public string state;
     public List<GameObject> selection = new List<GameObject>();
     [SerializeField] GameObject cardPrefab;
     public UnityAction updateSelection;

@@ -36,6 +36,11 @@ public class GameManager : MonoBehaviour
         StartEnemyAttack += EnemyAttackPhase;
     }
 
+    void Start()
+    {
+        PickFirstPlayer();
+    }
+
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space)) //For Testing Purposes
@@ -86,6 +91,16 @@ public class GameManager : MonoBehaviour
     {
         phase = "EnemyAttack";
         Debug.Log(phase);
+    }
+
+    void PickFirstPlayer()
+    {
+        int chance = Random.Range(0, 2);
+
+        if(chance == 0)
+            StartPlayerTurn.Invoke();
+        else
+            StartEnemyTurn.Invoke();
     }
 #endregion
 }
