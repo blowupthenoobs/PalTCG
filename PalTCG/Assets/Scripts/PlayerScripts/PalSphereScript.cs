@@ -22,6 +22,7 @@ public class PalSphereScript : MonoBehaviour
                     HandScript.Instance.updateSelection += VerifyButtons;
                     ConfirmationButtons.Instance.Confirmed += PayForCard;
                     ConfirmationButtons.Instance.Denied += Disengage;
+                    ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
 
                     VerifyButtons();
                 }
@@ -45,6 +46,7 @@ public class PalSphereScript : MonoBehaviour
         HandScript.Instance.updateSelection -= VerifyButtons;
         ConfirmationButtons.Instance.Confirmed -= PayForCard;
         ConfirmationButtons.Instance.Denied -= Disengage;
+        ConfirmationButtons.Instance.Denied -= HandScript.Instance.ClearSelection;
         GameManager.Instance.HideConfirmationButtons();
 
         var data = (PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
@@ -82,6 +84,7 @@ public class PalSphereScript : MonoBehaviour
         HandScript.Instance.updateSelection -= VerifyButtons;
         ConfirmationButtons.Instance.Confirmed -= PayForCard;
         ConfirmationButtons.Instance.Denied -= Disengage;
+        ConfirmationButtons.Instance.Denied -= HandScript.Instance.ClearSelection;
         GameManager.Instance.HideConfirmationButtons();
 
         HandScript.Instance.selected.SendMessage("Deselect");

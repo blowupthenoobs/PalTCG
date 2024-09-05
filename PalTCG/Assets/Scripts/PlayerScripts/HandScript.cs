@@ -91,6 +91,15 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
     }
 
+    public void ClearSelection()
+    {
+        while(selection.Count > 0)
+        {        
+            selection[0].SendMessage("Deselect");
+            selection.RemoveAt(0);
+        }
+    }
+
     public IEnumerator Click()
     {
         var originalSelect = selected;
