@@ -93,6 +93,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void ClearSelection()
     {
+        selected = null;
         while(selection.Count > 0)
         {        
             selection[0].SendMessage("Deselect");

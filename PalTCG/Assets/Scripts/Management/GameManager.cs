@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         PickFirstPlayer();
+        StartEnemyTurn += HandScript.Instance.ClearSelection;
     }
 
     void Update()
