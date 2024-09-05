@@ -11,6 +11,10 @@ public abstract class CardData : ScriptableObject
     public Sprite cardart;
     public UnityEngine.UI.Image image;
     public GameObject gameObject;
+    public int maxHp;
+    public int currentHp;
+    public int defaultAtk;
+    public int currentAtk;
 
     
     public virtual void Awake()

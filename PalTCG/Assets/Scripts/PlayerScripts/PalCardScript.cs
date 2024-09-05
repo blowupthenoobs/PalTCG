@@ -3,17 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PalCardScript : MonoBehaviour
+public class PalCardScript : UnitCardScript
 {
-    [SerializeField] Button button;
     [SerializeField] Resources.StatusEffects statuses;
-    public CardData cardData;
 
-    void Awake()
-    {
-        button = GetComponent<Button>();
-    }
-    
     public void PlaceOnPalSphere()
     {
         var palSphere = HandScript.Instance.selection[0];

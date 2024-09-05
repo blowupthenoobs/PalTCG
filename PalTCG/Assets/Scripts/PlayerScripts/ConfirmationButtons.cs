@@ -25,6 +25,14 @@ public class ConfirmationButtons : MonoBehaviour
             Destroy(gameObject);
     }
 
+    void Start()
+    {
+        GameManager.Instance.StartPlayerTurn += Deny;
+        GameManager.Instance.StartEnemyTurn += Deny;
+        GameManager.Instance.StartPlayerAttack += Deny;
+        GameManager.Instance.StartEnemyAttack += Deny;
+    }
+
     public void Confirm()
     {
         if(canConfirm)
