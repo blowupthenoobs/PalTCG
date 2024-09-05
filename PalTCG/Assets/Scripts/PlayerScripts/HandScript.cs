@@ -183,6 +183,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void Raise()
     {
-        targetPos = originalPos;
+        if(state != "")
+            targetPos = originalPos;
     }
 }

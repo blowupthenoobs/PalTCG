@@ -20,7 +20,7 @@ public class CardScript : MonoBehaviour
 
     public void Select()
     {
-        if(!cancelSelect)
+        if(!cancelSelect && HandScript.Instance.state != "")
         {
             image.color = selectColor;
             HandScript.Instance.Select(gameObject);
