@@ -15,10 +15,40 @@ public class PalCardScript : UnitCardScript
         GameManager.Instance.HideConfirmationButtons();
     }
 
+    public void PrepareAttackPhase()
+    {
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(SelectForAttack);
+    }
+
+    public void EndAttackPhase()
+    {
+        button.onClick.RemoveAllListeners();
+    }
+
     public void ReadyToBePlaced()
     {
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(LookForPalSphere);
+    }
+
+    public void SelectForAttack()
+    {
+        if(HandScript.Instance.state == "choosingAttack" && HandScript.Instance.selected != gameObject && !HandScript.Instance.selection.Contains(gameObject))
+        {
+            image.color = selectColor;
+            HandScript.Instance.Select(gameObject);
+        }
+        else
+            Deselect();
+    }
+
+    public void Deselect()
+    {
+        if(HandScript.Instance.selected == gameObject)
+            HandScript.Instance.selected = null;
+        if(HandScript.Instance.selection.Contains(gameObject))
+            HandScript.Instance.selection.Remove(gameObject);
     }
 
     void LookForPalSphere()

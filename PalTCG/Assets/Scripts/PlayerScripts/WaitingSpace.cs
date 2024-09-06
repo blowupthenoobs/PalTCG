@@ -26,32 +26,35 @@ public class WaitingSpace : MonoBehaviour
     {
         int size = data.size;
 
+        var heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
+
         if(size <= 1)
         {
-            var heldCard = Instantiate(cardPrefab, readyspot.transform.position, transform.rotation);
+            heldCard.transform.position = readyspot.transform.position;
             heldCard.transform.SetParent(readyspot.transform);
             readyCards.Add(heldCard);
             heldCard.SendMessage("ReadyToBePlaced");
         }
         else if(size == 2)
         {
-            var heldCard = Instantiate(cardPrefab, waiting1.transform.position, transform.rotation);
+            heldCard.transform.position = waiting1.transform.position;
             heldCard.transform.SetParent(waiting1.transform);
             TurnsTillReady1.Add(heldCard);
         }
         else if(size == 3)
         {
-            var heldCard = Instantiate(cardPrefab, waiting2.transform.position, transform.rotation);
+            heldCard.transform.position = waiting2.transform.position;
             heldCard.transform.SetParent(waiting2.transform);
             TurnsTillReady2.Add(heldCard);
         }
         else if(size == 4)
         {
-            var heldCard = Instantiate(cardPrefab, waiting3.transform.position, transform.rotation);
+            heldCard.transform.position = waiting3.transform.position;
             heldCard.transform.SetParent(waiting3.transform);
             TurnsTillReady3.Add(heldCard);
         }
-
+        
+        heldCard.SendMessage("SetUpCard", data);
     }
 
     void MoveWaitlist()

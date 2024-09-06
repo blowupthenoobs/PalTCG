@@ -67,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -89,8 +89,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1884408aa7df92248a4702c74cf8549d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button: {fileID: 0}
   cardData: {fileID: 0}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  selectColor: {r: 0, g: 0.8683064, b: 1, a: 1}
 --- !u!114 &-2031198440478612101
 MonoBehaviour:
   m_ObjectHideFlags: 0

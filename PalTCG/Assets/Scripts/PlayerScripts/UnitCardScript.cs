@@ -5,12 +5,22 @@ using UnityEngine.UI;
 
 public class UnitCardScript : MonoBehaviour
 {
+    protected Image image;
     protected Button button;
     public CardData cardData;
+    public Color normalColor; //Probably Temp
+    public Color selectColor;
 
     void Awake()
     {
         button = GetComponent<Button>();
+        image = gameObject.GetComponent<Image>();
+    }
+
+    public void SetUpCard(CardData newData)
+    {
+        cardData = newData;
+        image.sprite = cardData.cardArt;
     }
     
     public void Hurt(int dmg)

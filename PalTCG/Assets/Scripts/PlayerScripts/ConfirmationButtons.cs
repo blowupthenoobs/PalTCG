@@ -41,7 +41,8 @@ public class ConfirmationButtons : MonoBehaviour
 
     public void Deny()
     {
-        Denied.Invoke();
+        if(Denied != null)
+            Denied.Invoke();
     }
 
     public void AllowConfirmation(bool input)

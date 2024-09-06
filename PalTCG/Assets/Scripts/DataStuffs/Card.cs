@@ -8,7 +8,7 @@ public abstract class CardData : ScriptableObject
 {
     public string CardType;
     public string CardName;
-    public Sprite cardart;
+    public Sprite cardArt;
     public UnityEngine.UI.Image image;
     public GameObject gameObject;
     public int maxHp;

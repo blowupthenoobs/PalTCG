@@ -39,6 +39,9 @@ public class PalSphereScript : MonoBehaviour
         heldCard = card;
         heldCard.transform.SetParent(transform);
         heldCard.transform.position = transform.position;
+
+        GameManager.Instance.StartPlayerAttack += heldCard.GetComponent<PalCardScript>().PrepareAttackPhase;
+        GameManager.Instance.StartEnemyTurn += heldCard.GetComponent<PalCardScript>().EndAttackPhase;
     }
 
     void PayForCard()
@@ -54,10 +57,9 @@ public class PalSphereScript : MonoBehaviour
         if(data.size <= 1)
         {
             heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
-            
             PlaceCard(heldCard);
 
-            heldCard.GetComponent<PalCardScript>().cardData = data;
+            heldCard.SendMessage("SetUpCard", data);
         }
         else
         {

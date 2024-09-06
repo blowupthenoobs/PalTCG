@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
     void PlayerAttackPhase()
     {
         phase = "PlayerAttack";
+        HandScript.Instance.state = "choosingAttack";
         Debug.Log(phase);
     }
 
