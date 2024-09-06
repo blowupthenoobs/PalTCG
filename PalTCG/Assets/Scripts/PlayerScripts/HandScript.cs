@@ -59,36 +59,43 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     }
     public void Select(GameObject card)
     {
-        if(state == "default")
+        switch(state)
         {
-            selected = card;
-            Duck();
-        }
-        else if(state == "buildingPay")
-        {
-            if(card != selected)
-            {
-                if(!selection.Contains(card))
-                    selection.Add(card);
-                else
+            case "default":
+                selected = card;
+                Duck();
+
+                break;
+            case "buildingPay":
+                if(card != selected)
                 {
-                    selection.RemoveAt(selection.IndexOf(card));
-                    card.SendMessage("Deselect");
+                    if(!selection.Contains(card))
+                        selection.Add(card);
+                    else
+                    {
+                        selection.RemoveAt(selection.IndexOf(card));
+                        card.SendMessage("Deselect");
+                    }
+
+                    updateSelection.Invoke();
                 }
 
-                updateSelection.Invoke();
-            }
-        }
-        else if(state == "lookingForSphere")
-        {
-            if(card.GetComponent<PalSphereScript>() != null)
-            {
-                selection.Clear();
-                selection.Add(card);
+                break;
+            case "lookingForSphere":
+                if(card.GetComponent<PalSphereScript>() != null)
+                {
+                    selection.Clear();
+                    selection.Add(card);
 
-                updateSelection.Invoke();
-            }
+                    updateSelection.Invoke();
+                }
+
+                break;
+            default:
+                Debug.Log("invalid state");
+                break;
         }
+        
     }
 
     public void ClearSelection()

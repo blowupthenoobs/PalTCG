@@ -45,6 +45,7 @@ public class PalCardScript : UnitCardScript
 
     public void Deselect()
     {
+        Debug.Log("deselecting");
         if(HandScript.Instance.selected == gameObject)
             HandScript.Instance.selected = null;
         if(HandScript.Instance.selection.Contains(gameObject))

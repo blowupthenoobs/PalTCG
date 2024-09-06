@@ -70,6 +70,7 @@ public class PalSphereScript : MonoBehaviour
 
         HandScript.Instance.Hand.RemoveAt(HandScript.Instance.Hand.IndexOf(HandScript.Instance.selected));
         Destroy(HandScript.Instance.selected);
+        HandScript.Instance.selected = null;
 
         while(HandScript.Instance.selection.Count > 0)
         {
