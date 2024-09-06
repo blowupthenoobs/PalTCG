@@ -91,6 +91,9 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 }
 
                 break;
+            case "choosingAttack":
+                selected = card;
+                break;
             default:
                 Debug.Log("invalid state");
                 break;
