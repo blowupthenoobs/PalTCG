@@ -34,10 +34,16 @@ public class PalCardScript : UnitCardScript
 
     public void SelectForAttack()
     {
-        if(HandScript.Instance.state == "choosingAttack" && HandScript.Instance.selected != gameObject && !HandScript.Instance.selection.Contains(gameObject))
+        if(HandScript.Instance.state == "choosingAttack" || HandScript.Instance.state == "targeting")
         {
-            image.color = selectColor;
-            HandScript.Instance.Select(gameObject);
+            if(HandScript.Instance.selected != gameObject && !HandScript.Instance.selection.Contains(gameObject))
+            {
+                image.color = selectColor;
+                HandScript.Instance.Select(gameObject);
+            }
+            else
+                Deselect();
+            
         }
         else
             Deselect();
@@ -46,7 +52,12 @@ public class PalCardScript : UnitCardScript
     public void Deselect()
     {
         if(HandScript.Instance.selected == gameObject)
+        {
             HandScript.Instance.selected = null;
+
+            if(HandScript.Instance.state == "targeting")
+                HandScript.Instance.state = "choosingAttack";
+        }
         if(HandScript.Instance.selection.Contains(gameObject))
             HandScript.Instance.selection.Remove(gameObject);
 

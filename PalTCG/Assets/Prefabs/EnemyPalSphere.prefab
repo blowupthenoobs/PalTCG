@@ -135,9 +135,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PalSphereScript, Assembly-CSharp
-        m_MethodName: CheckForCard
+      - m_Target: {fileID: -2598723900738669565}
+        m_TargetAssemblyTypeName: EnemyPalSphereScript, Assembly-CSharp
+        m_MethodName: SelectAsTarget
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
