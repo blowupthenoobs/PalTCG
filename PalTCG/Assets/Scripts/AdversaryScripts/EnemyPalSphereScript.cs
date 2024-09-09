@@ -26,7 +26,8 @@ public class EnemyPalSphereScript : MonoBehaviour
             HandScript.Instance.selection.Add(HandScript.Instance.selected);
             HandScript.Instance.selected = heldCard;
             HandScript.Instance.updateSelection += VerifyAttack;
-            // ConfirmationButtons.Instance.Confirmed += PayForCard;
+            ConfirmationButtons.Instance.Confirmed += StartRaid;
+            ConfirmationButtons.Instance.Confirmed += HandScript.Instance.Attack;
             ConfirmationButtons.Instance.Denied += DisengageAttacks;
             ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
         }
@@ -35,7 +36,20 @@ public class EnemyPalSphereScript : MonoBehaviour
     void DisengageAttacks()
     {
         HandScript.Instance.updateSelection -= VerifyAttack;
-        // ConfirmationButtons.Instance.Confirmed -= PayForCard;
+        ConfirmationButtons.Instance.Confirmed -= StartRaid;
+        ConfirmationButtons.Instance.Confirmed = HandScript.Instance.Attack;
+        ConfirmationButtons.Instance.Denied -= DisengageAttacks;
+        ConfirmationButtons.Instance.Denied -= HandScript.Instance.ClearSelection;
+        GameManager.Instance.HideConfirmationButtons();
+
+        HandScript.Instance.state = "choosingAttack";
+    }
+
+    void StartRaid()
+    {
+        HandScript.Instance.updateSelection -= VerifyAttack;
+        ConfirmationButtons.Instance.Confirmed -= StartRaid;
+        ConfirmationButtons.Instance.Confirmed = HandScript.Instance.Attack;
         ConfirmationButtons.Instance.Denied -= DisengageAttacks;
         ConfirmationButtons.Instance.Denied -= HandScript.Instance.ClearSelection;
         GameManager.Instance.HideConfirmationButtons();

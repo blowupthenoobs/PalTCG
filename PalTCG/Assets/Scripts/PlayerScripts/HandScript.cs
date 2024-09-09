@@ -122,7 +122,10 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         for(int i = 0; i < selection.Count; i++)
         {
             selection[i].SendMessage("Attack", selected);
+            Debug.Log("put " + selection[i] + " to sleep");
         }
+
+        ClearSelection();
     }
 
     public IEnumerator Click()
