@@ -57,6 +57,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * ScreenCalculations.GetScale(gameObject) * Time.deltaTime);
         
     }
+#region Selecting&Targeting
     public void Select(GameObject card)
     {
         switch(state)
@@ -95,6 +96,10 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 selected = card;
                 state = "targeting";
                 break;
+            case "raiding":
+                selection.Add(card);
+                updateSelection.Invoke();
+                break;
             default:
                 Debug.Log("invalid state");
                 break;
@@ -106,9 +111,17 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         selected = null;
         while(selection.Count > 0)
-        {        
+        {
             selection[0].SendMessage("Deselect");
             selection.RemoveAt(0);
+        }
+    }
+
+    public void Attack()
+    {
+        for(int i = 0; i < selection.Count; i++)
+        {
+            selection[i].SendMessage("Attack", selected);
         }
     }
 
@@ -132,7 +145,8 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 
             }
     }
-
+#endregion
+#region HandStuff
     public void CenterCards()
     {
         float spacing = Preferences.spacing * ScreenCalculations.GetScale(gameObject);
@@ -177,7 +191,8 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 Hand.RemoveAt(i);
         }
     }
-
+#endregion
+#region HandMovement
     public void OnPointerEnter(PointerEventData eventData)
     {
         Raise();
@@ -197,4 +212,5 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         targetPos = originalPos;
     }
+#endregion
 }

@@ -16,6 +16,14 @@ public abstract class CardData : ScriptableObject
     public int defaultAtk;
     public int currentAtk;
 
+    //PalCard Stuffs
+    public UnityEvent OnDestroy;
+    public UnityEvent WhenAttack;
+    public UnityEvent OnAttack;
+    public UnityEvent OnHurt;
+    public UnityEvent OnPlay;
+    public UnityEvent PalSkill;
+
     
     public virtual void Awake()
     {

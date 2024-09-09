@@ -20,6 +20,17 @@ public class PalCardScript : UnitCardScript
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(SelectForAttack);
     }
+    
+    public void Attack(GameObject target)
+    {
+        if(cardData.WhenAttack != null)
+            cardData.WhenAttack.Invoke();
+        
+        target.SendMessage("Hurt", cardData.currentAtk);
+
+        if(cardData.OnAttack != null)
+            cardData.OnAttack.Invoke();
+    }
 
     public void EndAttackPhase()
     {
@@ -42,14 +53,23 @@ public class PalCardScript : UnitCardScript
                 HandScript.Instance.Select(gameObject);
             }
             else
-                Deselect();
-            
+                RemoveFromSelection(); 
+        }
+        else if(HandScript.Instance.state == "raiding")
+        {
+            if(HandScript.Instance.selected != gameObject && !HandScript.Instance.selection.Contains(gameObject))
+            {
+                image.color = selectColor;
+                HandScript.Instance.Select(gameObject);
+            }
+            else
+                RemoveFromSelection(); 
         }
         else
-            Deselect();
+            RemoveFromSelection();
     }
 
-    public void Deselect()
+    public void RemoveFromSelection()
     {
         if(HandScript.Instance.selected == gameObject)
         {
@@ -61,6 +81,11 @@ public class PalCardScript : UnitCardScript
         if(HandScript.Instance.selection.Contains(gameObject))
             HandScript.Instance.selection.Remove(gameObject);
 
+        image.color = normalColor;
+    }
+
+    public void Deselect()
+    {
         image.color = normalColor;
     }
 

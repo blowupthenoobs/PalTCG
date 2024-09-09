@@ -23,17 +23,34 @@ public class EnemyPalSphereScript : MonoBehaviour
         {
             GameManager.Instance.ShowConfirmationButtons();
             HandScript.Instance.state = "raiding";
-            Debug.Log("now running");
-            // HandScript.Instance.updateSelection += VerifyButtons;
+            HandScript.Instance.selection.Add(HandScript.Instance.selected);
+            HandScript.Instance.selected = heldCard;
+            HandScript.Instance.updateSelection += VerifyAttack;
             // ConfirmationButtons.Instance.Confirmed += PayForCard;
-            // ConfirmationButtons.Instance.Denied += Disengage;
-            // ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
+            ConfirmationButtons.Instance.Denied += DisengageAttacks;
+            ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
         }
+    }
+
+    void DisengageAttacks()
+    {
+        HandScript.Instance.updateSelection -= VerifyAttack;
+        // ConfirmationButtons.Instance.Confirmed -= PayForCard;
+        ConfirmationButtons.Instance.Denied -= DisengageAttacks;
+        ConfirmationButtons.Instance.Denied -= HandScript.Instance.ClearSelection;
+        GameManager.Instance.HideConfirmationButtons();
+
+        HandScript.Instance.state = "choosingAttack";
     }
 
     void PlaceCard()
     {
         heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
         heldCard.transform.SetParent(transform);
+    }
+
+    public void VerifyAttack()
+    {
+        ConfirmationButtons.Instance.AllowConfirmation(HandScript.Instance.selection.Count > 0);
     }
 }
