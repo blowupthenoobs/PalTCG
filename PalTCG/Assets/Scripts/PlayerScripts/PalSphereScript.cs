@@ -32,6 +32,13 @@ public class PalSphereScript : MonoBehaviour
                 HandScript.Instance.Select(gameObject);
             }
         }
+        else if(HandScript.Instance.selected != null)
+        {
+            if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
+            {
+                HandScript.Instance.selected = null;
+            }
+        }
     }
 
     void PlaceCard(GameObject card)
