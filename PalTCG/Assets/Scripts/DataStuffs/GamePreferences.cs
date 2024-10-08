@@ -10,5 +10,7 @@ public class GamePreferences : ScriptableObject
     public float spacing;
 
     public float cardMoveSpeed;
+
+    public string tempDeck;
     
 }

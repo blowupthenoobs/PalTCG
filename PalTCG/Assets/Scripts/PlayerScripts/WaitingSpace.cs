@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Resources;
+
 public class WaitingSpace : MonoBehaviour
 {
     [SerializeField] GameObject waiting3;
@@ -139,7 +141,7 @@ public class WaitingSpace : MonoBehaviour
 
     void VerifyButtons()
     {
-        ConfirmationButtons.Instance.AllowConfirmation(Resources.PalPaymentIsCorrect());
+        ConfirmationButtons.Instance.AllowConfirmation(ResourceProcesses.PalPaymentIsCorrect());
     }
 
 }

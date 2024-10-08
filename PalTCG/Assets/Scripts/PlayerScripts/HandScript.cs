@@ -5,9 +5,11 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
+using DefaultUnitData;
+
 public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] GamePreferences Preferences;
+    [SerializeField] public GamePreferences Preferences; //Temporarilly set to public
 
     public static HandScript Instance;
 
@@ -166,11 +168,29 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
     }
 
-    public void Draw(CardData data)
+    public void Draw(string datatype)
     {
+        string[] dataParts = datatype.Split("/");
+
         var newCard = Instantiate(cardPrefab, transform.position, transform.rotation);
+        CardData data = null;
+
+        switch(dataParts[0])
+        {
+            case "p":
+                data = (PalCardData)ScriptableObject.CreateInstance(typeof(PalCardData));
+                ((PalCardData)data).DecomposeData(new Pals().FindPalData(dataParts[1], int.Parse(dataParts[2])));
+            break;
+            case "t":
+                Debug.Log("look for items");
+            break;
+            case "h":
+                Debug.Log("look for player/hero");
+            break;
+        }
 
         newCard.GetComponent<CardScript>().cardData = data;
+
         Hand.Add(newCard);
         newCard.transform.SetParent(gameObject.transform);
 

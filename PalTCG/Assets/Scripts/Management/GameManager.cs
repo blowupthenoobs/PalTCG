@@ -4,9 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
+using DefaultUnitData;
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public Sprites CardSprites = new Sprites();
 
 
     //Visuals and Confirmation

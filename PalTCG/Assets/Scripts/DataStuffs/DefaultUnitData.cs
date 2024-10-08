@@ -2,21 +2,54 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Resources;
+
 namespace DefaultUnitData
 {
+    public class Sprites
+    {
+        public List<Sprite> lamball;
+        public List<Sprite> cattiva;
+        public List<Sprite> chikipi;
+        public List<Sprite> lifmunk;
+        public List<Sprite> tanzee;
+        public List<Sprite> depresso;
+        public List<Sprite> daedream;
+    }
+    
     public struct DefaultPal
     {
         public int cost;
-        public Resources.Element element;
-        public Resources.Traits traits;
+        public Element element;
+        public Traits traits;
         public int size;
+        public List<Sprite> cardArt;
 
-        public DefaultPal(int cost, Resources.Element element, Resources.Traits traits, int size)
+        public DefaultPal(int cost, Element element, Traits traits, int size, List<Sprite> cardArt)
         {
             this.cost = cost;
             this.element = element;
             this.traits = traits;
             this.size = size;
+            this.cardArt = cardArt;
+        }
+    }
+
+    public struct PalData
+    {
+        public int cost;
+        public Element element;
+        public Traits traits;
+        public int size;
+        public Sprite cardArt;
+
+        public PalData(DefaultPal originalData, int artIndex)
+        {
+            this.cost = originalData.cost;
+            this.element = originalData.element;
+            this.traits = originalData.traits;
+            this.size = originalData.size;
+            this.cardArt = originalData.cardArt[artIndex];
         }
     }
 
@@ -28,8 +61,8 @@ namespace DefaultUnitData
         public DefaultPal lamball = new DefaultPal
         (
             cost: 1,
-            element: Resources.Element.Basic,
-            traits: new Resources.Traits
+            element: Element.Basic,
+            traits: new Traits
             (
                 ranch: 1,
                 handyWork: 1,
@@ -46,14 +79,15 @@ namespace DefaultUnitData
                 dragon: 0,
                 bird: false
             ),
-            size: 1
+            size: 1,
+            cardArt: GameManager.Instance.CardSprites.lamball
         );
 
         public DefaultPal cattiva = new DefaultPal
         (
             cost: 1,
-            element: Resources.Element.Basic,
-            traits: new Resources.Traits
+            element: Element.Basic,
+            traits: new Traits
             (
                 ranch: 0,
                 handyWork: 1,
@@ -70,14 +104,15 @@ namespace DefaultUnitData
                 dragon: 0,
                 bird: false
             ),
-            size: 1
+            size: 1,
+            cardArt: GameManager.Instance.CardSprites.cattiva
         );
 
         public DefaultPal chikipi = new DefaultPal
         (
             cost: 1,
-            element: Resources.Element.Basic,
-            traits: new Resources.Traits
+            element: Element.Basic,
+            traits: new Traits
             (
                 ranch: 1,
                 handyWork: 0,
@@ -94,17 +129,18 @@ namespace DefaultUnitData
                 dragon: 0,
                 bird: false
             ),
-            size: 1
+            size: 1,
+            cardArt: GameManager.Instance.CardSprites.chikipi
         );
 
 #endregion BasicPals
 
-#region PlantPals
+#region GrassPals
         public DefaultPal lifmunk = new DefaultPal
         (
             cost: 1,
-            element: Resources.Element.Dark,
-            traits: new Resources.Traits
+            element: Element.Grass,
+            traits: new Traits
             (
                 ranch: 0,
                 handyWork: 1,
@@ -121,14 +157,15 @@ namespace DefaultUnitData
                 dragon: 0,
                 bird: false
             ),
-            size: 1
+            size: 1,
+            cardArt: GameManager.Instance.CardSprites.lifmunk
         );
 
         public DefaultPal tanzee = new DefaultPal
         (
             cost: 1,
-            element: Resources.Element.Dark,
-            traits: new Resources.Traits
+            element: Element.Grass,
+            traits: new Traits
             (
                 ranch: 0,
                 handyWork: 1,
@@ -145,17 +182,18 @@ namespace DefaultUnitData
                 dragon: 0,
                 bird: false
             ),
-            size: 1
+            size: 1,
+            cardArt: GameManager.Instance.CardSprites.tanzee
         );
 
-#endregion PlantPals
+#endregion GrassPals
 
 #region DarkPals
         public DefaultPal depresso = new DefaultPal
         (
             cost: 1,
-            element: Resources.Element.Dark,
-            traits: new Resources.Traits
+            element: Element.Dark,
+            traits: new Traits
             (
                 ranch: 1,
                 handyWork: 1,
@@ -172,14 +210,15 @@ namespace DefaultUnitData
                 dragon: 0,
                 bird: false
             ),
-            size: 1
+            size: 1,
+            cardArt: GameManager.Instance.CardSprites.depresso
         );
 
         public DefaultPal daeDream = new DefaultPal
         (
             cost: 1,
-            element: Resources.Element.Dark,
-            traits: new Resources.Traits
+            element: Element.Dark,
+            traits: new Traits
             (
                 ranch: 0,
                 handyWork: 1,
@@ -196,10 +235,29 @@ namespace DefaultUnitData
                 dragon: 0,
                 bird: false
             ),
-            size: 1
+            size: 1,
+            cardArt: GameManager.Instance.CardSprites.daedream
         );
 
 #endregion DarkPals
+
+
+    public PalData FindPalData(string palName, int artIndex)
+    {
+        switch (palName)
+        {
+            case "cattiva":
+                return new PalData(cattiva, artIndex);
+            break;
+
+            default:
+                Debug.Log("doesn't have assigned pal");
+                return new PalData(cattiva, artIndex);
+            break;
+        }
+    }
+
+
     }
     
 

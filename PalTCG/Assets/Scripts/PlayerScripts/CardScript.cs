@@ -14,7 +14,7 @@ public class CardScript : MonoBehaviour
     protected virtual void Awake()
     {
         cardData.gameObject = gameObject;
-        cardData.Awake();
+        cardData.SetToGameObject();
         image = cardData.image;
     }
 

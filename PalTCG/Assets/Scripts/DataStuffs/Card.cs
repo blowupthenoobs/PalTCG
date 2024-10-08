@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
+using DefaultUnitData;
+
 public abstract class CardData : ScriptableObject
 {
     public string CardType;
@@ -25,7 +27,7 @@ public abstract class CardData : ScriptableObject
     public UnityEvent PalSkill;
 
     
-    public virtual void Awake()
+    public virtual void SetToGameObject()
     {
         image = gameObject.GetComponent<UnityEngine.UI.Image>();
     }
@@ -40,8 +42,8 @@ public abstract class CardData : ScriptableObject
         Debug.Log("No Effect Set");
     }
 
-    public virtual void DecomposeData(string data)
-    {
-        Debug.Log("No decompesition set for this item");
-    }
+    // public virtual void DecomposeData(PalData newData)
+    // {
+    //     Debug.Log("No decompesition set for this item");
+    // }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Resources : MonoBehaviour
+namespace Resources
 {
     public enum Element{Basic, Fire, Grass, Water, Ice, Electric, Dark}
     public struct resources
@@ -53,30 +53,34 @@ public class Resources : MonoBehaviour
         }
     }
 
-    public static bool PalPaymentIsCorrect()
+    public class ResourceProcesses
     {
-        var data = (PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
-        var costAmount = data.cost;
-
-        if(data.element == Element.Basic && HandScript.Instance.selection.Count == costAmount)
-            return true;
-        else if(HandScript.Instance.selection.Count == costAmount)
+        public static bool PalPaymentIsCorrect()
         {
-            var typesAreCorrect = true;
-            var cardColor = ((PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData).element;
+            var data = (PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
+            var costAmount = data.cost;
 
-            for(int i = 0; i < HandScript.Instance.selection.Count; i++)
+            if(data.element == Element.Basic && HandScript.Instance.selection.Count == costAmount)
+                return true;
+            else if(HandScript.Instance.selection.Count == costAmount)
             {
-                var paymentColor = ((PalCardData)HandScript.Instance.selection[i].GetComponent<CardScript>().cardData).element;
+                var typesAreCorrect = true;
+                var cardColor = ((PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData).element;
 
-                if(cardColor != paymentColor && paymentColor != Element.Basic)
-                    typesAreCorrect = false;
+                for(int i = 0; i < HandScript.Instance.selection.Count; i++)
+                {
+                    var paymentColor = ((PalCardData)HandScript.Instance.selection[i].GetComponent<CardScript>().cardData).element;
 
+                    if(cardColor != paymentColor && paymentColor != Element.Basic)
+                        typesAreCorrect = false;
+
+                }
+
+                return typesAreCorrect;
             }
-
-            return typesAreCorrect;
+            else
+                return false;
         }
-        else
-            return false;
     }
+    
 }

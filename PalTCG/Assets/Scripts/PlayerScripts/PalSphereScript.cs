@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Resources;
+
 public class PalSphereScript : MonoBehaviour
 {
     [SerializeField] GameObject waitingSpace;
@@ -105,7 +107,7 @@ public class PalSphereScript : MonoBehaviour
 
     void VerifyButtons()
     {
-        ConfirmationButtons.Instance.AllowConfirmation(Resources.PalPaymentIsCorrect());
+        ConfirmationButtons.Instance.AllowConfirmation(ResourceProcesses.PalPaymentIsCorrect());
     }
 
 }
