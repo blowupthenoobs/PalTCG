@@ -214,7 +214,7 @@ namespace DefaultUnitData
             cardArt: GameManager.Instance.CardSprites.depresso
         );
 
-        public DefaultPal daeDream = new DefaultPal
+        public DefaultPal daedream = new DefaultPal
         (
             cost: 1,
             element: Element.Dark,
@@ -246,10 +246,24 @@ namespace DefaultUnitData
     {
         switch (palName)
         {
+            case "lamball":
+                return new PalData(lamball, artIndex);
+            break;
             case "cattiva":
                 return new PalData(cattiva, artIndex);
             break;
-
+            case "chikipi":
+                return new PalData(chikipi, artIndex);
+            break;
+            case "tanzee":
+                return new PalData(tanzee, artIndex);
+            break;
+            case "depresso":
+                return new PalData(depresso, artIndex);
+            break;
+            case "daedream":
+                return new PalData(daedream, artIndex);
+            break;
             default:
                 Debug.Log("doesn't have assigned pal");
                 return new PalData(cattiva, artIndex);
