@@ -10,14 +10,20 @@ public class CardScript : MonoBehaviour
     public Color normalColor;
     public Color selectColor;
     private Image image;
-    
+
     protected virtual void Awake()
     {
         cardData.gameObject = gameObject;
         cardData.SetToGameObject();
         image = cardData.image;
+        Debug.Log(cardData.cardArt);
     }
 
+    public virtual void SetUpCard()
+    {
+        image.sprite = cardData.cardArt;
+    }
+    
     public void Select()
     {
         if(!cancelSelect && HandScript.Instance.state != "")

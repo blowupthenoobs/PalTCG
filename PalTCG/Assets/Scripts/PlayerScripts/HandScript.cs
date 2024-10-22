@@ -190,7 +190,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
 
         newCard.GetComponent<CardScript>().cardData = data;
-
+        newCard.GetComponent<CardScript>().SetUpCard();
         Hand.Add(newCard);
         newCard.transform.SetParent(gameObject.transform);
 

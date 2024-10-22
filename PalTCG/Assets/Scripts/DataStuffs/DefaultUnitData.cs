@@ -244,6 +244,7 @@ namespace DefaultUnitData
 
     public PalData FindPalData(string palName, int artIndex)
     {
+        Debug.Log("finding pal data");
         switch (palName)
         {
             case "lamball":
