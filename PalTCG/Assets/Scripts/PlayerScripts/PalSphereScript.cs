@@ -50,7 +50,9 @@ public class PalSphereScript : MonoBehaviour
         heldCard.transform.position = transform.position;
 
         GameManager.Instance.StartPlayerAttack += heldCard.GetComponent<PalCardScript>().PrepareAttackPhase;
+        GameManager.Instance.StartPlayerTurn += heldCard.GetComponent<PalCardScript>().Wake;
         GameManager.Instance.StartEnemyTurn += heldCard.GetComponent<PalCardScript>().EndAttackPhase;
+        GameManager.Instance.StartEnemyTurn += heldCard.GetComponent<PalCardScript>().Wake;
     }
 
     void PayForCard()
