@@ -15,4 +15,4 @@ MonoBehaviour:
   barTransTime: 0
   spacing: 130
   cardMoveSpeed: 100
-  tempDeck: p/cattiva/0,p/cattiva/0,p/cattiva/0,p/lamball/0,p/daedream/0,p/daedream/0,p/depresso/1
+  tempDeck: p/lifmunk/0,p/depresso/0,p/cattiva/0,p/cattiva/0,p/cattiva/0,p/lamball/0,p/daedream/0,p/daedream/0,p/depresso/1

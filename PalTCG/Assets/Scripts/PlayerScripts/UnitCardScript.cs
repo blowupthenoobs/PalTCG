@@ -11,6 +11,10 @@ public class UnitCardScript : MonoBehaviour
     public Color normalColor; //Probably Temp
     public Color selectColor;
 
+    //Effects and state variables
+    public bool isResting;
+
+
     void Awake()
     {
         button = GetComponent<Button>();
@@ -37,6 +41,18 @@ public class UnitCardScript : MonoBehaviour
 
         if(cardData.currentHp > cardData.maxHp)
             cardData.currentHp = cardData.maxHp;
+    }
+
+    public void Rest()
+    {
+        transform.rotation = Quaternion.Euler(0, 0, -90);
+        isResting = true;
+    }
+
+    public void Wake()
+    {
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+        isResting = false;
     }
 
     protected void Die()

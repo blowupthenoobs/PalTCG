@@ -23,5 +23,6 @@ public class PalCardData : CardData
         size = orignalData.size;
         cost = orignalData.cost;
         element = orignalData.element;
+        currentAtk = orignalData.attackPower;
     }
 }

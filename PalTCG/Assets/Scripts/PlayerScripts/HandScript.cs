@@ -124,7 +124,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         for(int i = 0; i < selection.Count; i++)
         {
             selection[i].SendMessage("Attack", selected);
-            Debug.Log("put " + selection[i] + " to sleep");
+            selection[i].SendMessage("Rest");
         }
 
         ClearSelection();
@@ -168,27 +168,10 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
     }
 
-    public void Draw(string datatype)
+    public void Draw(CardData data)
     {
-        string[] dataParts = datatype.Split("/");
-
         var newCard = Instantiate(cardPrefab, transform.position, transform.rotation);
-        CardData data = null;
-
-        switch(dataParts[0])
-        {
-            case "p":
-                data = (PalCardData)ScriptableObject.CreateInstance(typeof(PalCardData));
-                ((PalCardData)data).DecomposeData(new Pals().FindPalData(dataParts[1], int.Parse(dataParts[2])));
-            break;
-            case "t":
-                Debug.Log("look for items");
-            break;
-            case "h":
-                Debug.Log("look for player/hero");
-            break;
-        }
-
+        
         newCard.GetComponent<CardScript>().cardData = data;
         newCard.GetComponent<CardScript>().SetUpCard();
         Hand.Add(newCard);

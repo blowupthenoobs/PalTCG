@@ -16,7 +16,6 @@ public class CardScript : MonoBehaviour
         cardData.gameObject = gameObject;
         cardData.SetToGameObject();
         image = cardData.image;
-        Debug.Log(cardData.cardArt);
     }
 
     public virtual void SetUpCard()

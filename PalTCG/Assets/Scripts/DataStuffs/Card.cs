@@ -15,7 +15,6 @@ public abstract class CardData : ScriptableObject
     public GameObject gameObject;
     public int maxHp;
     public int currentHp;
-    public int defaultAtk;
     public int currentAtk;
 
     //PalCard Stuffs

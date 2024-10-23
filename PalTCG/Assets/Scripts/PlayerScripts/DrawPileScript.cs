@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using DefaultUnitData;
+
 public class DrawPileScript : MonoBehaviour
 {
-    public new List<string> currentDeck = new List<string>();
+    public new List<CardData> currentDeck = new List<CardData>();
 
     void Start()
     {
@@ -15,11 +17,11 @@ public class DrawPileScript : MonoBehaviour
     {
         string[] cards = deck.Split(",");
 
-        List<string> cardsToAdd = new List<string>();
+        List<CardData> cardsToAdd = new List<CardData>();
 
         for(int i = 0; i < cards.Length; i++)
         {
-            cardsToAdd.Add(cards[i]);
+            cardsToAdd.Add(ConvertToCardData(cards[i]));
         }
 
         while(cardsToAdd.Count > 0)
@@ -39,5 +41,28 @@ public class DrawPileScript : MonoBehaviour
         }
         else
             Debug.Log("out of cards");
+    }
+
+    private CardData ConvertToCardData(string datatype)
+    {
+        string[] dataParts = datatype.Split("/");
+
+        CardData data = null;
+
+        switch(dataParts[0])
+        {
+            case "p":
+                data = (PalCardData)ScriptableObject.CreateInstance(typeof(PalCardData));
+                ((PalCardData)data).DecomposeData(new Pals().FindPalData(dataParts[1], int.Parse(dataParts[2])));
+            break;
+            case "t":
+                Debug.Log("look for items");
+            break;
+            case "h":
+                Debug.Log("look for player/hero");
+            break;
+        }
+
+        return data;
     }
 }

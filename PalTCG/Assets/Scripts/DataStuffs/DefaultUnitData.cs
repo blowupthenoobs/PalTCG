@@ -23,14 +23,18 @@ namespace DefaultUnitData
         public Element element;
         public Traits traits;
         public int size;
+        public int attackPower;
+        public int maxHp;
         public List<Sprite> cardArt;
 
-        public DefaultPal(int cost, Element element, Traits traits, int size, List<Sprite> cardArt)
+        public DefaultPal(int cost, Element element, Traits traits, int size, int attackPower, int maxHp, List<Sprite> cardArt)
         {
             this.cost = cost;
             this.element = element;
             this.traits = traits;
             this.size = size;
+            this.attackPower = attackPower;
+            this.maxHp = maxHp;
             this.cardArt = cardArt;
         }
     }
@@ -41,6 +45,8 @@ namespace DefaultUnitData
         public Element element;
         public Traits traits;
         public int size;
+        public int attackPower;
+        public int maxHp;
         public Sprite cardArt;
 
         public PalData(DefaultPal originalData, int artIndex)
@@ -49,6 +55,8 @@ namespace DefaultUnitData
             this.element = originalData.element;
             this.traits = originalData.traits;
             this.size = originalData.size;
+            this.attackPower = originalData.attackPower;
+            this.maxHp = originalData.maxHp;
             this.cardArt = originalData.cardArt[artIndex];
         }
     }
@@ -80,6 +88,8 @@ namespace DefaultUnitData
                 bird: false
             ),
             size: 1,
+            attackPower: 1,
+            maxHp: 9,
             cardArt: GameManager.Instance.CardSprites.lamball
         );
 
@@ -105,6 +115,8 @@ namespace DefaultUnitData
                 bird: false
             ),
             size: 1,
+            attackPower: 2,
+            maxHp: 8,
             cardArt: GameManager.Instance.CardSprites.cattiva
         );
 
@@ -130,6 +142,8 @@ namespace DefaultUnitData
                 bird: false
             ),
             size: 1,
+            attackPower: 2,
+            maxHp: 7,
             cardArt: GameManager.Instance.CardSprites.chikipi
         );
 
@@ -158,6 +172,8 @@ namespace DefaultUnitData
                 bird: false
             ),
             size: 1,
+            attackPower: 3,
+            maxHp: 7,
             cardArt: GameManager.Instance.CardSprites.lifmunk
         );
 
@@ -183,6 +199,8 @@ namespace DefaultUnitData
                 bird: false
             ),
             size: 1,
+            attackPower: 2,
+            maxHp: 8,
             cardArt: GameManager.Instance.CardSprites.tanzee
         );
 
@@ -211,6 +229,8 @@ namespace DefaultUnitData
                 bird: false
             ),
             size: 1,
+            attackPower: 2,
+            maxHp: 8,
             cardArt: GameManager.Instance.CardSprites.depresso
         );
 
@@ -236,6 +256,8 @@ namespace DefaultUnitData
                 bird: false
             ),
             size: 1,
+            attackPower: 2,
+            maxHp: 7,
             cardArt: GameManager.Instance.CardSprites.daedream
         );
 
@@ -244,7 +266,6 @@ namespace DefaultUnitData
 
     public PalData FindPalData(string palName, int artIndex)
     {
-        Debug.Log("finding pal data");
         switch (palName)
         {
             case "lamball":
@@ -255,6 +276,9 @@ namespace DefaultUnitData
             break;
             case "chikipi":
                 return new PalData(chikipi, artIndex);
+            break;
+            case "lifmunk":
+                return new PalData(lifmunk, artIndex);
             break;
             case "tanzee":
                 return new PalData(tanzee, artIndex);
