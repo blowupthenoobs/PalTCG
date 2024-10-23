@@ -12,7 +12,7 @@ public class UnitCardScript : MonoBehaviour
     public Color selectColor;
 
     //Effects and state variables
-    public bool isResting;
+    public bool resting;
 
 
     void Awake()
@@ -66,28 +66,31 @@ public class UnitCardScript : MonoBehaviour
 
     public void SelectForAttack()
     {
-        if(HandScript.Instance.state == "choosingAttack" || HandScript.Instance.state == "targeting")
+        if(!resting)
         {
-            if(HandScript.Instance.selected != gameObject && !HandScript.Instance.selection.Contains(gameObject))
+            if(HandScript.Instance.state == "choosingAttack" || HandScript.Instance.state == "targeting")
             {
-                image.color = selectColor;
-                HandScript.Instance.Select(gameObject);
+                if(HandScript.Instance.selected != gameObject && !HandScript.Instance.selection.Contains(gameObject))
+                {
+                    image.color = selectColor;
+                    HandScript.Instance.Select(gameObject);
+                }
+                else
+                    RemoveFromSelection(); 
+            }
+            else if(HandScript.Instance.state == "raiding")
+            {
+                if(HandScript.Instance.selected != gameObject && !HandScript.Instance.selection.Contains(gameObject))
+                {
+                    image.color = selectColor;
+                    HandScript.Instance.Select(gameObject);
+                }
+                else
+                    RemoveFromSelection(); 
             }
             else
-                RemoveFromSelection(); 
+                RemoveFromSelection();
         }
-        else if(HandScript.Instance.state == "raiding")
-        {
-            if(HandScript.Instance.selected != gameObject && !HandScript.Instance.selection.Contains(gameObject))
-            {
-                image.color = selectColor;
-                HandScript.Instance.Select(gameObject);
-            }
-            else
-                RemoveFromSelection(); 
-        }
-        else
-            RemoveFromSelection();
     }
 
     public void RemoveFromSelection()
@@ -109,13 +112,13 @@ public class UnitCardScript : MonoBehaviour
     public void Rest()
     {
         transform.rotation = Quaternion.Euler(0, 0, -90);
-        isResting = true;
+        resting = true;
     }
 
     public void Wake()
     {
         transform.rotation = Quaternion.Euler(0, 0, 0);
-        isResting = false;
+        resting = false;
     }
 
     protected void Die()
