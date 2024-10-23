@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using TMPro;
 
 using DefaultUnitData;
 
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     //Visuals and Confirmation
     public GameObject ConfirmationButtons;
+    public TextMeshProUGUI TurnText; 
 
     public UnityAction StartPlayerTurn;
     public UnityAction StartEnemyTurn;
@@ -75,27 +77,27 @@ public class GameManager : MonoBehaviour
     {
         HandScript.Instance.state = "default";
         phase = "PlayerTurn";
-        Debug.Log(phase);
+        TurnText.text = phase;
     }
 
     void EnemyPhase()
     {
         phase = "EnemyTurn";
         HandScript.Instance.state = "";
-        Debug.Log(phase);
+        TurnText.text = phase;
     }
 
     void PlayerAttackPhase()
     {
         phase = "PlayerAttack";
         HandScript.Instance.state = "choosingAttack";
-        Debug.Log(phase);
+        TurnText.text = phase;
     }
 
     void EnemyAttackPhase()
     {
         phase = "EnemyAttack";
-        Debug.Log(phase);
+        TurnText.text = phase;
     }
 
     void PickFirstPlayer()

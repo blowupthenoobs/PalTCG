@@ -444,6 +444,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ConfirmationButtons: {fileID: 1348966686}
+  TurnText: {fileID: 1083964834}
   phase: 
 --- !u!114 &127665057
 MonoBehaviour:
