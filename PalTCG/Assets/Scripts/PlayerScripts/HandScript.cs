@@ -95,6 +95,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
                 break;
             case "choosingAttack":
+                Debug.Log("chosen attack unit:" + card);
                 selected = card;
                 state = "targeting";
                 break;

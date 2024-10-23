@@ -43,6 +43,69 @@ public class UnitCardScript : MonoBehaviour
             cardData.currentHp = cardData.maxHp;
     }
 
+    public void PrepareAttackPhase()
+    {
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(SelectForAttack);
+    }
+
+    public void Attack(GameObject target)
+    {
+        if(cardData.WhenAttack != null)
+            cardData.WhenAttack.Invoke();
+        
+        target.SendMessage("Hurt", cardData.currentAtk);
+
+        if(cardData.OnAttack != null)
+            cardData.OnAttack.Invoke();
+    }
+    public void EndAttackPhase()
+    {
+        button.onClick.RemoveAllListeners();
+    }
+
+    public void SelectForAttack()
+    {
+        if(HandScript.Instance.state == "choosingAttack" || HandScript.Instance.state == "targeting")
+        {
+            if(HandScript.Instance.selected != gameObject && !HandScript.Instance.selection.Contains(gameObject))
+            {
+                image.color = selectColor;
+                HandScript.Instance.Select(gameObject);
+            }
+            else
+                RemoveFromSelection(); 
+        }
+        else if(HandScript.Instance.state == "raiding")
+        {
+            if(HandScript.Instance.selected != gameObject && !HandScript.Instance.selection.Contains(gameObject))
+            {
+                image.color = selectColor;
+                HandScript.Instance.Select(gameObject);
+            }
+            else
+                RemoveFromSelection(); 
+        }
+        else
+            RemoveFromSelection();
+    }
+
+    public void RemoveFromSelection()
+    {
+        if(HandScript.Instance.selected == gameObject)
+        {
+            HandScript.Instance.selected = null;
+
+            if(HandScript.Instance.state == "targeting")
+                HandScript.Instance.state = "choosingAttack";
+        }
+        if(HandScript.Instance.selection.Contains(gameObject))
+            HandScript.Instance.selection.Remove(gameObject);
+
+        image.color = normalColor;
+    }
+
+
     public void Rest()
     {
         transform.rotation = Quaternion.Euler(0, 0, -90);
@@ -58,5 +121,10 @@ public class UnitCardScript : MonoBehaviour
     protected void Die()
     {
         Debug.Log("unit is now dead :(");
+    }
+
+    public void Deselect()
+    {
+        image.color = normalColor;
     }
 }
