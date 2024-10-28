@@ -12,11 +12,6 @@ public class EnemyPalSphereScript : MonoBehaviour
         PlaceCard();
     }
 
-    void Update()
-    {
-        
-    }
-
     public void SelectAsTarget()
     {
         if(HandScript.Instance.state == "targeting" && heldCard != null)
@@ -27,7 +22,7 @@ public class EnemyPalSphereScript : MonoBehaviour
             HandScript.Instance.selected = heldCard;
             HandScript.Instance.updateSelection += VerifyAttack;
             ConfirmationButtons.Instance.Confirmed += StartRaid;
-            ConfirmationButtons.Instance.Confirmed += HandScript.Instance.Attack;
+            ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.StartCoroutine(HandScript.Instance.Attack());
             ConfirmationButtons.Instance.Denied += DisengageAttacks;
             ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
         }
@@ -37,7 +32,7 @@ public class EnemyPalSphereScript : MonoBehaviour
     {
         HandScript.Instance.updateSelection -= VerifyAttack;
         ConfirmationButtons.Instance.Confirmed -= StartRaid;
-        ConfirmationButtons.Instance.Confirmed = HandScript.Instance.Attack;
+        ConfirmationButtons.Instance.Confirmed -= () => HandScript.Instance.StartCoroutine(HandScript.Instance.Attack());
         ConfirmationButtons.Instance.Denied -= DisengageAttacks;
         ConfirmationButtons.Instance.Denied -= HandScript.Instance.ClearSelection;
         GameManager.Instance.HideConfirmationButtons();
@@ -49,7 +44,7 @@ public class EnemyPalSphereScript : MonoBehaviour
     {
         HandScript.Instance.updateSelection -= VerifyAttack;
         ConfirmationButtons.Instance.Confirmed -= StartRaid;
-        ConfirmationButtons.Instance.Confirmed = HandScript.Instance.Attack;
+        ConfirmationButtons.Instance.Confirmed -= () => HandScript.Instance.StartCoroutine(HandScript.Instance.Attack());
         ConfirmationButtons.Instance.Denied -= DisengageAttacks;
         ConfirmationButtons.Instance.Denied -= HandScript.Instance.ClearSelection;
         GameManager.Instance.HideConfirmationButtons();

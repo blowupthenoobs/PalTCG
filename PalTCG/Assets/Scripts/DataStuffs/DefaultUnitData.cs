@@ -16,6 +16,11 @@ namespace DefaultUnitData
         public List<Sprite> depresso;
         public List<Sprite> daedream;
     }
+
+    public class Abilities
+    {
+        
+    }
     
     public struct DefaultPal
     {

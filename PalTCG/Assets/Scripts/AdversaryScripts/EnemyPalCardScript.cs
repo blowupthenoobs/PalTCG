@@ -17,6 +17,22 @@ public class EnemyPalCardScript : MonoBehaviour
 
     public void Hurt(int damage)
     {
-        Debug.Log(damage);
+        Debug.Log("took " + damage + " damage");
     }
+    
+    public void Rest()
+    {
+        transform.rotation = Quaternion.Euler(0, 0, -90);
+    }
+
+    public void Wake()
+    {
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+    }
+
+    protected void Die()
+    {
+        Debug.Log("unit is now dead :(");
+    }
+
 }

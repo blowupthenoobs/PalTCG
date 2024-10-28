@@ -95,7 +95,6 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
                 break;
             case "choosingAttack":
-                Debug.Log("chosen attack unit:" + card);
                 selected = card;
                 state = "targeting";
                 break;
@@ -120,10 +119,11 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
     }
 
-    public void Attack()
+    public IEnumerator Attack()
     {
         for(int i = 0; i < selection.Count; i++)
         {
+            yield return null;
             selection[i].SendMessage("Attack", selected);
             selection[i].SendMessage("Rest");
         }

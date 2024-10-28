@@ -11,19 +11,19 @@ public abstract class CardData : ScriptableObject
     public string CardType;
     public string CardName;
     public Sprite cardArt;
-    public UnityEngine.UI.Image image;
+    public Image image;
     public GameObject gameObject;
     public int maxHp;
     public int currentHp;
     public int currentAtk;
 
     //PalCard Stuffs
-    public UnityEvent OnDestroy;
-    public UnityEvent WhenAttack;
-    public UnityEvent OnAttack;
-    public UnityEvent OnHurt;
-    public UnityEvent OnPlay;
-    public UnityEvent PalSkill;
+    public List<UnityAction> OnDestroy = new List<UnityAction>();
+    public List<UnityAction> WhenAttack = new List<UnityAction>();
+    public List<UnityAction> OnAttack = new List<UnityAction>();
+    public List<UnityAction> OnHurt = new List<UnityAction>();
+    public List<UnityAction> OnPlay = new List<UnityAction>();
+    public List<UnityAction> PalSkill = new List<UnityAction>();
 
     
     public virtual void SetToGameObject()
@@ -40,9 +40,4 @@ public abstract class CardData : ScriptableObject
     {
         Debug.Log("No Effect Set");
     }
-
-    // public virtual void DecomposeData(PalData newData)
-    // {
-    //     Debug.Log("No decompesition set for this item");
-    // }
 }

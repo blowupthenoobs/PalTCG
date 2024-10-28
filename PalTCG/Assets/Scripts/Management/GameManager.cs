@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public UnityAction StartEnemyAttack;
     public UnityAction EndPlayerTurn;
     public UnityAction EndEnemyTurn;
+    public UnityAction testAction;
 
     public string phase = "PlayerTurn";
 

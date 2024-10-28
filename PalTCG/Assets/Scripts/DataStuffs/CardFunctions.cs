@@ -2,21 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "CardFunctions/HandFunctions")]
-public class HandFunctions : ScriptableObject
+public class HandFunctions : MonoBehaviour
 {
-    public static void GoFirst()
-    {
-        Debug.Log("this should be first");
-    }
-    public static void GoSecond()
-    {
-        Debug.Log("this should be second");
-    }
-    public static void GoThird()
-    {
-        Debug.Log("this should be third");
-    }
     public static void SendToDiscard()
     {
         //I think you'll get this one
@@ -43,8 +30,7 @@ public class HandFunctions : ScriptableObject
     }
 }
 
-[CreateAssetMenu(menuName = "CardFunctions/TargetingMechanisms")]
-public class TargetingMechanisms: ScriptableObject
+public class TargetingMechanisms: MonoBehaviour
 {
     public static void SelectTarget()
     {
@@ -62,11 +48,46 @@ public class TargetingMechanisms: ScriptableObject
     }
 }
 
-[CreateAssetMenu(menuName = "CardFunctions/ApplyStatusEffects")]
-public class StatusEffects: ScriptableObject
+public class StatusEffects: MonoBehaviour
 {
     public static void PoisonCard()
     {
         //does nothing rn
+    }
+
+    public static IEnumerator PutToSleep()
+    {
+        yield return null;
+        //Look for target
+        //put target to sleep
+    }
+}
+
+public class CardEffectCoroutines: MonoBehaviour
+{
+    
+}
+
+public class CoroutineHelper : MonoBehaviour
+{
+    private static CoroutineHelper _instance;
+
+    public static CoroutineHelper Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                GameObject helperObject = new GameObject("CoroutineHelper");
+                _instance = helperObject.AddComponent<CoroutineHelper>();
+            }
+            return _instance;
+        }
+    }
+
+    // This method allows calling coroutines from static methods
+    public void StartHelperCoroutine(IEnumerator coroutine)
+    {
+        StartCoroutine(coroutine);
     }
 }

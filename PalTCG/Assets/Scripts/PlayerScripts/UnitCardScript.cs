@@ -49,16 +49,28 @@ public class UnitCardScript : MonoBehaviour
         button.onClick.AddListener(SelectForAttack);
     }
 
-    public void Attack(GameObject target)
+    public IEnumerator Attack(GameObject target)
     {
         if(cardData.WhenAttack != null)
-            cardData.WhenAttack.Invoke();
-        
+        {
+            for(int i = 0; i < cardData.WhenAttack.Count; i++)
+            {
+                cardData.WhenAttack[i].Invoke();
+            }
+        }
+            
+        yield return null;
         target.SendMessage("Hurt", cardData.currentAtk);
 
         if(cardData.OnAttack != null)
-            cardData.OnAttack.Invoke();
+        {
+            for(int i = 0; i < cardData.OnAttack.Count; i++)
+            {
+                cardData.OnAttack[i].Invoke();
+            }
+        }
     }
+    
     public void EndAttackPhase()
     {
         button.onClick.RemoveAllListeners();
@@ -107,7 +119,6 @@ public class UnitCardScript : MonoBehaviour
 
         image.color = normalColor;
     }
-
 
     public void Rest()
     {
