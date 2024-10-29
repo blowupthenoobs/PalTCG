@@ -14,6 +14,9 @@ public class UnitCardScript : MonoBehaviour
     //Effects and state variables
     public bool resting;
 
+    //Coroutine Checks
+    private bool readyForNextAttackAction;
+
 
     void Awake()
     {
@@ -56,10 +59,11 @@ public class UnitCardScript : MonoBehaviour
             for(int i = 0; i < cardData.WhenAttack.Count; i++)
             {
                 cardData.WhenAttack[i].Invoke();
+                yield return new WaitUntil(() => readyForNextAttackAction);
+                readyForNextAttackAction = false;
             }
         }
             
-        yield return null;
         target.SendMessage("Hurt", cardData.currentAtk);
 
         if(cardData.OnAttack != null)
@@ -67,8 +71,13 @@ public class UnitCardScript : MonoBehaviour
             for(int i = 0; i < cardData.OnAttack.Count; i++)
             {
                 cardData.OnAttack[i].Invoke();
+                yield return new WaitUntil(() => readyForNextAttackAction);
+                readyForNextAttackAction = false;
             }
         }
+
+        yield return null;
+        HandScript.Instance.currentAttacker = null;
     }
     
     public void EndAttackPhase()

@@ -32,6 +32,9 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public float duckAmount;
     public float moveSpeed;
 
+    //Attack Checks
+    public GameObject currentAttacker;
+
     void Awake()
     {
         if(Instance == null)
@@ -123,12 +126,18 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         for(int i = 0; i < selection.Count; i++)
         {
-            yield return null;
+            currentAttacker = selection[i];
             selection[i].SendMessage("Attack", selected);
+            yield return new WaitUntil(() => FinishPalAttack());
             selection[i].SendMessage("Rest");
         }
 
         ClearSelection();
+    }
+
+    public bool FinishPalAttack()
+    {
+        return (currentAttacker == null);
     }
 
     public IEnumerator Click()
