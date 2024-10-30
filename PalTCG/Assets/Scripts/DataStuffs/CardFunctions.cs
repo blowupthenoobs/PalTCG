@@ -50,6 +50,7 @@ public class TargetingMechanisms: MonoBehaviour
 
 public class StatusEffects: MonoBehaviour
 {
+    private static bool canMoveToNextStep;
     public static void PoisonCard()
     {
         //does nothing rn
@@ -57,6 +58,7 @@ public class StatusEffects: MonoBehaviour
 
     public static IEnumerator PutToSleep()
     {
+        HandScript.Instance.selection.Clear();
         yield return null;
         //Look for target
         //put target to sleep

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 using Resources;
 
@@ -18,6 +19,11 @@ namespace DefaultUnitData
     }
 
     public class Abilities
+    {
+        public List<UnityAction> lamballOnAttack = new List<UnityAction>();
+    }
+
+    public struct PalAbilitySets
     {
         
     }

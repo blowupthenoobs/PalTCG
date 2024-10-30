@@ -34,6 +34,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     //Attack Checks
     public GameObject currentAttacker;
+    public List<GameObject> raid = new List<GameObject>();
 
     void Awake()
     {
@@ -124,12 +125,13 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public IEnumerator Attack()
     {
+        raid = selection;
         for(int i = 0; i < selection.Count; i++)
         {
-            currentAttacker = selection[i];
-            selection[i].SendMessage("Attack", selected);
+            currentAttacker = raid[i];
+            raid[i].SendMessage("Attack", selected);
             yield return new WaitUntil(() => FinishPalAttack());
-            selection[i].SendMessage("Rest");
+            raid[i].SendMessage("Rest");
         }
 
         ClearSelection();
