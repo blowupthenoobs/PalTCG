@@ -23,6 +23,7 @@ public class EnemyPalSphereScript : MonoBehaviour
             HandScript.Instance.updateSelection += VerifyAttack;
             ConfirmationButtons.Instance.Confirmed += StartRaid;
             ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.StartCoroutine(HandScript.Instance.Attack());
+            Debug.Log(ConfirmationButtons.Instance.Confirmed);
             ConfirmationButtons.Instance.Denied += DisengageAttacks;
             ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
         }
@@ -30,11 +31,10 @@ public class EnemyPalSphereScript : MonoBehaviour
 
     void DisengageAttacks()
     {
+        
         HandScript.Instance.updateSelection -= VerifyAttack;
-        ConfirmationButtons.Instance.Confirmed -= StartRaid;
-        ConfirmationButtons.Instance.Confirmed -= () => HandScript.Instance.StartCoroutine(HandScript.Instance.Attack());
-        ConfirmationButtons.Instance.Denied -= DisengageAttacks;
-        ConfirmationButtons.Instance.Denied -= HandScript.Instance.ClearSelection;
+        ConfirmationButtons.Instance.Confirmed = null;
+        ConfirmationButtons.Instance.Denied = null;
         GameManager.Instance.HideConfirmationButtons();
 
         HandScript.Instance.state = "choosingAttack";
@@ -43,10 +43,8 @@ public class EnemyPalSphereScript : MonoBehaviour
     void StartRaid()
     {
         HandScript.Instance.updateSelection -= VerifyAttack;
-        ConfirmationButtons.Instance.Confirmed -= StartRaid;
-        ConfirmationButtons.Instance.Confirmed -= () => HandScript.Instance.StartCoroutine(HandScript.Instance.Attack());
-        ConfirmationButtons.Instance.Denied -= DisengageAttacks;
-        ConfirmationButtons.Instance.Denied -= HandScript.Instance.ClearSelection;
+        ConfirmationButtons.Instance.Confirmed = null;
+        ConfirmationButtons.Instance.Denied = null;
         GameManager.Instance.HideConfirmationButtons();
 
         HandScript.Instance.state = "choosingAttack";

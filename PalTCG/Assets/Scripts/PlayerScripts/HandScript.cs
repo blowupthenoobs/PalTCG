@@ -116,6 +116,11 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void ClearSelection()
     {
         selected = null;
+        UnselectSelection();
+    }
+
+    public void UnselectSelection()
+    {
         while(selection.Count > 0)
         {
             selection[0].SendMessage("Deselect");
@@ -125,8 +130,10 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public IEnumerator Attack()
     {
-        raid = selection;
-        for(int i = 0; i < selection.Count; i++)
+        raid = new List<GameObject>(selection);
+        UnselectSelection();
+
+        for(int i = 0; i < raid.Count; i++)
         {
             currentAttacker = raid[i];
             raid[i].SendMessage("Attack", selected);
@@ -134,7 +141,13 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             raid[i].SendMessage("Rest");
         }
 
-        ClearSelection();
+        while(raid.Count > 0)
+        {
+            raid[0].SendMessage("Deselect");
+            raid.RemoveAt(0);
+        }
+
+        selected = null;
     }
 
     public bool FinishPalAttack()

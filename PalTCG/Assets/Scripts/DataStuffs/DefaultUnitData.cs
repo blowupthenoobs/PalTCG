@@ -18,14 +18,91 @@ namespace DefaultUnitData
         public List<Sprite> daedream;
     }
 
-    public class Abilities
+    public class PalAbilitySets
     {
-        public List<UnityAction> lamballOnAttack = new List<UnityAction>();
+        public CardAbilities lamball = new CardAbilities
+        (
+            OnDestroy: new List<UnityAction>(),
+            WhenAttack: new List<UnityAction>(),
+            OnAttack: new List<UnityAction>(),
+            OnHurt: new List<UnityAction>(),
+            OnPlay: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>()
+        );
+        public CardAbilities cattiva = new CardAbilities
+        (
+            OnDestroy: new List<UnityAction>(),
+            WhenAttack: new List<UnityAction>(),
+            OnAttack: new List<UnityAction>(),
+            OnHurt: new List<UnityAction>(),
+            OnPlay: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>()
+        );
+        public CardAbilities chikipi = new CardAbilities
+        (
+            OnDestroy: new List<UnityAction>(),
+            WhenAttack: new List<UnityAction>(),
+            OnAttack: new List<UnityAction>(),
+            OnHurt: new List<UnityAction>(),
+            OnPlay: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>()
+        );
+        public CardAbilities lifmunk = new CardAbilities
+        (
+            OnDestroy: new List<UnityAction>(),
+            WhenAttack: new List<UnityAction>(),
+            OnAttack: new List<UnityAction>(),
+            OnHurt: new List<UnityAction>(),
+            OnPlay: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>()
+        );
+        public CardAbilities tanzee = new CardAbilities
+        (
+            OnDestroy: new List<UnityAction>(),
+            WhenAttack: new List<UnityAction>(),
+            OnAttack: new List<UnityAction>(),
+            OnHurt: new List<UnityAction>(),
+            OnPlay: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>()
+        );
+        public CardAbilities depresso = new CardAbilities
+        (
+            OnDestroy: new List<UnityAction>(),
+            WhenAttack: new List<UnityAction>(),
+            OnAttack: new List<UnityAction>(),
+            OnHurt: new List<UnityAction>(),
+            OnPlay: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>()
+        );
+        public CardAbilities daedream = new CardAbilities
+        (
+            OnDestroy: new List<UnityAction>(),
+            WhenAttack: new List<UnityAction>(),
+            OnAttack: new List<UnityAction>(),
+            OnHurt: new List<UnityAction>(),
+            OnPlay: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>()
+        );
     }
 
-    public struct PalAbilitySets
+    public struct CardAbilities
     {
-        
+        public List<UnityAction> OnDestroy;
+        public List<UnityAction> WhenAttack;
+        public List<UnityAction> OnAttack;
+        public List<UnityAction> OnHurt;
+        public List<UnityAction> OnPlay;
+        public List<UnityAction> PalSkill;
+
+        public CardAbilities(List<UnityAction> OnDestroy, List<UnityAction> WhenAttack, List<UnityAction> OnAttack, List<UnityAction> OnHurt, List<UnityAction> OnPlay, List<UnityAction> PalSkill)
+        {
+            this.OnDestroy = OnDestroy;
+            this.WhenAttack = WhenAttack;
+            this.OnAttack = OnAttack;
+            this.OnHurt = OnHurt;
+            this.OnPlay = OnPlay;
+            this.PalSkill = PalSkill;
+        }
     }
     
     public struct DefaultPal
@@ -37,8 +114,9 @@ namespace DefaultUnitData
         public int attackPower;
         public int maxHp;
         public List<Sprite> cardArt;
+        public CardAbilities abilities;
 
-        public DefaultPal(int cost, Element element, Traits traits, int size, int attackPower, int maxHp, List<Sprite> cardArt)
+        public DefaultPal(int cost, Element element, Traits traits, int size, int attackPower, int maxHp, List<Sprite> cardArt, CardAbilities abilities)
         {
             this.cost = cost;
             this.element = element;
@@ -47,6 +125,7 @@ namespace DefaultUnitData
             this.attackPower = attackPower;
             this.maxHp = maxHp;
             this.cardArt = cardArt;
+            this.abilities = abilities;
         }
     }
 
@@ -59,6 +138,7 @@ namespace DefaultUnitData
         public int attackPower;
         public int maxHp;
         public Sprite cardArt;
+        public CardAbilities abilities;
 
         public PalData(DefaultPal originalData, int artIndex)
         {
@@ -68,6 +148,7 @@ namespace DefaultUnitData
             this.size = originalData.size;
             this.attackPower = originalData.attackPower;
             this.maxHp = originalData.maxHp;
+            this.abilities = originalData.abilities;
             this.cardArt = originalData.cardArt[artIndex];
         }
     }
@@ -101,7 +182,8 @@ namespace DefaultUnitData
             size: 1,
             attackPower: 1,
             maxHp: 9,
-            cardArt: GameManager.Instance.CardSprites.lamball
+            cardArt: GameManager.Instance.CardSprites.lamball,
+            abilities: GameManager.Instance.PalAbilities.lamball
         );
 
         public DefaultPal cattiva = new DefaultPal
@@ -128,7 +210,8 @@ namespace DefaultUnitData
             size: 1,
             attackPower: 2,
             maxHp: 8,
-            cardArt: GameManager.Instance.CardSprites.cattiva
+            cardArt: GameManager.Instance.CardSprites.cattiva,
+            abilities: GameManager.Instance.PalAbilities.cattiva
         );
 
         public DefaultPal chikipi = new DefaultPal
@@ -155,7 +238,8 @@ namespace DefaultUnitData
             size: 1,
             attackPower: 2,
             maxHp: 7,
-            cardArt: GameManager.Instance.CardSprites.chikipi
+            cardArt: GameManager.Instance.CardSprites.chikipi,
+            abilities: GameManager.Instance.PalAbilities.chikipi
         );
 
 #endregion BasicPals
@@ -185,7 +269,8 @@ namespace DefaultUnitData
             size: 1,
             attackPower: 3,
             maxHp: 7,
-            cardArt: GameManager.Instance.CardSprites.lifmunk
+            cardArt: GameManager.Instance.CardSprites.lifmunk,
+            abilities: GameManager.Instance.PalAbilities.lifmunk
         );
 
         public DefaultPal tanzee = new DefaultPal
@@ -212,7 +297,8 @@ namespace DefaultUnitData
             size: 1,
             attackPower: 2,
             maxHp: 8,
-            cardArt: GameManager.Instance.CardSprites.tanzee
+            cardArt: GameManager.Instance.CardSprites.tanzee,
+            abilities: GameManager.Instance.PalAbilities.tanzee
         );
 
 #endregion GrassPals
@@ -242,7 +328,8 @@ namespace DefaultUnitData
             size: 1,
             attackPower: 2,
             maxHp: 8,
-            cardArt: GameManager.Instance.CardSprites.depresso
+            cardArt: GameManager.Instance.CardSprites.depresso,
+            abilities: GameManager.Instance.PalAbilities.depresso
         );
 
         public DefaultPal daedream = new DefaultPal
@@ -269,7 +356,8 @@ namespace DefaultUnitData
             size: 1,
             attackPower: 2,
             maxHp: 7,
-            cardArt: GameManager.Instance.CardSprites.daedream
+            cardArt: GameManager.Instance.CardSprites.daedream,
+            abilities: GameManager.Instance.PalAbilities.daedream
         );
 
 #endregion DarkPals

@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public Sprites CardSprites = new Sprites();
+    public PalAbilitySets PalAbilities = new PalAbilitySets();
 
 
     //Visuals and Confirmation
