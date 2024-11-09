@@ -23,7 +23,6 @@ public class EnemyPalSphereScript : MonoBehaviour
             HandScript.Instance.updateSelection += VerifyAttack;
             ConfirmationButtons.Instance.Confirmed += StartRaid;
             ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.StartCoroutine(HandScript.Instance.Attack());
-            Debug.Log(ConfirmationButtons.Instance.Confirmed);
             ConfirmationButtons.Instance.Denied += DisengageAttacks;
             ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
         }
