@@ -58,6 +58,7 @@ public class UnitCardScript : MonoBehaviour
         {
             for(int i = 0; i < cardData.WhenAttack.Count; i++)
             {
+                Debug.Log("ran");
                 cardData.WhenAttack[i].Invoke();
                 yield return new WaitUntil(() => readyForNextAttackAction);
                 readyForNextAttackAction = false;
@@ -78,6 +79,11 @@ public class UnitCardScript : MonoBehaviour
 
         yield return null;
         HandScript.Instance.currentAttacker = null;
+    }
+
+    public void FinishEffect()
+    {
+        readyForNextAttackAction = true;
     }
     
     public void EndAttackPhase()

@@ -106,6 +106,22 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 selection.Add(card);
                 updateSelection.Invoke();
                 break;
+            case "settingAilment":
+                if(!selection.Contains(card))
+                {
+                    if(HandScript.Instance.updateSelection == AllowConfirmations.LookForSingleTarget)
+                        selection.Clear();
+                    
+                    selection.Add(card);
+                }
+                else
+                {
+                    selection.RemoveAt(selection.IndexOf(card));
+                    card.SendMessage("Deselect");
+                }
+
+                    updateSelection.Invoke();
+                break;
             default:
                 Debug.Log("invalid state");
                 break;

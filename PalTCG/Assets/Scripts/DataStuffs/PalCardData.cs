@@ -24,5 +24,11 @@ public class PalCardData : CardData
         cost = orignalData.cost;
         element = orignalData.element;
         currentAtk = orignalData.attackPower;
+
+        OnDestroy = orignalData.abilities.OnDestroy;
+        WhenAttack = orignalData.abilities.WhenAttack;
+        OnAttack = orignalData.abilities.OnAttack;
+        // OnDestroy = orignalData.abilities.OnDestroy;
+        // OnDestroy = orignalData.abilities.OnDestroy;
     }
 }

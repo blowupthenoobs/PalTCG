@@ -8,6 +8,10 @@ using DefaultUnitData;
 
 public class ValueAssigner : MonoBehaviour
 {
+    private GameManager manager;
+    private Sprites spritesContainer;
+    private PalAbilitySets abilitySets;
+    [Header("Sprites")]
     public List<Sprite> lamballSprites;
     public List<Sprite> cattivaSprites;
     public List<Sprite> chikipiSprites;
@@ -18,12 +22,19 @@ public class ValueAssigner : MonoBehaviour
     
     void Start()
     {
-        GetComponent<GameManager>().CardSprites.lamball = lamballSprites;
-        GetComponent<GameManager>().CardSprites.cattiva = cattivaSprites;
-        GetComponent<GameManager>().CardSprites.chikipi = chikipiSprites;
-        GetComponent<GameManager>().CardSprites.lifmunk = lifmunkSprites;
-        GetComponent<GameManager>().CardSprites.tanzee = tanzeeSprites;
-        GetComponent<GameManager>().CardSprites.depresso = depressoSprites;
-        GetComponent<GameManager>().CardSprites.daedream = daedreamSprites;
+        manager  = GetComponent<GameManager>();
+        spritesContainer = manager.CardSprites;
+        abilitySets = manager.PalAbilities;
+
+
+        spritesContainer.lamball = lamballSprites;
+        spritesContainer.cattiva = cattivaSprites;
+        spritesContainer.chikipi = chikipiSprites;
+        spritesContainer.lifmunk = lifmunkSprites;
+        spritesContainer.tanzee = tanzeeSprites;
+        spritesContainer.depresso = depressoSprites;
+        spritesContainer.daedream = daedreamSprites;
+
+        abilitySets.daedream.WhenAttack.Add(() => StartCoroutine(StatusEffects.PutToSleep()));
     }
 }

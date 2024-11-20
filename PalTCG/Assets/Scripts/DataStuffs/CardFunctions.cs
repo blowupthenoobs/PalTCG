@@ -61,17 +61,41 @@ public class StatusEffects: MonoBehaviour
         HandScript.Instance.selection.Clear();
         yield return null;
         GameManager.Instance.ShowConfirmationButtons();
-        // HandScript.Instance.state = "raiding";
-        // HandScript.Instance.selection.Add(HandScript.Instance.selected);
-        // HandScript.Instance.selected = heldCard;
-        // HandScript.Instance.updateSelection += VerifyAttack;
-        // ConfirmationButtons.Instance.Confirmed += StartRaid;
-        // ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.StartCoroutine(HandScript.Instance.Attack());
-        // ConfirmationButtons.Instance.Denied += DisengageAttacks;
-        // ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
+        HandScript.Instance.state = "settingAilment";
+        HandScript.Instance.updateSelection += AllowConfirmations.LookForSingleTarget;
+        ConfirmationButtons.Instance.Confirmed += RestTargets;
+        ConfirmationButtons.Instance.Confirmed += HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect;
+        ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
+        ConfirmationButtons.Instance.Denied += HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect;
+        ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
+        //ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
         //equip trigger to finish effect
 
         //put target to sleep
+    }
+
+    public static void RestTargets()
+    {
+        for(int i = 0; i < HandScript.Instance.selection.Count; i++)
+        {
+            HandScript.Instance.selection[i].SendMessage("Rest"); //Will have to switch to telling server to tell it to rest
+        }
+    }
+}
+
+public class AllowConfirmations
+{
+    public static void LookForSingleTarget()
+    {
+        ConfirmationButtons.Instance.AllowConfirmation(HandScript.Instance.selection.Count == 1);
+    }
+
+    public static void ClearButtonEffects()
+    {
+        ConfirmationButtons.Instance.Confirmed = null;
+        ConfirmationButtons.Instance.Denied = null;
+        GameManager.Instance.HideConfirmationButtons();
+        HandScript.Instance.state = "choosingAttack";
     }
 }
 
