@@ -130,7 +130,9 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     }
 
     public void ClearSelection()
-    {
+    {   
+        if(selected != null)
+            selected.SendMessage("Deselect");
         selected = null;
         UnselectSelection();
     }
