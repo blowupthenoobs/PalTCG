@@ -15,6 +15,16 @@ public class EnemyPalCardScript : MonoBehaviour
         image = gameObject.GetComponent<Image>();
     }
 
+    public void Select()
+    {
+        image.color = targetColor;
+    }
+
+    public void Deselect()
+    {
+        image.color = normalColor;
+    }
+
     public void Hurt(int damage)
     {
         Debug.Log("took " + damage + " damage");

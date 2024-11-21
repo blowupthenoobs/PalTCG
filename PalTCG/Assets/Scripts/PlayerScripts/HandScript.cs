@@ -109,10 +109,15 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             case "settingAilment":
                 if(!selection.Contains(card))
                 {
-                    if(HandScript.Instance.updateSelection == AllowConfirmations.LookForSingleTarget)
+                    if(updateSelection == AllowConfirmations.LookForSingleTarget && selection.Count > 0)
+                    {
+                        selection[0].SendMessage("Deselect");
+
                         selection.Clear();
+                    }
                     
                     selection.Add(card);
+                    card.SendMessage("Select");
                 }
                 else
                 {

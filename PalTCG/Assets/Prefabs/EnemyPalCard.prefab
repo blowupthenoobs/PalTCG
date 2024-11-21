@@ -89,6 +89,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f29f2d161beee7b48a12bb540d0006c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardData: {fileID: 0}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  targetColor: {r: 1, g: 0.7414741, b: 0, a: 1}
 --- !u!114 &1864609811039397826
 MonoBehaviour:
   m_ObjectHideFlags: 0

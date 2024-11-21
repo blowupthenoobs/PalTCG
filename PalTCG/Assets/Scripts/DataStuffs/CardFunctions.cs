@@ -79,6 +79,7 @@ public class StatusEffects: MonoBehaviour
         for(int i = 0; i < HandScript.Instance.selection.Count; i++)
         {
             HandScript.Instance.selection[i].SendMessage("Rest"); //Will have to switch to telling server to tell it to rest
+            HandScript.Instance.selection[i].SendMessage("Deselect");
         }
     }
 }
