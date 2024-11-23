@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 public class LobbyScript : MonoBehaviourPunCallbacks
 {
+    public static LobbyScript Instance;
     [Header("UI")]
     public GameObject loadingGo;
     public Button createRoomButton;
@@ -26,6 +27,11 @@ public class LobbyScript : MonoBehaviourPunCallbacks
     {
         loadingGo.SetActive(true);
         createRoomButton.interactable = false;
+
+        if(Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
     }
 
     private IEnumerator Start()
@@ -96,7 +102,15 @@ public class LobbyScript : MonoBehaviourPunCallbacks
 
             roomItem.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = room.Name;
             roomItem.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = room.PlayerCount + "/2";
+            roomItem.GetComponent<RoomItemScript>().linkedRoom = room.Name;
         }
+    }
+
+    public void JoinRoomByName(string roomName)
+    {
+        PlayerPrefs.SetString("roomnameToJoinOrCreate", roomName);
+
+        SceneManager.LoadScene(1);
     }
 
     public void ChangeHostedName(string text)
