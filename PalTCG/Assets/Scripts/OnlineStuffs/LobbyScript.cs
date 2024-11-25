@@ -47,6 +47,8 @@ public class LobbyScript : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
     }
 
+
+#region onlineStuffs
     public override void OnConnectedToMaster()
     {
         base.OnConnectedToMaster();
@@ -136,5 +138,17 @@ public class LobbyScript : MonoBehaviourPunCallbacks
         PlayerPrefs.SetString("roomnameToJoinOrCreate", customRoomName);
 
         SceneManager.LoadScene(1);
+    }
+#endregion OnlineStuffs
+
+    public void EnterDeckBuilder()
+    {
+        SceneManager.LoadScene(2);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+        Debug.Log("you can't quit in unity, mwhahahahaha!!");
     }
 }
