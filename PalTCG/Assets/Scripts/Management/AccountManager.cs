@@ -50,6 +50,16 @@ public class AccountManager : MonoBehaviour
         }
     }
 
+    
+    [System.Serializable]
+    public struct Settings
+    {
+        public float masterVol;
+        public float musicVol;
+        public float sfxVol;
+        public bool useKeyboardShortCuts;
+    }
+
     [System.Serializable]
     public struct EarnedItems
     {
