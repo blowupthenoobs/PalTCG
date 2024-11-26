@@ -8,7 +8,7 @@ using DefaultUnitData;
 
 public class ValueAssigner : MonoBehaviour
 {
-    private GameManager manager;
+    private AccountManager manager;
     private Sprites spritesContainer;
     private PalAbilitySets abilitySets;
     [Header("Sprites")]
@@ -22,7 +22,7 @@ public class ValueAssigner : MonoBehaviour
     
     void Start()
     {
-        manager  = GetComponent<GameManager>();
+        manager  = AccountManager.Instance;
         spritesContainer = manager.CardSprites;
         abilitySets = manager.PalAbilities;
 

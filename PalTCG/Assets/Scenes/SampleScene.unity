@@ -373,7 +373,6 @@ GameObject:
   - component: {fileID: 127665054}
   - component: {fileID: 127665053}
   - component: {fileID: 127665056}
-  - component: {fileID: 127665057}
   - component: {fileID: 127665058}
   m_Layer: 0
   m_Name: EventSystem
@@ -447,33 +446,6 @@ MonoBehaviour:
   ConfirmationButtons: {fileID: 1348966686}
   TurnText: {fileID: 1083964834}
   phase: 
---- !u!114 &127665057
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 127665052}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df7d4908359b9784789e485c2bcc76f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lamballSprites:
-  - {fileID: 21300000, guid: eda6bd278515823458eb53e2f675695c, type: 3}
-  cattivaSprites:
-  - {fileID: 21300000, guid: 06176dbdbd2bc7a4097b45d186a14999, type: 3}
-  chikipiSprites:
-  - {fileID: 21300000, guid: 59aad104cfd21e5449e23e81e621226a, type: 3}
-  lifmunkSprites:
-  - {fileID: 21300000, guid: 3cda5e1c9303fbf4896961fe1c571560, type: 3}
-  tanzeeSprites:
-  - {fileID: 21300000, guid: d04f54fe21e308049b5baa1597dc5d48, type: 3}
-  depressoSprites:
-  - {fileID: 21300000, guid: 79e026f539b452942a10665e99a8380a, type: 3}
-  - {fileID: 21300000, guid: 6c9bd661e567ae64d8ff101befccd3e5, type: 3}
-  daedreamSprites:
-  - {fileID: 21300000, guid: 8230b8264ae71e24fbeb31b555ef5c6f, type: 3}
 --- !u!114 &127665058
 MonoBehaviour:
   m_ObjectHideFlags: 0

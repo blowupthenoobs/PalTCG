@@ -10,8 +10,8 @@ using DefaultUnitData;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public Sprites CardSprites = new Sprites();
-    public PalAbilitySets PalAbilities = new PalAbilitySets();
+    public Sprites CardSprites;
+    public PalAbilitySets PalAbilities;
 
 
     //Visuals and Confirmation
@@ -36,6 +36,9 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
 
         HideConfirmationButtons();
+
+        CardSprites = AccountManager.Instance.CardSprites;
+        PalAbilities = AccountManager.Instance.PalAbilities;
 
         StartPlayerTurn += PlayerPhase;
         StartEnemyTurn += EnemyPhase;

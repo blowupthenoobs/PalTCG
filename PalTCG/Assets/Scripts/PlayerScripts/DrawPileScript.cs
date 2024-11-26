@@ -21,7 +21,7 @@ public class DrawPileScript : MonoBehaviour
 
         for(int i = 0; i < cards.Length; i++)
         {
-            cardsToAdd.Add(ConvertToCardData(cards[i]));
+            cardsToAdd.Add(Pals.ConvertToCardData(cards[i]));
         }
 
         while(cardsToAdd.Count > 0)
@@ -41,28 +41,5 @@ public class DrawPileScript : MonoBehaviour
         }
         else
             Debug.Log("out of cards");
-    }
-
-    private CardData ConvertToCardData(string datatype)
-    {
-        string[] dataParts = datatype.Split("/");
-
-        CardData data = null;
-
-        switch(dataParts[0])
-        {
-            case "p":
-                data = (PalCardData)ScriptableObject.CreateInstance(typeof(PalCardData));
-                ((PalCardData)data).DecomposeData(new Pals().FindPalData(dataParts[1], int.Parse(dataParts[2])));
-            break;
-            case "t":
-                Debug.Log("look for items");
-            break;
-            case "h":
-                Debug.Log("look for player/hero");
-            break;
-        }
-
-        return data;
     }
 }

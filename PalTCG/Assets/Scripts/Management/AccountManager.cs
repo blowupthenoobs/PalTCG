@@ -2,9 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using DefaultUnitData;
+
 public class AccountManager : MonoBehaviour
 {
     public static AccountManager Instance;
+    [HideInInspector] public Sprites CardSprites = new Sprites();
+    [HideInInspector] public PalAbilitySets PalAbilities = new PalAbilitySets();
 
     public Account player;
 
@@ -16,6 +20,19 @@ public class AccountManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+
+        if(ES3.KeyExists("account"))
+            player = ES3.Load<Account>("account");
+        else
+        {
+            Debug.Log("created new account");
+            player = new Account();
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        ES3.Save("account", player);
     }
 
 #region structs
@@ -24,13 +41,17 @@ public class AccountManager : MonoBehaviour
     {
         public string accountName;
         public Stats stats;
+        public Settings settings;
+        public EarnedItems earnedItems;
         public List<string> achivements;
         public List<Decks> decks;
 
-        public Account(string accountName, Stats stats, List<string> achievements, List<Decks> decks)
+        public Account(string accountName, Stats stats, Settings settings, EarnedItems earnedItems, List<string> achievements, List<Decks> decks)
         {
             this.accountName = accountName;
             this.stats = stats;
+            this.settings = settings;
+            this.earnedItems = earnedItems;
             this.achivements = achievements;
             this.decks = decks;
         }
@@ -63,13 +84,15 @@ public class AccountManager : MonoBehaviour
     [System.Serializable]
     public struct EarnedItems
     {
-        public List<object> ownedCards;
+        public List<string> ownedCardTypes;
+        public List<int> ownedCardsCount;
         public List<string> ownedPlayerCards;
         public List<string> ownedFrames;
 
-        public EarnedItems(List<object> ownedCards, List<string> ownedPlayerCards, List<string> ownedFrames)
+        public EarnedItems(List<string> ownedCardTypes, List<int> ownedCardsCount, List<string> ownedPlayerCards, List<string> ownedFrames)
         {
-            this.ownedCards = ownedCards;
+            this.ownedCardTypes = ownedCardTypes;
+            this.ownedCardsCount = ownedCardsCount;
             this.ownedPlayerCards = ownedPlayerCards;
             this.ownedFrames = ownedFrames;
         }
@@ -78,15 +101,20 @@ public class AccountManager : MonoBehaviour
     [System.Serializable]
     public struct Decks
     {
+        public string deckName;
+        public string coverCard;
         public string playerCard;
         public string playerFrame;
         public string decklist;
-
-        public Decks(string playerCard, string playerFrame, string decklist)
+        public bool isLegal;
+        public Decks(string deckName, string coverCard, string playerCard, string playerFrame, string decklist, bool isLegal)
         {
+            this.deckName = deckName;
+            this.coverCard = coverCard;
             this.playerCard = playerCard;
             this.playerFrame = playerFrame;
             this.decklist = decklist;
+            this.isLegal = isLegal;
         }
     }
 

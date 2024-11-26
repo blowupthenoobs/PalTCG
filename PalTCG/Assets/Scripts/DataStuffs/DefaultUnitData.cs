@@ -85,6 +85,7 @@ namespace DefaultUnitData
         );
     }
 
+    [System.Serializable]
     public struct CardAbilities
     {
         public List<UnityAction> OnDestroy;
@@ -105,6 +106,7 @@ namespace DefaultUnitData
         }
     }
     
+    [System.Serializable]
     public struct DefaultPal
     {
         public int cost;
@@ -129,6 +131,7 @@ namespace DefaultUnitData
         }
     }
 
+    [System.Serializable]
     public struct PalData
     {
         public int cost;
@@ -182,8 +185,8 @@ namespace DefaultUnitData
             size: 1,
             attackPower: 1,
             maxHp: 9,
-            cardArt: GameManager.Instance.CardSprites.lamball,
-            abilities: GameManager.Instance.PalAbilities.lamball
+            cardArt: AccountManager.Instance.CardSprites.lamball,
+            abilities: AccountManager.Instance.PalAbilities.lamball
         );
 
         public DefaultPal cattiva = new DefaultPal
@@ -210,8 +213,8 @@ namespace DefaultUnitData
             size: 1,
             attackPower: 2,
             maxHp: 8,
-            cardArt: GameManager.Instance.CardSprites.cattiva,
-            abilities: GameManager.Instance.PalAbilities.cattiva
+            cardArt: AccountManager.Instance.CardSprites.cattiva,
+            abilities: AccountManager.Instance.PalAbilities.cattiva
         );
 
         public DefaultPal chikipi = new DefaultPal
@@ -238,8 +241,8 @@ namespace DefaultUnitData
             size: 1,
             attackPower: 2,
             maxHp: 7,
-            cardArt: GameManager.Instance.CardSprites.chikipi,
-            abilities: GameManager.Instance.PalAbilities.chikipi
+            cardArt: AccountManager.Instance.CardSprites.chikipi,
+            abilities: AccountManager.Instance.PalAbilities.chikipi
         );
 
 #endregion BasicPals
@@ -269,8 +272,8 @@ namespace DefaultUnitData
             size: 1,
             attackPower: 3,
             maxHp: 7,
-            cardArt: GameManager.Instance.CardSprites.lifmunk,
-            abilities: GameManager.Instance.PalAbilities.lifmunk
+            cardArt: AccountManager.Instance.CardSprites.lifmunk,
+            abilities: AccountManager.Instance.PalAbilities.lifmunk
         );
 
         public DefaultPal tanzee = new DefaultPal
@@ -297,8 +300,8 @@ namespace DefaultUnitData
             size: 1,
             attackPower: 2,
             maxHp: 8,
-            cardArt: GameManager.Instance.CardSprites.tanzee,
-            abilities: GameManager.Instance.PalAbilities.tanzee
+            cardArt: AccountManager.Instance.CardSprites.tanzee,
+            abilities: AccountManager.Instance.PalAbilities.tanzee
         );
 
 #endregion GrassPals
@@ -328,8 +331,8 @@ namespace DefaultUnitData
             size: 1,
             attackPower: 2,
             maxHp: 8,
-            cardArt: GameManager.Instance.CardSprites.depresso,
-            abilities: GameManager.Instance.PalAbilities.depresso
+            cardArt: AccountManager.Instance.CardSprites.depresso,
+            abilities: AccountManager.Instance.PalAbilities.depresso
         );
 
         public DefaultPal daedream = new DefaultPal
@@ -356,46 +359,67 @@ namespace DefaultUnitData
             size: 1,
             attackPower: 2,
             maxHp: 7,
-            cardArt: GameManager.Instance.CardSprites.daedream,
-            abilities: GameManager.Instance.PalAbilities.daedream
+            cardArt: AccountManager.Instance.CardSprites.daedream,
+            abilities: AccountManager.Instance.PalAbilities.daedream
         );
 
 #endregion DarkPals
 
 
-    public PalData FindPalData(string palName, int artIndex)
-    {
-        switch (palName)
+        public PalData FindPalData(string palName, int artIndex)
         {
-            case "lamball":
-                return new PalData(lamball, artIndex);
-            break;
-            case "cattiva":
-                return new PalData(cattiva, artIndex);
-            break;
-            case "chikipi":
-                return new PalData(chikipi, artIndex);
-            break;
-            case "lifmunk":
-                return new PalData(lifmunk, artIndex);
-            break;
-            case "tanzee":
-                return new PalData(tanzee, artIndex);
-            break;
-            case "depresso":
-                return new PalData(depresso, artIndex);
-            break;
-            case "daedream":
-                return new PalData(daedream, artIndex);
-            break;
-            default:
-                Debug.Log("doesn't have assigned pal");
-                return new PalData(cattiva, artIndex);
-            break;
+            switch (palName)
+            {
+                case "lamball":
+                    return new PalData(lamball, artIndex);
+                break;
+                case "cattiva":
+                    return new PalData(cattiva, artIndex);
+                break;
+                case "chikipi":
+                    return new PalData(chikipi, artIndex);
+                break;
+                case "lifmunk":
+                    return new PalData(lifmunk, artIndex);
+                break;
+                case "tanzee":
+                    return new PalData(tanzee, artIndex);
+                break;
+                case "depresso":
+                    return new PalData(depresso, artIndex);
+                break;
+                case "daedream":
+                    return new PalData(daedream, artIndex);
+                break;
+                default:
+                    Debug.Log("doesn't have assigned pal");
+                    return new PalData(cattiva, artIndex);
+                break;
+            }
         }
-    }
 
+        public static CardData ConvertToCardData(string datatype)
+        {
+            string[] dataParts = datatype.Split("/");
 
+            CardData data = null;
+
+            switch(dataParts[0])
+            {
+                case "p":
+                    data = (PalCardData)ScriptableObject.CreateInstance(typeof(PalCardData));
+                    ((PalCardData)data).DecomposeData(new Pals().FindPalData(dataParts[1], int.Parse(dataParts[2])));
+                break;
+                case "t":
+                    Debug.Log("look for items");
+                break;
+                case "h":
+                    Debug.Log("look for player/hero");
+                break;
+            }
+
+            return data;
+        }
     }
     
 
