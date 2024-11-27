@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 using DefaultUnitData;
 
@@ -20,10 +21,14 @@ public class DeckBuildingManagerScript : MonoBehaviour
     [SerializeField] GameObject deckbuildingMenu;
 
     [Header("DeckBuilding")]
+    [SerializeField] TMP_InputField deckNameSpot;
+    [SerializeField] GameObject artShowcase;
+    [SerializeField] GameObject textShowcase;
     [SerializeField] GameObject ownedCardContainer; 
     [SerializeField] GameObject deckCardContainer;
-    List<GameObject> ownedCardList = new List<GameObject>();
-    List<GameObject> deckCardList  = new List<GameObject>();
+    public List<GameObject> ownedCardList = new List<GameObject>(); //Only public for sake of debug
+    public List<GameObject> deckCardList  = new List<GameObject>();
+    public List<string> rawCardList = new List<string>();
     [SerializeField] GameObject cardIconPrefab;
     public static int heldIndex;
     private AccountManager.Decks currentDeckData;
@@ -45,6 +50,7 @@ public class DeckBuildingManagerScript : MonoBehaviour
         {
             Destroy(deckCardList[0]);
             deckCardList.RemoveAt(0);
+            rawCardList.RemoveAt(0);
         }
 
         while(ownedCardList.Count > 0)
@@ -57,30 +63,84 @@ public class DeckBuildingManagerScript : MonoBehaviour
         {
             ownedCardList.Add(Instantiate(cardIconPrefab, transform.position, transform.rotation));
             ownedCardList[ownedCardList.Count - 1].transform.SetParent(ownedCardContainer.transform);
-            ownedCardList[ownedCardList.Count - 1].GetComponent<CardIconScript>().SetUpCard(AccountManager.Instance.player.earnedItems.ownedCardsCount[i], AccountManager.Instance.player.earnedItems.ownedCardTypes[i]);
-
+            ownedCardList[ownedCardList.Count - 1].GetComponent<CardIconScript>().SetUpCard(this, AccountManager.Instance.player.earnedItems.ownedCardsCount[i], AccountManager.Instance.player.earnedItems.ownedCardTypes[i], true, artShowcase, textShowcase);
+            ownedCardList[ownedCardList.Count - 1].GetComponent<CardIconScript>().isFromFullList = true;
         }
 
         if(heldIndex < AccountManager.Instance.player.decks.Count)
         {
-            //Load all of the details
+            currentDeckData = AccountManager.Instance.player.decks[newIndex];
+
+            deckNameSpot.text = currentDeckData.deckName;
+            
+            if(AccountManager.Instance.player.decks[newIndex].decklist != "")
+            {
+                string[] temp = AccountManager.Instance.player.decks[newIndex].decklist.Split(",");;
+
+                for(int i = 0; i < temp.Length; i++)
+                {
+                    if(rawCardList.Contains(temp[i]))
+                    {
+                        deckCardList[rawCardList.IndexOf(temp[i])].SendMessage("Increment", 1);
+                    }
+                    else
+                    {
+                        rawCardList.Add(temp[i]);
+                        deckCardList.Add(Instantiate(cardIconPrefab, transform.position, transform.rotation));
+                        deckCardList[deckCardList.Count - 1].transform.SetParent(deckCardContainer.transform);
+                        deckCardList[deckCardList.Count - 1].GetComponent<CardIconScript>().SetUpCard(this, 1, temp[i], false, artShowcase, textShowcase);
+                    }
+                }
+            }
+                
         }
         else
         {
             currentDeckData = new AccountManager.Decks();
-
         }
     }
 
-    public List<CardData> DecompileDeckString(string deck)
+    public void SwitchIconSide(bool isFromFullList, string rawCardRef)
+    {
+        if(isFromFullList)
+        {
+            if(rawCardList.Contains(rawCardRef))
+            {
+                if(deckCardList[rawCardList.IndexOf(rawCardRef)].GetComponent<CardIconScript>().cardCount < AccountManager.Instance.player.earnedItems.ownedCardsCount[AccountManager.Instance.player.earnedItems.ownedCardTypes.IndexOf(rawCardRef)])
+                    deckCardList[rawCardList.IndexOf(rawCardRef)].SendMessage("Increment", 1);
+            }
+            else
+            {
+                rawCardList.Add(rawCardRef);
+                deckCardList.Add(Instantiate(cardIconPrefab, transform.position, transform.rotation));
+                deckCardList[deckCardList.Count - 1].transform.SetParent(deckCardContainer.transform);
+                deckCardList[deckCardList.Count - 1].GetComponent<CardIconScript>().SetUpCard(this, 1, rawCardRef, false, artShowcase, textShowcase);
+            }
+        }
+        else
+        {
+            deckCardList[rawCardList.IndexOf(rawCardRef)].SendMessage("Increment", -1);
+
+            if(deckCardList[rawCardList.IndexOf(rawCardRef)].GetComponent<CardIconScript>().cardCount <= 0)
+            {
+                var index = rawCardList.IndexOf(rawCardRef);
+
+                rawCardList.RemoveAt(index);
+                Destroy(deckCardList[index]);
+                deckCardList.RemoveAt(index);
+            }
+        }
+    }
+
+    public List<string> DecompileDeckString(string deck)
     {
         string[] cards = deck.Split(",");
 
-        List<CardData> dataList = new List<CardData>();
+        List<string> dataList = new List<string>();
 
         for(int i = 0; i < cards.Length; i++)
         {
-            dataList.Add(Pals.ConvertToCardData(cards[i]));
+            dataList.Add(cards[i]);
         }
 
         return dataList;
