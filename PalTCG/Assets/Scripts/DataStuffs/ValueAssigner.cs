@@ -11,7 +11,17 @@ public class ValueAssigner : MonoBehaviour
     private AccountManager manager;
     private Sprites spritesContainer;
     private PalAbilitySets abilitySets;
-    [Header("Sprites")]
+    [Header("PlayerArts")]
+    public Sprite playerDef;
+    public Sprite playerAlt;
+    public Sprite normalAxel;
+    public Sprite normalLily;
+    public Sprite normalMarcus;
+    public Sprite normalVictor;
+    public Sprite normalZoe;
+    public Sprite overheadZoe;
+
+    [Header("PalSprites")]
     public List<Sprite> lamballSprites;
     public List<Sprite> cattivaSprites;
     public List<Sprite> chikipiSprites;
@@ -26,6 +36,14 @@ public class ValueAssigner : MonoBehaviour
         spritesContainer = manager.CardSprites;
         abilitySets = manager.PalAbilities;
 
+        spritesContainer.playerDef = playerDef;
+        spritesContainer.playerAlt = playerAlt;
+        spritesContainer.normalAxel = normalAxel;
+        spritesContainer.normalLily = normalLily;
+        spritesContainer.normalMarcus = normalMarcus;
+        spritesContainer.normalVictor = normalVictor;
+        spritesContainer.normalZoe = normalZoe;
+        spritesContainer.overheadZoe = overheadZoe;
 
         spritesContainer.lamball = lamballSprites;
         spritesContainer.cattiva = cattivaSprites;

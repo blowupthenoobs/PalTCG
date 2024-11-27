@@ -9,6 +9,18 @@ namespace DefaultUnitData
 {
     public class Sprites
     {
+        [Header("PlayerCards")]
+        public Sprite playerDef;
+        public Sprite playerAlt;
+        public Sprite normalAxel;
+        public Sprite normalLily;
+        public Sprite normalMarcus;
+        public Sprite normalVictor;
+        public Sprite normalZoe;
+        public Sprite overheadZoe;
+
+
+        [Header("Pals")]
         public List<Sprite> lamball;
         public List<Sprite> cattiva;
         public List<Sprite> chikipi;
@@ -372,29 +384,47 @@ namespace DefaultUnitData
             {
                 case "lamball":
                     return new PalData(lamball, artIndex);
-                break;
                 case "cattiva":
                     return new PalData(cattiva, artIndex);
-                break;
                 case "chikipi":
                     return new PalData(chikipi, artIndex);
-                break;
                 case "lifmunk":
                     return new PalData(lifmunk, artIndex);
-                break;
                 case "tanzee":
                     return new PalData(tanzee, artIndex);
-                break;
                 case "depresso":
                     return new PalData(depresso, artIndex);
-                break;
                 case "daedream":
                     return new PalData(daedream, artIndex);
-                break;
                 default:
                     Debug.Log("doesn't have assigned pal");
                     return new PalData(cattiva, artIndex);
-                break;
+            }
+        }
+
+        public Sprite LookForPlayerArt(string artName)
+        {
+            switch (artName)
+            {
+                case "playerDef":
+                    return AccountManager.Instance.CardSprites.playerDef;
+                case "playerAlt":
+                    return AccountManager.Instance.CardSprites.playerAlt;
+                case "normalAxel":
+                    return AccountManager.Instance.CardSprites.normalAxel;
+                case "normalLily":
+                    return AccountManager.Instance.CardSprites.normalLily;
+                case "normalMarcus":
+                    return AccountManager.Instance.CardSprites.normalMarcus;
+                case "normalVictor":
+                    return AccountManager.Instance.CardSprites.normalVictor;
+                case "normalZoe":
+                    return AccountManager.Instance.CardSprites.normalZoe;
+                case "overheadZoe":
+                    return AccountManager.Instance.CardSprites.overheadZoe;
+                default:
+                    Debug.Log("didn't have assigned playerArt");
+                    return AccountManager.Instance.CardSprites.playerDef;
             }
         }
 
@@ -414,7 +444,8 @@ namespace DefaultUnitData
                     Debug.Log("look for items");
                 break;
                 case "h":
-                    Debug.Log("look for player/hero");
+                    data = new PalCardData();
+                    data.cardArt = new Pals().LookForPlayerArt(dataParts[1]);
                 break;
             }
 

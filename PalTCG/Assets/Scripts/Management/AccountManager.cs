@@ -104,15 +104,13 @@ public class AccountManager : MonoBehaviour
         public string deckName;
         public string coverCard;
         public string playerCard;
-        public string playerFrame;
         public string decklist;
         public bool isLegal;
-        public Decks(string deckName, string coverCard, string playerCard, string playerFrame, string decklist, bool isLegal)
+        public Decks(string deckName, string coverCard, string playerCard, string decklist, bool isLegal)
         {
             this.deckName = deckName;
             this.coverCard = coverCard;
             this.playerCard = playerCard;
-            this.playerFrame = playerFrame;
             this.decklist = decklist;
             this.isLegal = isLegal;
         }

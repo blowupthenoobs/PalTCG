@@ -13,7 +13,7 @@ public class CardIconScript : MonoBehaviour, IPointerEnterHandler
     private GameObject cardShowcase;
     private GameObject abilityShowcase;
     [HideInInspector] CardData data;
-    [SerializeField] TMP_Text TextBox;
+    [SerializeField] TMP_Text textBox;
     [SerializeField] Image cardArt;
     [HideInInspector] public string cardDataReference;
     [HideInInspector] public int cardCount;
@@ -23,7 +23,7 @@ public class CardIconScript : MonoBehaviour, IPointerEnterHandler
         manager = builder;
         data = Pals.ConvertToCardData(cardReference);
         cardCount = totalCount;
-        TextBox.text = cardCount.ToString();
+        textBox.text = cardCount.ToString();
         cardDataReference = cardReference;
         isFromFullList = inOwnedList;
         cardShowcase = artShowcase;
@@ -34,13 +34,16 @@ public class CardIconScript : MonoBehaviour, IPointerEnterHandler
 
     public void Click()
     {
-        manager.SwitchIconSide(isFromFullList, cardDataReference);
+        if(!manager.changingMainCard)
+            manager.SwitchIconSide(isFromFullList, cardDataReference);
+        else if(!isFromFullList)
+            manager.ChangeMainCard(cardDataReference);
     }
 
     public void Increment(int amount)
     {
         cardCount += amount;
-        TextBox.text = cardCount.ToString();
+        textBox.text = cardCount.ToString();
     }
 
     public void OnPointerEnter(PointerEventData eventData)

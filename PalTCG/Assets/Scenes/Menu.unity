@@ -1205,6 +1205,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df7d4908359b9784789e485c2bcc76f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerDef: {fileID: 21300000, guid: 62ccaa35054f9f642976ef1082e016af, type: 3}
+  playerAlt: {fileID: 21300000, guid: 65373eab33a4ada428a01d62cd6bbf30, type: 3}
+  normalAxel: {fileID: 21300000, guid: db94778afa24604428e2b24a348c2a3e, type: 3}
+  normalLily: {fileID: 21300000, guid: 5f979f2bbe45e174c8396a27a7370b7a, type: 3}
+  normalMarcus: {fileID: 21300000, guid: 32528fb116fe67e44809ac6ab7ba8925, type: 3}
+  normalVictor: {fileID: 21300000, guid: 027049becad51d64a9762e3512baec31, type: 3}
+  normalZoe: {fileID: 21300000, guid: f2093ae1302b2fd4db8e8cdadd517b2d, type: 3}
+  overheadZoe: {fileID: 21300000, guid: 339066d5d76c6524193ed7bcd0e91c65, type: 3}
   lamballSprites:
   - {fileID: 21300000, guid: eda6bd278515823458eb53e2f675695c, type: 3}
   cattivaSprites:

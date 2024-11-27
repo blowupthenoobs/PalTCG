@@ -24,14 +24,20 @@ public class DeckBuildingManagerScript : MonoBehaviour
     [SerializeField] TMP_InputField deckNameSpot;
     [SerializeField] GameObject artShowcase;
     [SerializeField] GameObject textShowcase;
+    [SerializeField] GameObject highlightCardContainer;
+    [SerializeField] GameObject chosenPlayerCardContainer;
+    [SerializeField] GameObject allPlayerCardsContainer;
     [SerializeField] GameObject ownedCardContainer; 
     [SerializeField] GameObject deckCardContainer;
-    public List<GameObject> ownedCardList = new List<GameObject>(); //Only public for sake of debug
-    public List<GameObject> deckCardList  = new List<GameObject>();
-    public List<string> rawCardList = new List<string>();
+    List<GameObject> ownedPlayerCards = new List<GameObject>();
+    List<GameObject> ownedCardList = new List<GameObject>();
+    List<GameObject> deckCardList  = new List<GameObject>();
+    List<string> rawCardList = new List<string>();
+    [SerializeField] GameObject playerCardIconPrefab;
     [SerializeField] GameObject cardIconPrefab;
     public static int heldIndex;
     private AccountManager.Decks currentDeckData;
+    public bool changingMainCard;
     
 
     private void Awake()
@@ -59,12 +65,25 @@ public class DeckBuildingManagerScript : MonoBehaviour
             ownedCardList.RemoveAt(0);
         }
 
+        while(ownedPlayerCards.Count > 0)
+        {
+            Destroy(ownedPlayerCards[0]);
+            ownedPlayerCards.RemoveAt(0);
+        }
+
         for(int i = 0; i < AccountManager.Instance.player.earnedItems.ownedCardTypes.Count; i++)
         {
             ownedCardList.Add(Instantiate(cardIconPrefab, transform.position, transform.rotation));
             ownedCardList[ownedCardList.Count - 1].transform.SetParent(ownedCardContainer.transform);
             ownedCardList[ownedCardList.Count - 1].GetComponent<CardIconScript>().SetUpCard(this, AccountManager.Instance.player.earnedItems.ownedCardsCount[i], AccountManager.Instance.player.earnedItems.ownedCardTypes[i], true, artShowcase, textShowcase);
             ownedCardList[ownedCardList.Count - 1].GetComponent<CardIconScript>().isFromFullList = true;
+        }
+
+        for(int i = 0; i < AccountManager.Instance.player.earnedItems.ownedPlayerCards.Count; i++)
+        {
+            ownedPlayerCards.Add(Instantiate(playerCardIconPrefab, transform.position, transform.rotation));
+            ownedPlayerCards[ownedPlayerCards.Count - 1].transform.SetParent(allPlayerCardsContainer.transform);
+            ownedPlayerCards[ownedPlayerCards.Count - 1].GetComponent<PlayerIconScript>().SetUpCard(this, AccountManager.Instance.player.earnedItems.ownedPlayerCards[i]);
         }
 
         if(heldIndex < AccountManager.Instance.player.decks.Count)
@@ -92,6 +111,9 @@ public class DeckBuildingManagerScript : MonoBehaviour
                     }
                 }
             }
+            
+            ChangeMainCard(currentDeckData.coverCard);
+            ChangePlayerCard(currentDeckData.playerCard);
                 
         }
         else
@@ -128,6 +150,9 @@ public class DeckBuildingManagerScript : MonoBehaviour
                 rawCardList.RemoveAt(index);
                 Destroy(deckCardList[index]);
                 deckCardList.RemoveAt(index);
+
+                if(currentDeckData.coverCard == rawCardRef)
+                    ChangeMainCard(currentDeckData.playerCard);
             }
         }
     }
@@ -146,8 +171,53 @@ public class DeckBuildingManagerScript : MonoBehaviour
         return dataList;
     }
 
+    public void ChangeDeckName(string newName)
+    {
+        currentDeckData.deckName = newName;
+    }
+
+    public void LookForNewDeckHighlight()
+    {
+        changingMainCard = true;
+    }
+
+    public void ChangeMainCard(string cardReference)
+    {
+        changingMainCard = false;
+        currentDeckData.coverCard = cardReference;
+        highlightCardContainer.GetComponent<Image>().sprite = Pals.ConvertToCardData(cardReference).cardArt;
+    }
+
+    public void ChangeHighlightCardToPlayer()
+    {
+        if(changingMainCard)
+        {
+            changingMainCard = false;
+            currentDeckData.coverCard = currentDeckData.playerCard;
+            highlightCardContainer.GetComponent<Image>().sprite = Pals.ConvertToCardData(currentDeckData.playerCard).cardArt;
+        }
+    }
+
+    public void ChangePlayerCard(string playerReference)
+    {
+        currentDeckData.playerCard = playerReference;
+        chosenPlayerCardContainer.GetComponent<Image>().sprite = Pals.ConvertToCardData(playerReference).cardArt;
+    }
+
     public void SaveDeck()
     {
+        currentDeckData.decklist = "";
+
+        foreach(GameObject icon in deckCardList)
+        {
+            for(int i = 0; i < icon.GetComponent<CardIconScript>().cardCount; i++)
+            {
+                currentDeckData.decklist = currentDeckData.decklist + "," + rawCardList[deckCardList.IndexOf(icon)];
+            }
+        }
+
+        currentDeckData.decklist = currentDeckData.decklist.Substring(1);
+
         if(heldIndex < AccountManager.Instance.player.decks.Count)
         {
             AccountManager.Instance.player.decks[heldIndex] = currentDeckData;
@@ -172,6 +242,7 @@ public class DeckBuildingManagerScript : MonoBehaviour
             allDeckIcons[i].transform.SetParent(deckContainer.transform);
             allDeckIcons[i].GetComponent<DeckIconButtonScript>().manager = this;
             allDeckIcons[i].GetComponent<DeckIconButtonScript>().indexNumber = i;
+            allDeckIcons[i].SendMessage("SetUpIcon");
         }
 
         if(allDeckIcons.Count < 30)
