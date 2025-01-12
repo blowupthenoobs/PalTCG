@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ea0bd05b26ca6846ac9061bed0f0c7b, type: 3}
+  m_Name: FirePal
+  m_EditorClassIdentifier: 
+  CardType: 
+  CardName: 
+  cardArt: {fileID: 21300000, guid: 7299426a1bd6cbb478362b7736a4918c, type: 3}
+  image: {fileID: 0}
+  gameObject: {fileID: 0}
+  maxHp: 0
+  currentHp: 0
+  defaultAtk: 3
+  currentAtk: 3
+  OnDestroy:
+    m_PersistentCalls:
+      m_Calls: []
+  WhenAttack:
+    m_PersistentCalls:
+      m_Calls: []
+  OnAttack:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHurt:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlay:
+    m_PersistentCalls:
+      m_Calls: []
+  PalSkill:
+    m_PersistentCalls:
+      m_Calls: []
+  cost: 1
+  element: 1
+  size: 0
