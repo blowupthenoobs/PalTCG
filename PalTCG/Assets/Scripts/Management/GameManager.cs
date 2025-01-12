@@ -48,10 +48,15 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        PickFirstPlayer();
         StartEnemyTurn += HandScript.Instance.ClearSelection;
         StartPlayerTurn += HandScript.Instance.ClearSelection;
         StartPlayerAttack += HandScript.Instance.ClearSelection;
+    }
+
+    public void LockInDeck()
+    {
+        TurnText.text = "Waiting for other player";
+        
     }
 
     void Update()

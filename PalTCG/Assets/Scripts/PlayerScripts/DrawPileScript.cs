@@ -8,11 +8,6 @@ public class DrawPileScript : MonoBehaviour
 {
     public new List<CardData> currentDeck = new List<CardData>();
 
-    void Start()
-    {
-        SetDeckCards(HandScript.Instance.Preferences.tempDeck);
-    }
-
     public void SetDeckCards(string deck)
     {
         string[] cards = deck.Split(",");
