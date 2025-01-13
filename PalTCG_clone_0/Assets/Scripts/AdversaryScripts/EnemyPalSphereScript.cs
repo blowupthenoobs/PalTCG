@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class EnemyPalSphereScript : MonoBehaviour
 {
+    [SerializeField] PhotonView opponentMirror;
     [SerializeField] GameObject cardPrefab;
     public GameObject heldCard;
 
     void Start()
     {
-        PlaceCard();
+        
     }
 
     public void SelectAsTarget()

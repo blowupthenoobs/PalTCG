@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7587169341793396262}
   - component: {fileID: 2852815478580233721}
   - component: {fileID: 3110401272640994159}
+  - component: {fileID: 3571576661228182349}
   m_Layer: 5
   m_Name: PalSphere
   m_TagString: Untagged
@@ -145,6 +146,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e96130d38fdfc043bcf6f871bce3fd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  opponentMirror: {fileID: 0}
   waitingSpace: {fileID: 0}
   cardPrefab: {fileID: 2608142742448742569, guid: def5710fa1ea5d84092d2431f3ff57d1, type: 3}
   heldCard: {fileID: 0}
+--- !u!114 &3571576661228182349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8017676101420941317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  observableSearch: 1
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0

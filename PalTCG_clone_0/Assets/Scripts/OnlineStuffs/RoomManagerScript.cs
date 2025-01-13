@@ -18,6 +18,8 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
+        waitingScreen.SetActive(true);
+        
         if(Instance != null)
             Destroy(gameObject);
         else
@@ -43,7 +45,7 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
     [PunRPC]
     public void ReadyForMatch()
     {
-
+        waitingScreen.SetActive(false);
     }
 
     public void PlayerLockedIn()
@@ -52,7 +54,10 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
         PhotonView.Get(this).RPC("OpponentLockedIn", RpcTarget.OthersBuffered);
 
         if(playerReady && opponentReady)
+        {
             PhotonView.Get(this).RPC("ReadyForMatch", RpcTarget.All);
+            GameManager.Instance.PickFirstPlayer();
+        }
         
     }
 
@@ -60,7 +65,6 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
     public void OpponentLockedIn()
     {
         opponentReady = true;
-
-        // if()
+        Debug.Log("opponent locked in");
     }
 }

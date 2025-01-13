@@ -41,6 +41,9 @@ MonoBehaviour:
   - RespawnSpaceship
   - OpponentLockedIn
   - ReadyForMatch
+  - StartWithOpponent
+  - StartWithPlayer
+  - SwitchPhases
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

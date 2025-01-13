@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using Photon.Pun;
 using TMPro;
 
 using DefaultUnitData;
@@ -56,22 +57,35 @@ public class GameManager : MonoBehaviour
     public void LockInDeck()
     {
         TurnText.text = "Waiting for other player";
-        
+        RoomManagerScript.Instance.PlayerLockedIn();
     }
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space)) //For Testing Purposes
-            TestModes();
+        if(Input.GetKeyDown(KeyCode.Space) && (phase == "PlayerTurn" || phase == "PlayerAttack")) //For Testing Purposes
+            PhotonView.Get(this).RPC("SwitchPhases", RpcTarget.All);
     }
 
-    void TestModes()
+    [PunRPC]
+    void SwitchPhases()
     {
-        if(phase == "PlayerTurn")
-            StartPlayerAttack.Invoke();
-        else
-            StartPlayerTurn.Invoke();
+        switch(phase)
+        {
+            case "PlayerTurn":
+                StartPlayerAttack.Invoke();
+                break;
+            case "PlayerAttack":
+                StartEnemyTurn.Invoke();
+                break;
+            case "EnemyTurn":
+                StartEnemyAttack.Invoke();
+                break;
+            case "EnemyAttack":
+                StartPlayerTurn.Invoke();
+                break;
+        }
     }
+
 
     public void HideConfirmationButtons()
     {
@@ -112,14 +126,32 @@ public class GameManager : MonoBehaviour
         TurnText.text = phase;
     }
 
-    void PickFirstPlayer()
+    public void PickFirstPlayer()
     {
         int chance = Random.Range(0, 2);
 
         if(chance == 0)
-            StartPlayerTurn.Invoke();
+        {
+            StartWithPlayer();
+            PhotonView.Get(this).RPC("StartWithOpponent", RpcTarget.Others);
+        }
         else
-            StartEnemyTurn.Invoke();
+        {
+            StartWithOpponent();
+            PhotonView.Get(this).RPC("StartWithPlayer", RpcTarget.Others);
+        }
+    }
+
+    [PunRPC]
+    void StartWithPlayer()
+    {
+        StartPlayerTurn.Invoke();
+    }
+
+    [PunRPC]
+    void StartWithOpponent()
+    {
+        StartEnemyTurn.Invoke();
     }
 #endregion
 }

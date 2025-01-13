@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 using Resources;
 
 public class PalSphereScript : MonoBehaviour
 {
+    [SerializeField] PhotonView opponentMirror;
     [SerializeField] GameObject waitingSpace;
     [SerializeField] GameObject cardPrefab;
     public GameObject heldCard;
