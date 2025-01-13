@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using DefaultUnitData;
+
 public class GamePrepManagerScript : MonoBehaviour
 {
     List<GameObject> deckIcons = new List<GameObject>();

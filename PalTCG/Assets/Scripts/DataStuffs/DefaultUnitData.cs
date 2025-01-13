@@ -146,6 +146,7 @@ namespace DefaultUnitData
     [System.Serializable]
     public struct PalData
     {
+        public string cardID;
         public int cost;
         public Element element;
         public Traits traits;
@@ -155,8 +156,9 @@ namespace DefaultUnitData
         public Sprite cardArt;
         public CardAbilities abilities;
 
-        public PalData(DefaultPal originalData, int artIndex)
+        public PalData(DefaultPal originalData, int artIndex, string cardID)
         {
+            this.cardID = cardID;
             this.cost = originalData.cost;
             this.element = originalData.element;
             this.traits = originalData.traits;
@@ -380,25 +382,26 @@ namespace DefaultUnitData
 
         public PalData FindPalData(string palName, int artIndex)
         {
+            string cardID = "p/" + palName + "/" + artIndex.ToString();
             switch (palName)
             {
                 case "lamball":
-                    return new PalData(lamball, artIndex);
+                    return new PalData(lamball, artIndex, cardID);
                 case "cattiva":
-                    return new PalData(cattiva, artIndex);
+                    return new PalData(cattiva, artIndex, cardID);
                 case "chikipi":
-                    return new PalData(chikipi, artIndex);
+                    return new PalData(chikipi, artIndex, cardID);
                 case "lifmunk":
-                    return new PalData(lifmunk, artIndex);
+                    return new PalData(lifmunk, artIndex, cardID);
                 case "tanzee":
-                    return new PalData(tanzee, artIndex);
+                    return new PalData(tanzee, artIndex, cardID);
                 case "depresso":
-                    return new PalData(depresso, artIndex);
+                    return new PalData(depresso, artIndex, cardID);
                 case "daedream":
-                    return new PalData(daedream, artIndex);
+                    return new PalData(daedream, artIndex, cardID);
                 default:
                     Debug.Log("doesn't have assigned pal");
-                    return new PalData(cattiva, artIndex);
+                    return new PalData(cattiva, artIndex, "p/cattiva/" + artIndex.ToString());
             }
         }
 

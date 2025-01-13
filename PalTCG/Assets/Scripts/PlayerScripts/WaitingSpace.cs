@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 using Resources;
+using DefaultUnitData;
 
 public class WaitingSpace : MonoBehaviour
 {
+    [SerializeField] PhotonView opponentMirror;
     [SerializeField] GameObject waiting3;
     [SerializeField] GameObject waiting2;
     [SerializeField] GameObject waiting1;
@@ -16,12 +19,27 @@ public class WaitingSpace : MonoBehaviour
     List<GameObject> TurnsTillReady2 = new List<GameObject>();
     List<GameObject> TurnsTillReady3 = new List<GameObject>();
 
+    [SerializeField] bool isPlayerSide;
+
 
     [SerializeField] GameObject cardPrefab;
 
     void Start() //Do this first to garuentee that GameManager has a value as start happens after awake
     {
-        GameManager.Instance.StartPlayerTurn += MoveWaitlist;
+        if(isPlayerSide)
+            GameManager.Instance.StartPlayerTurn += MoveWaitlist;
+        else
+            GameManager.Instance.StartEnemyTurn += MoveWaitlist;
+    }
+
+    [PunRPC]
+    public void CreateCardForWaitlist(string palType)
+    {
+        var data = (PalCardData)Pals.ConvertToCardData(palType);
+
+        AddToWaitlist(data);
+
+        //RemoveCards from opponent hand?
     }
 
     public void AddToWaitlist(PalCardData data)
@@ -35,7 +53,9 @@ public class WaitingSpace : MonoBehaviour
             heldCard.transform.position = readyspot.transform.position;
             heldCard.transform.SetParent(readyspot.transform);
             readyCards.Add(heldCard);
-            heldCard.SendMessage("ReadyToBePlaced");
+
+            if(isPlayerSide)
+                heldCard.SendMessage("ReadyToBePlaced");
         }
         else if(size == 2)
         {
@@ -112,6 +132,7 @@ public class WaitingSpace : MonoBehaviour
         var data = (PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
 
         AddToWaitlist(data);
+        opponentMirror.RPC("CreateCardForWaitlist", RpcTarget.Others, data.originalData.cardID);
 
         HandScript.Instance.Hand.RemoveAt(HandScript.Instance.Hand.IndexOf(HandScript.Instance.selected));
         Destroy(HandScript.Instance.selected);

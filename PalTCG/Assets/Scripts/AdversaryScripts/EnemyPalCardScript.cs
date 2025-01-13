@@ -15,6 +15,12 @@ public class EnemyPalCardScript : MonoBehaviour
         image = gameObject.GetComponent<Image>();
     }
 
+    public void SetUpCard(CardData newData)
+    {
+        cardData = newData;
+        image.sprite = cardData.cardArt;
+    }
+
     public void Select()
     {
         image.color = targetColor;

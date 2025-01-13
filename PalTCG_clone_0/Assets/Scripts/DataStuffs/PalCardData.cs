@@ -8,7 +8,7 @@ using DefaultUnitData;
 [CreateAssetMenu(menuName = "Card/PalCard")]
 public class PalCardData : CardData
 {
-    public PalData orignalData;
+    public PalData originalData;
     public int cost;
     public Resources.Element element;
     public Resources.Traits traits;
@@ -16,19 +16,19 @@ public class PalCardData : CardData
 
     public void DecomposeData(PalData newData)
     {
-        orignalData = newData;
+        originalData = newData;
 
-        cardArt = orignalData.cardArt;
-        traits = orignalData.traits;
-        size = orignalData.size;
-        cost = orignalData.cost;
-        element = orignalData.element;
-        currentAtk = orignalData.attackPower;
+        cardArt = originalData.cardArt;
+        traits = originalData.traits;
+        size = originalData.size;
+        cost = originalData.cost;
+        element = originalData.element;
+        currentAtk = originalData.attackPower;
 
-        OnDestroy = orignalData.abilities.OnDestroy;
-        WhenAttack = orignalData.abilities.WhenAttack;
-        OnAttack = orignalData.abilities.OnAttack;
-        // OnDestroy = orignalData.abilities.OnDestroy;
-        // OnDestroy = orignalData.abilities.OnDestroy;
+        OnDestroy = originalData.abilities.OnDestroy;
+        WhenAttack = originalData.abilities.WhenAttack;
+        OnAttack = originalData.abilities.OnAttack;
+        OnDestroy = originalData.abilities.OnDestroy;
+        OnDestroy = originalData.abilities.OnDestroy;
     }
 }
