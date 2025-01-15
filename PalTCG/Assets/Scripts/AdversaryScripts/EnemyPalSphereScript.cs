@@ -77,9 +77,17 @@ public class EnemyPalSphereScript : MonoBehaviour
     {
         var data = (PalCardData)Pals.ConvertToCardData(palType);
 
-        var newCard = Instantiate(cardPrefab, transform.position, transform.rotation);
-        newCard.SendMessage("SetUpCard", data);
-        PlaceCard(newCard);
+        if(data.size <= 1)
+        {
+            heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
+            PlaceCard(heldCard);
+
+            heldCard.SendMessage("SetUpCard", data);
+        }
+        else
+        {
+            waitingSpace.SendMessage("AddToWaitlist", data);
+        }
     }
 
     void PlaceCard(GameObject card)

@@ -72,6 +72,7 @@ public class PalSphereScript : MonoBehaviour
         GameManager.Instance.HideConfirmationButtons();
 
         var data = (PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
+        opponentMirror.RPC("CreateCard", RpcTarget.Others, data.originalData.cardID);
 
         if(data.size <= 1)
         {
