@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+using DefaultUnitData;
+
 public class EnemyPalSphereScript : MonoBehaviour
 {
     [SerializeField] PhotonView opponentMirror;
@@ -62,10 +64,22 @@ public class EnemyPalSphereScript : MonoBehaviour
         HandScript.Instance.state = "choosingAttack";
     }
 
-    void PlaceCard()
+    [PunRPC]
+    void CreateCard(string palType)
     {
-        heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
+        var data = (PalCardData)Pals.ConvertToCardData(palType);
+
+        var newCard = Instantiate(cardPrefab, transform.position, transform.rotation);
+        newCard.SendMessage("SetUpCard", data);
+        PlaceCard(newCard);
+    }
+
+    void PlaceCard(GameObject card)
+    {
+        // heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
+        heldCard = card;
         heldCard.transform.SetParent(transform);
+        heldCard.transform.position = transform.position;
     }
 
     public void VerifyAttack()

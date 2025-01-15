@@ -14,7 +14,7 @@ public class WaitingSpace : MonoBehaviour
     [SerializeField] GameObject waiting1;
     [SerializeField] GameObject readyspot;
 
-    List<GameObject> readyCards = new List<GameObject>();
+    public List<GameObject> readyCards = new List<GameObject>();
     List<GameObject> TurnsTillReady1 = new List<GameObject>();
     List<GameObject> TurnsTillReady2 = new List<GameObject>();
     List<GameObject> TurnsTillReady3 = new List<GameObject>();

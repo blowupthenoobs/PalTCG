@@ -51,6 +51,13 @@ public class PalSphereScript : MonoBehaviour
         heldCard.transform.SetParent(transform);
         heldCard.transform.position = transform.position;
 
+        if(waitingSpace.GetComponent<WaitingSpace>().readyCards.Contains(card))
+        {
+            // opponentMirror.RPC("CreateCardForWaitlist", RpcTarget.Others, data.originalData.cardID);
+
+            waitingSpace.GetComponent<WaitingSpace>().readyCards.RemoveAt(waitingSpace.GetComponent<WaitingSpace>().readyCards.IndexOf(card));
+        }
+
         GameManager.Instance.StartPlayerAttack += heldCard.GetComponent<PalCardScript>().PrepareAttackPhase;
         GameManager.Instance.StartPlayerTurn += heldCard.GetComponent<PalCardScript>().Wake;
         GameManager.Instance.StartEnemyTurn += heldCard.GetComponent<PalCardScript>().EndAttackPhase;
