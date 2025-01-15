@@ -53,8 +53,7 @@ public class PalSphereScript : MonoBehaviour
 
         if(waitingSpace.GetComponent<WaitingSpace>().readyCards.Contains(card))
         {
-            // opponentMirror.RPC("CreateCardForWaitlist", RpcTarget.Others, data.originalData.cardID);
-
+            opponentMirror.RPC("GetCardFromWaitingSpace", RpcTarget.Others, waitingSpace.GetComponent<WaitingSpace>().readyCards.IndexOf(card));
             waitingSpace.GetComponent<WaitingSpace>().readyCards.RemoveAt(waitingSpace.GetComponent<WaitingSpace>().readyCards.IndexOf(card));
         }
 

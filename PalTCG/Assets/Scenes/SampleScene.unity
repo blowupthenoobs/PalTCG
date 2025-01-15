@@ -789,6 +789,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 420665871}
     m_Modifications:
     - target: {fileID: -2598723900738669565, guid: d615f1e5db35b7845b88c378ead34de7, type: 3}
+      propertyPath: waitingSpace
+      value: 
+      objectReference: {fileID: 491062616}
+    - target: {fileID: -2598723900738669565, guid: d615f1e5db35b7845b88c378ead34de7, type: 3}
       propertyPath: opponentMirror
       value: 
       objectReference: {fileID: 1491098775}
@@ -1492,6 +1496,7 @@ MonoBehaviour:
   waiting2: {fileID: 562600312}
   waiting1: {fileID: 2037335978}
   readyspot: {fileID: 429631083}
+  readyCards: []
   isPlayerSide: 0
   cardPrefab: {fileID: 3607679034451322415, guid: 979d1c1f96e181b4a8543ed23ce7226b, type: 3}
 --- !u!1 &519420028
@@ -2926,6 +2931,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 420665871}
     m_Modifications:
     - target: {fileID: -2598723900738669565, guid: d615f1e5db35b7845b88c378ead34de7, type: 3}
+      propertyPath: waitingSpace
+      value: 
+      objectReference: {fileID: 491062616}
+    - target: {fileID: -2598723900738669565, guid: d615f1e5db35b7845b88c378ead34de7, type: 3}
       propertyPath: opponentMirror
       value: 
       objectReference: {fileID: 1216979173}
@@ -3831,6 +3840,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 420665871}
     m_Modifications:
     - target: {fileID: -2598723900738669565, guid: d615f1e5db35b7845b88c378ead34de7, type: 3}
+      propertyPath: waitingSpace
+      value: 
+      objectReference: {fileID: 491062616}
+    - target: {fileID: -2598723900738669565, guid: d615f1e5db35b7845b88c378ead34de7, type: 3}
       propertyPath: opponentMirror
       value: 
       objectReference: {fileID: 8171347353093411482}
@@ -4285,6 +4298,7 @@ MonoBehaviour:
   waiting2: {fileID: 1878148859}
   waiting1: {fileID: 196931361}
   readyspot: {fileID: 858231556}
+  readyCards: []
   isPlayerSide: 1
   cardPrefab: {fileID: 2608142742448742569, guid: def5710fa1ea5d84092d2431f3ff57d1, type: 3}
 --- !u!114 &1375381347
@@ -5079,6 +5093,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 420665871}
     m_Modifications:
     - target: {fileID: -2598723900738669565, guid: d615f1e5db35b7845b88c378ead34de7, type: 3}
+      propertyPath: waitingSpace
+      value: 
+      objectReference: {fileID: 491062616}
+    - target: {fileID: -2598723900738669565, guid: d615f1e5db35b7845b88c378ead34de7, type: 3}
       propertyPath: opponentMirror
       value: 
       objectReference: {fileID: 74410653}
@@ -5274,6 +5292,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 420665871}
     m_Modifications:
+    - target: {fileID: -2598723900738669565, guid: d615f1e5db35b7845b88c378ead34de7, type: 3}
+      propertyPath: waitingSpace
+      value: 
+      objectReference: {fileID: 491062616}
     - target: {fileID: -2598723900738669565, guid: d615f1e5db35b7845b88c378ead34de7, type: 3}
       propertyPath: opponentMirror
       value: 

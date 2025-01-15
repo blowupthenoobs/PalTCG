@@ -8,6 +8,7 @@ using DefaultUnitData;
 public class EnemyPalSphereScript : MonoBehaviour
 {
     [SerializeField] PhotonView opponentMirror;
+    [SerializeField] GameObject waitingSpace;
     [SerializeField] GameObject cardPrefab;
     public GameObject heldCard;
 
@@ -62,6 +63,13 @@ public class EnemyPalSphereScript : MonoBehaviour
         heldCard.SendMessage("Deselect");
 
         HandScript.Instance.state = "choosingAttack";
+    }
+
+    [PunRPC]
+    void GetCardFromWaitingSpace(int cardIndex)
+    {
+        PlaceCard(waitingSpace.GetComponent<WaitingSpace>().readyCards[cardIndex]);
+        waitingSpace.GetComponent<WaitingSpace>().readyCards.RemoveAt(cardIndex);
     }
 
     [PunRPC]
