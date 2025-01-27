@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UnitCardScript : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class UnitCardScript : MonoBehaviour
     public CardData cardData;
     public Color normalColor; //Probably Temp
     public Color selectColor;
+    [SerializeField] TMP_Text health;
 
     //Effects and state variables
     public bool resting;
@@ -36,6 +38,8 @@ public class UnitCardScript : MonoBehaviour
 
         if(cardData.currentHp < 0)
             Die();
+        
+        health.text = cardData.currentHp.ToString();
     }
 
     public void Heal(int heal)

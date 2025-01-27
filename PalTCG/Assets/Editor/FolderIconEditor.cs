@@ -8,6 +8,14 @@ public static class FolderIconEditor
     static FolderIconEditor()
     {
         SetFolderIcon("Assets/Art", "Assets/Editor/PalThing.png");
+        SetFolderIcon("Assets/Editor", "Assets/Editor/TerrierSwag.png");
+        SetFolderIcon("Assets/Imports", "Assets/Editor/finDerp.png");
+        SetFolderIcon("Assets/ParrelSync", "Assets/Editor/BubbleGumOk.png");
+        SetFolderIcon("Assets/Plugins", "Assets/Editor/SansDunk.png");
+        SetFolderIcon("Assets/Prefabs", "Assets/Editor/Tryanno.png");
+        SetFolderIcon("Assets/Scenes", "Assets/Editor/Spectating.png");
+        SetFolderIcon("Assets/ScriptableObjects", "Assets/Editor/ClaraShy.png");
+        SetFolderIcon("Assets/Scripts", "Assets/Editor/Scissor7What.png");
     }
 
     private static void SetFolderIcon(string folderPath, string iconPath)
