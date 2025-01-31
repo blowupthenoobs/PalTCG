@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 using TMPro;
 
 public class UnitCardScript : MonoBehaviour
@@ -12,6 +13,7 @@ public class UnitCardScript : MonoBehaviour
     public Color normalColor; //Probably Temp
     public Color selectColor;
     [SerializeField] TMP_Text health;
+    [HideInInspector] public PhotonView opponentMirror;
 
     //Effects and state variables
     public bool resting;
@@ -30,6 +32,9 @@ public class UnitCardScript : MonoBehaviour
     {
         cardData = newData;
         image.sprite = cardData.cardArt;
+        cardData.currentHp = cardData.maxHp;
+        health.text = cardData.currentHp.ToString();
+        opponentMirror.RPC("UpdateHealth", RpcTarget.Others, cardData.currentHp);
     }
     
     public void Hurt(int dmg)
@@ -40,6 +45,7 @@ public class UnitCardScript : MonoBehaviour
             Die();
         
         health.text = cardData.currentHp.ToString();
+        opponentMirror.RPC("UpdateHealth", RpcTarget.Others, cardData.currentHp);
     }
 
     public void Heal(int heal)

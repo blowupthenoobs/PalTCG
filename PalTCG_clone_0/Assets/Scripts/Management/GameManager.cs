@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
 
 
     //Visuals and Confirmation
+    public GameObject CardPileBox;
     public GameObject ConfirmationButtons;
     public TextMeshProUGUI TurnText; 
 

@@ -447,7 +447,7 @@ namespace DefaultUnitData
                     Debug.Log("look for items");
                 break;
                 case "h":
-                    data = new PalCardData();
+                    data = (PalCardData)ScriptableObject.CreateInstance(typeof(PalCardData));
                     data.cardArt = new Pals().LookForPlayerArt(dataParts[1]);
                 break;
             }

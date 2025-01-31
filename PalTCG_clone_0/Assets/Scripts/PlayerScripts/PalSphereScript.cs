@@ -50,6 +50,7 @@ public class PalSphereScript : MonoBehaviour
         heldCard = card;
         heldCard.transform.SetParent(transform);
         heldCard.transform.position = transform.position;
+        heldCard.GetComponent<PalCardScript>().opponentMirror = opponentMirror;
 
         if(waitingSpace.GetComponent<WaitingSpace>().readyCards.Contains(card))
         {

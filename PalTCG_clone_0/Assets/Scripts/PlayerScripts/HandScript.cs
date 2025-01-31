@@ -17,7 +17,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public GameObject selected;
     private GameObject target;
 
-    public new List<GameObject> Hand = new List<GameObject>();
+    public List<GameObject> Hand = new List<GameObject>();
 
     //Card Stuff
     public string state;

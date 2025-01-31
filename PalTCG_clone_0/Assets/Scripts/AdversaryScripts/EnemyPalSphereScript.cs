@@ -12,11 +12,7 @@ public class EnemyPalSphereScript : MonoBehaviour
     [SerializeField] GameObject cardPrefab;
     public GameObject heldCard;
 
-    void Start()
-    {
-        
-    }
-
+#region palsphereFunctions
     public void SelectAsTarget()
     {
         if(heldCard != null)
@@ -102,4 +98,15 @@ public class EnemyPalSphereScript : MonoBehaviour
     {
         ConfirmationButtons.Instance.AllowConfirmation(HandScript.Instance.selection.Count > 0);
     }
+#endregion
+
+#region cardDelegation
+    [PunRPC]
+    public void UpdateHealth(int newHealth)
+    {
+        Debug.Log("Updating health");
+        heldCard.GetComponent<EnemyPalCardScript>().cardData.currentHp = newHealth;
+        heldCard.GetComponent<EnemyPalCardScript>().health.text = newHealth.ToString();
+    }
+#endregion
 }

@@ -6,7 +6,7 @@ using DefaultUnitData;
 
 public class DrawPileScript : MonoBehaviour
 {
-    public new List<CardData> currentDeck = new List<CardData>();
+    public List<CardData> currentDeck = new List<CardData>();
 
     public void SetDeckCards(string deck)
     {

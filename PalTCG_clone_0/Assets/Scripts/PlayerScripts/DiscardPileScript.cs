@@ -6,7 +6,7 @@ public class DiscardPileScript : MonoBehaviour
 {
     public static DiscardPileScript Instance;
     public DrawPileScript drawPile;
-    public new List<CardData> discardPile = new List<CardData>();
+    public List<CardData> discardPile = new List<CardData>();
 
     void Awake()
     {

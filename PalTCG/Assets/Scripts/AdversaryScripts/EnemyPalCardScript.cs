@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class EnemyPalCardScript : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class EnemyPalCardScript : MonoBehaviour
     public CardData cardData;
     public Color normalColor; //Probably Temp
     public Color targetColor;
+    public TMP_Text health;
 
     void Awake()
     {

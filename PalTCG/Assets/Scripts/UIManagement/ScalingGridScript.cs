@@ -20,13 +20,14 @@ public class ScalingGridScript : MonoBehaviour
     void UpdateCellSizes()
     {
         Vector2 gridSize = GetComponent<RectTransform>().rect.size;
+        Vector2 gridPadding = new Vector2(GetComponent<GridLayoutGroup>().padding.left + GetComponent<GridLayoutGroup>().padding.right, GetComponent<GridLayoutGroup>().padding.top + GetComponent<GridLayoutGroup>().padding.bottom);
 
         Vector2 newGridDimensions = new Vector2();
         Vector2 newSpacingDimensions = new Vector2();
         
         if(!isVerticle)
         {
-            float percentToMake = gridSize.x / (defaultGridDimensions.x * maxGridDimensions.x + defaultSpacingDimensions.x * (maxGridDimensions.x - 1));
+            float percentToMake = (gridSize.x - gridPadding.x) / (defaultGridDimensions.x * maxGridDimensions.x + defaultSpacingDimensions.x * (maxGridDimensions.x - 1));
             newGridDimensions = defaultGridDimensions * percentToMake;
             newSpacingDimensions = defaultSpacingDimensions * percentToMake;
         }

@@ -16,6 +16,8 @@ public static class FolderIconEditor
         SetFolderIcon("Assets/Scenes", "Assets/Editor/Spectating.png");
         SetFolderIcon("Assets/ScriptableObjects", "Assets/Editor/ClaraShy.png");
         SetFolderIcon("Assets/Scripts", "Assets/Editor/Scissor7What.png");
+        SetFolderIcon("Assets/Scripts/AdversaryScripts", "Assets/Editor/DigimonCoolio.png");
+        // SetFolderIcon("Assets/Scripts/UIManagement", "Assets/Editor/Goobert.png");
     }
 
     private static void SetFolderIcon(string folderPath, string iconPath)
