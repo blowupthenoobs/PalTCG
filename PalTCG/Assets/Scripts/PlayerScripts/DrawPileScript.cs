@@ -27,6 +27,11 @@ public class DrawPileScript : MonoBehaviour
         }
     }
 
+    public void LookAtRemainingDeck()
+    {
+        GameManager.Instance.CardPileBox.GetComponent<CardListPopupScript>().LookAtRemainingDeck(currentDeck);
+    }
+
     public void Draw()
     {
         if(currentDeck.Count > 0)

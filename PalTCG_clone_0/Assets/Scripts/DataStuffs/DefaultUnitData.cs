@@ -168,6 +168,30 @@ namespace DefaultUnitData
             this.abilities = originalData.abilities;
             this.cardArt = originalData.cardArt[artIndex];
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is PalData otherData)
+            {
+                return this.cardID == otherData.cardID;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+           return cardID?.GetHashCode() ?? 0;
+        }
+
+        public static bool operator ==(PalData left, PalData right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(PalData left, PalData right)
+        {
+            return !(left == right);
+        }
     }
 
 

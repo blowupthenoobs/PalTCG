@@ -7,11 +7,19 @@ using DefaultUnitData;
 public class CardListPopupScript : MonoBehaviour
 {
     [SerializeField] GameObject IconPrefab;
-    List<CardData> defaultDeckTypes = new List<CardData>();
+    public List<CardData> defaultDeckTypes = new List<CardData>();
     List<GameObject> tempPileItems = new List<GameObject>();
+    private bool cancelDissapear;
+
+    void Update()
+    {
+        if(Input.GetMouseButtonDown(0))
+            StartCoroutine(ClickOffMenu());
+    }
 
     public void GetDefaultData(string deck)
     {
+        Debug.Log("Getting Data");
         string[] cards = deck.Split(",");
 
 
@@ -27,6 +35,8 @@ public class CardListPopupScript : MonoBehaviour
 
     public void CreateCardIcons(List<CardData> pileList)
     {
+        gameObject.SetActive(true);
+
         List<CardData> cardTypes = new List<CardData>();
         List<int> cardCount = new List<int>();
 
@@ -53,21 +63,32 @@ public class CardListPopupScript : MonoBehaviour
         }
     }
 
-    public void LookInDeckPile(List<CardData> pileList)
+    public void LookAtRemainingDeck(List<CardData> pileList)
     {
+        gameObject.SetActive(true);
+
         List<CardData> cardTypes = new List<CardData>(defaultDeckTypes);
         List<int> cardCount = new List<int>();
 
-        for(int i = 0; i < pileList.Count; i++)
+        for(int i = 0; i < cardTypes.Count; i++)
         {
-            if(!cardTypes.Contains(pileList[i]))
-            {
-                cardTypes.Add(pileList[i]);
-                cardCount.Add(1);
-            }
-            else
-                cardCount[cardTypes.IndexOf(pileList[i])]++;
+            cardCount.Add(0);
+        }
 
+        Debug.Log(pileList.Count.ToString() + " " + cardCount.Count.ToString());
+
+        for(int i = 0; i < defaultDeckTypes.Count; i++)
+        {
+            if(!pileList.Contains(defaultDeckTypes[i]))
+            {
+                cardCount.RemoveAt(cardTypes.IndexOf(defaultDeckTypes[i]));
+                cardTypes.RemoveAt(cardTypes.IndexOf(defaultDeckTypes[i]));
+            }
+        }
+
+        foreach(CardData card in pileList)
+        {
+            cardCount[cardTypes.IndexOf(card)]++;
         }
 
         while(cardTypes.Count > 0)
@@ -79,5 +100,31 @@ public class CardListPopupScript : MonoBehaviour
             cardTypes.RemoveAt(0);
             cardCount.RemoveAt(0);
         }
+    }
+
+    public void Click()
+    {
+        cancelDissapear = true;
+    }
+
+    private IEnumerator ClickOffMenu()
+    {
+        yield return new WaitForSeconds(.1f);
+
+        if(cancelDissapear)
+            cancelDissapear = false;
+        else
+            HidePopUp();
+    }
+
+    private void HidePopUp()
+    {
+        while(tempPileItems.Count > 0)
+        {
+            Destroy(tempPileItems[0]);
+            tempPileItems.RemoveAt(0);
+        }
+
+        gameObject.SetActive(false);
     }
 }

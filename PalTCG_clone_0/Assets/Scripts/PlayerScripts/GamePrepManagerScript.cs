@@ -33,7 +33,7 @@ public class GamePrepManagerScript : MonoBehaviour
     {
         lockedIn = true;
         drawPile.SendMessage("SetDeckCards", AccountManager.Instance.player.decks[currentSelectedDeckIndex].decklist);
-        GameManager.Instance.CardPileBox.SendMessage("");
+        GameManager.Instance.CardPileBox.GetComponent<CardListPopupScript>().GetDefaultData(AccountManager.Instance.player.decks[currentSelectedDeckIndex].decklist);
     }
 
     private void SetUpDeckIcons()

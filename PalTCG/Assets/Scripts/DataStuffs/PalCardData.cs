@@ -32,4 +32,28 @@ public class PalCardData : CardData
         OnDestroy = originalData.abilities.OnDestroy;
         OnDestroy = originalData.abilities.OnDestroy;
     }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is PalCardData otherData)
+        {
+            return originalData == otherData.originalData;
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return originalData.GetHashCode();
+    }
+
+   public static bool operator ==(PalCardData left, PalCardData right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(PalCardData left, PalCardData right)
+    {
+        return !(left == right);
+    }
 }
