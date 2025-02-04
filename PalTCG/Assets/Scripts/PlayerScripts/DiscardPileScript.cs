@@ -1,19 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+
+using DefaultUnitData;
 
 public class DiscardPileScript : MonoBehaviour
 {
-    public static DiscardPileScript Instance;
+    [SerializeField] PhotonView opponentMirror;
     public DrawPileScript drawPile;
     public List<CardData> discardPile = new List<CardData>();
 
-    void Awake()
+    public void DiscardCard(CardData newCard)
     {
-        if(Instance == null)
-            Instance=this;
-        else
-            Destroy(gameObject);
+        discardPile.Add(newCard);
+        opponentMirror.RPC("AddToDiscardPile", RpcTarget.Others, newCard.cardID);
+    }
+
+    [PunRPC]
+    public void AddToDiscardPile(string newCard)
+    {
+        discardPile.Add(Pals.ConvertToCardData(newCard));
     }
     
     public void Restock()

@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
 
     //Game References
     [SerializeField] GameObject playerDrawPile;
+    public GameObject playerDiscardPile;
 
     //Game Phases
     public UnityAction StartPlayerTurn;

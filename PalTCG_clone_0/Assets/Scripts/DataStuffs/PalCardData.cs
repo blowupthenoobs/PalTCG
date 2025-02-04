@@ -25,6 +25,7 @@ public class PalCardData : CardData
         element = originalData.element;
         currentAtk = originalData.attackPower;
         maxHp = originalData.maxHp;
+        cardID = originalData.cardID;
 
         OnDestroy = originalData.abilities.OnDestroy;
         WhenAttack = originalData.abilities.WhenAttack;

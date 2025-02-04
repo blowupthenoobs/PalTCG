@@ -233,6 +233,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void Discard(GameObject card)
     {
+        GameManager.Instance.playerDiscardPile.SendMessage("DiscardCard", card.GetComponent<CardScript>().cardData);
         Hand.RemoveAt(Hand.IndexOf(card));
         Destroy(card);
     }

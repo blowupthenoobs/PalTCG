@@ -67,6 +67,5 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
     public void OpponentLockedIn()
     {
         opponentReady = true;
-        Debug.Log("opponent locked in");
     }
 }

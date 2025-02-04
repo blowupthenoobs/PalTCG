@@ -8,7 +8,7 @@ using DefaultUnitData;
 
 public abstract class CardData : ScriptableObject
 {
-    public string CardType;
+    public string cardID;
     public string CardName;
     public Sprite cardArt;
     public Image image;
