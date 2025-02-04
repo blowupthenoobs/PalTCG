@@ -8,7 +8,7 @@ using DefaultUnitData;
 
 public class PileViewCardIconScript : MonoBehaviour
 {
-    private Image icon;
+    [SerializeField] Image icon;
     [SerializeField] TMP_Text counter;
     private CardData cardData;
     private int currentCount;

@@ -667,6 +667,7 @@ MonoBehaviour:
   CardPileBox: {fileID: 1050453569}
   ConfirmationButtons: {fileID: 1348966686}
   TurnText: {fileID: 1083964834}
+  playerDrawPile: {fileID: 322139904}
   phase: 
 --- !u!114 &127665058
 MonoBehaviour:
@@ -3331,6 +3332,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IconPrefab: {fileID: 6575130040650910004, guid: 0926b9ff7f380bd498eec30a56217f42, type: 3}
+  defaultDeckTypes: []
 --- !u!114 &1050453576
 MonoBehaviour:
   m_ObjectHideFlags: 0

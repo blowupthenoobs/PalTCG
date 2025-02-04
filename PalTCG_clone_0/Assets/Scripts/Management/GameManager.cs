@@ -20,6 +20,10 @@ public class GameManager : MonoBehaviour
     public GameObject ConfirmationButtons;
     public TextMeshProUGUI TurnText; 
 
+    //Game References
+    [SerializeField] GameObject playerDrawPile;
+
+    //Game Phases
     public UnityAction StartPlayerTurn;
     public UnityAction StartEnemyTurn;
     public UnityAction StartPlayerAttack;
@@ -43,6 +47,7 @@ public class GameManager : MonoBehaviour
         PalAbilities = AccountManager.Instance.PalAbilities;
 
         StartPlayerTurn += PlayerPhase;
+        StartPlayerTurn += () => DrawCards(2);
         StartEnemyTurn += EnemyPhase;
         StartPlayerAttack += PlayerAttackPhase;
         StartEnemyAttack += EnemyAttackPhase;
@@ -155,4 +160,12 @@ public class GameManager : MonoBehaviour
         StartEnemyTurn.Invoke();
     }
 #endregion
+    public void DrawCards(int amount)
+    {
+        while(amount > 0)
+        {
+            playerDrawPile.SendMessage("Draw");
+            amount++;
+        }
+    }
 }
