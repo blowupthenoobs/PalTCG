@@ -165,7 +165,7 @@ public class GameManager : MonoBehaviour
         while(amount > 0)
         {
             playerDrawPile.SendMessage("Draw");
-            amount++;
+            amount--;
         }
     }
 }
