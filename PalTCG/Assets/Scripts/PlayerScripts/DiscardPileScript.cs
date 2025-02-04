@@ -22,18 +22,9 @@ public class DiscardPileScript : MonoBehaviour
     {
         discardPile.Add(Pals.ConvertToCardData(newCard));
     }
-    
-    public void Restock()
+
+    public void Click()
     {
-        // while(discardPile.Count > 0)
-        // {
-        //     int index = Random.Range(0, discardPile.Count);
-
-        //     drawPile.drawPile.Add(discardPile[index]);
-        //     drawPile.cardData.Add(cardData[index]);
-
-        //     discardPile.RemoveAt(index);
-        //     cardData.RemoveAt(index);
-        // }
+        GameManager.Instance.CardPileBox.GetComponent<CardListPopupScript>().CreateCardIcons(discardPile);
     }
 }

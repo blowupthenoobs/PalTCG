@@ -55,8 +55,8 @@ public class CardListPopupScript : MonoBehaviour
         while(cardTypes.Count > 0)
         {
             tempPileItems.Add(Instantiate(IconPrefab, transform.position, transform.rotation));
-            tempPileItems[defaultDeckTypes.Count - 1].GetComponent<PileViewCardIconScript>().SetUpIcon(cardTypes[0], cardCount[0]);
-            tempPileItems[defaultDeckTypes.Count - 1].transform.SetParent(transform);
+            tempPileItems[tempPileItems.Count - 1].GetComponent<PileViewCardIconScript>().SetUpIcon(cardTypes[0], cardCount[0]);
+            tempPileItems[tempPileItems.Count - 1].transform.SetParent(transform);
 
             cardTypes.RemoveAt(0);
             cardCount.RemoveAt(0);
