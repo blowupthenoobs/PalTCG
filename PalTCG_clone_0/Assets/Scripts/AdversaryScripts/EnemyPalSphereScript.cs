@@ -108,5 +108,17 @@ public class EnemyPalSphereScript : MonoBehaviour
         heldCard.GetComponent<EnemyPalCardScript>().cardData.currentHp = newHealth;
         heldCard.GetComponent<EnemyPalCardScript>().health.text = newHealth.ToString();
     }
+
+    [PunRPC]
+    public void NormalRest()
+    {
+        heldCard.SendMessage("Rest");
+    }
+
+    
+    public void SendRestEffect()
+    {
+        opponentMirror.RPC("Rest", RpcTarget.Others);
+    }
 #endregion
 }

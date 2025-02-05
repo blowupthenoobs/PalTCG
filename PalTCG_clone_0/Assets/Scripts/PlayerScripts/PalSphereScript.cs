@@ -122,4 +122,12 @@ public class PalSphereScript : MonoBehaviour
         ConfirmationButtons.Instance.AllowConfirmation(ResourceProcesses.PalPaymentIsCorrect());
     }
 
+
+#region cardDelegation
+    [PunRPC]
+    public void Rest()
+    {
+        heldCard.SendMessage("Rest");
+    }
+#endregion
 }
