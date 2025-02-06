@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Pun;
 
 public class EnemyPalCardScript : MonoBehaviour
 {
@@ -35,7 +36,8 @@ public class EnemyPalCardScript : MonoBehaviour
 
     public void Hurt(int damage)
     {
-        Debug.Log("took " + damage + " damage");
+        transform.parent.GetComponent<EnemyPalSphereScript>().opponentMirror.RPC("HurtHeldCard", RpcTarget.Others, damage);
+        // Debug.Log("took " + damage + " damage");
     }
     
     public void Rest()

@@ -129,5 +129,11 @@ public class PalSphereScript : MonoBehaviour
     {
         heldCard.SendMessage("Rest");
     }
+
+    [PunRPC]
+    public void HurtHeldCard(int damage)
+    {
+        heldCard.SendMessage("Hurt", damage);
+    }
 #endregion
 }

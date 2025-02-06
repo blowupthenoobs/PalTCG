@@ -70,16 +70,13 @@ public class StatusEffects: MonoBehaviour
         ConfirmationButtons.Instance.Denied += HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect;
         ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
         //ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
-        //equip trigger to finish effect
-
-        //put target to sleep
     }
 
     public static void RestTargets()
     {
         for(int i = 0; i < HandScript.Instance.selection.Count; i++)
         {
-            HandScript.Instance.selection[i].transform.parent.SendMessage("SendRestEffect"); //Will have to switch to telling server to tell it to rest
+            HandScript.Instance.selection[i].transform.parent.SendMessage("SendRestEffect");
             HandScript.Instance.selection[i].SendMessage("Deselect");
         }
     }

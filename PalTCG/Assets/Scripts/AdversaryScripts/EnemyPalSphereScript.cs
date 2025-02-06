@@ -7,7 +7,7 @@ using DefaultUnitData;
 
 public class EnemyPalSphereScript : MonoBehaviour
 {
-    [SerializeField] PhotonView opponentMirror;
+    public PhotonView opponentMirror;
     [SerializeField] GameObject waitingSpace;
     [SerializeField] GameObject cardPrefab;
     public GameObject heldCard;
@@ -115,7 +115,7 @@ public class EnemyPalSphereScript : MonoBehaviour
         heldCard.SendMessage("Rest");
     }
 
-    
+
     public void SendRestEffect()
     {
         opponentMirror.RPC("Rest", RpcTarget.Others);
