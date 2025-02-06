@@ -120,5 +120,12 @@ public class EnemyPalSphereScript : MonoBehaviour
     {
         opponentMirror.RPC("Rest", RpcTarget.Others);
     }
+
+    [PunRPC]
+    public void Wake()
+    {
+        Debug.Log("Waking");
+        heldCard.SendMessage("Wake");
+    }
 #endregion
 }

@@ -155,6 +155,7 @@ public class UnitCardScript : MonoBehaviour
     {
         transform.rotation = Quaternion.Euler(0, 0, 0);
         resting = false;
+        opponentMirror.RPC("Wake", RpcTarget.Others);
     }
 
     protected void Die()
