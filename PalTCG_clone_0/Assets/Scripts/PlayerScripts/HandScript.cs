@@ -35,6 +35,10 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     //Attack Checks
     public GameObject currentAttacker;
     public List<GameObject> raid = new List<GameObject>();
+    public List<GameObject> attackers = new List<GameObject>();
+
+    //Board References
+    public List<GameObject> cardSlots = new List<GameObject>();
 
     void Awake()
     {
@@ -63,6 +67,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * ScreenCalculations.GetScale(gameObject) * Time.deltaTime);
         
     }
+    
 #region Selecting&Targeting
     public void Select(GameObject card)
     {
@@ -154,20 +159,22 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public IEnumerator Attack()
     {
         raid = new List<GameObject>(selection);
+        attackers = new List<GameObject>(raid);
         UnselectSelection();
 
-        for(int i = 0; i < raid.Count; i++)
+        for(int i = 0; i < attackers.Count; i++)
         {
-            currentAttacker = raid[i];
-            raid[i].SendMessage("Attack", selected);
+            currentAttacker = attackers[i];
+            attackers[i].SendMessage("Attack", selected);
             yield return new WaitUntil(() => FinishPalAttack());
-            raid[i].SendMessage("Rest");
+            attackers[i].SendMessage("Rest");
         }
 
-        while(raid.Count > 0)
+        while(attackers.Count > 0)
         {
-            raid[0].SendMessage("Deselect");
-            raid.RemoveAt(0);
+            attackers[0].SendMessage("Deselect");
+            attackers.RemoveAt(0);
+            raid.Clear();
         }
 
         selected = null;
@@ -267,5 +274,22 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         targetPos = originalPos;
     }
+#endregion
+#region BoardChecks
+    public bool CheckForBlockers()
+    {
+        foreach(GameObject space in cardSlots)
+        {
+            if(space.GetComponent<PalSphereScript>() != null)
+            {
+                if(!space.GetComponent<PalSphereScript>().heldCard.GetComponent<UnitCardScript>().resting && !space.GetComponent<PalSphereScript>().heldCard.GetComponent<UnitCardScript>().cardData.traits.blocker)
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+
 #endregion
 }

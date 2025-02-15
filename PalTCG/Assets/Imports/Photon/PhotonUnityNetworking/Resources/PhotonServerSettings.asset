@@ -49,6 +49,10 @@ MonoBehaviour:
   - GetCardFromWaitingSpace
   - UpdateHealth
   - AddToDiscardPile
+  - HurtHeldCard
+  - NormalRest
+  - Rest
+  - Wake
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

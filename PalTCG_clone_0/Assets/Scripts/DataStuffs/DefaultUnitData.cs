@@ -218,7 +218,9 @@ namespace DefaultUnitData
                 electric: 0,
                 freezing: 0,
                 dragon: 0,
-                bird: false
+                bird: false,
+                blocker: true,
+                tank: false
             ),
             size: 1,
             attackPower: 1,
@@ -246,7 +248,9 @@ namespace DefaultUnitData
                 electric: 0,
                 freezing: 0,
                 dragon: 0,
-                bird: false
+                bird: false,
+                blocker: false,
+                tank: false
             ),
             size: 1,
             attackPower: 2,
@@ -274,7 +278,9 @@ namespace DefaultUnitData
                 electric: 0,
                 freezing: 0,
                 dragon: 0,
-                bird: false
+                bird: false,
+                blocker: false,
+                tank: false
             ),
             size: 1,
             attackPower: 2,
@@ -305,7 +311,9 @@ namespace DefaultUnitData
                 electric: 0,
                 freezing: 0,
                 dragon: 0,
-                bird: false
+                bird: false,
+                blocker: false,
+                tank: false
             ),
             size: 1,
             attackPower: 3,
@@ -333,7 +341,9 @@ namespace DefaultUnitData
                 electric: 0,
                 freezing: 0,
                 dragon: 0,
-                bird: false
+                bird: false,
+                blocker: false,
+                tank: false
             ),
             size: 1,
             attackPower: 2,
@@ -364,7 +374,9 @@ namespace DefaultUnitData
                 electric: 0,
                 freezing: 0,
                 dragon: 0,
-                bird: false
+                bird: false,
+                blocker: false,
+                tank: false
             ),
             size: 1,
             attackPower: 2,
@@ -392,7 +404,9 @@ namespace DefaultUnitData
                 electric: 0,
                 freezing: 0,
                 dragon: 0,
-                bird: false
+                bird: false,
+                blocker: false,
+                tank: false
             ),
             size: 1,
             attackPower: 2,

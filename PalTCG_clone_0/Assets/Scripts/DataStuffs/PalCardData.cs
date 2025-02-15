@@ -11,7 +11,6 @@ public class PalCardData : CardData
     public PalData originalData;
     public int cost;
     public Resources.Element element;
-    public Resources.Traits traits;
     public int size;
 
     public void DecomposeData(PalData newData)

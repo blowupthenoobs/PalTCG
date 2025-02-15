@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 
 using DefaultUnitData;
+using Resources;
 
 public abstract class CardData : ScriptableObject
 {
@@ -13,6 +14,7 @@ public abstract class CardData : ScriptableObject
     public Sprite cardArt;
     public Image image;
     public GameObject gameObject;
+    public Traits traits;
     public int maxHp;
     public int currentHp;
     public int currentAtk;
