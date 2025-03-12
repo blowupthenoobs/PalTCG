@@ -58,10 +58,10 @@ public class PalSphereScript : MonoBehaviour
             waitingSpace.GetComponent<WaitingSpace>().readyCards.RemoveAt(waitingSpace.GetComponent<WaitingSpace>().readyCards.IndexOf(card));
         }
 
-        GameManager.Instance.StartPlayerAttack += heldCard.GetComponent<PalCardScript>().PrepareAttackPhase;
         GameManager.Instance.StartPlayerTurn += heldCard.GetComponent<PalCardScript>().Wake;
-        GameManager.Instance.StartEnemyTurn += heldCard.GetComponent<PalCardScript>().EndAttackPhase;
+        GameManager.Instance.StartPlayerAttack += heldCard.GetComponent<PalCardScript>().PrepareAttackPhase;
         GameManager.Instance.StartEnemyTurn += heldCard.GetComponent<PalCardScript>().Wake;
+        GameManager.Instance.StartEnemyTurn += heldCard.GetComponent<PalCardScript>().PrepareEnemyPhases;
     }
 
     void PayForCard()

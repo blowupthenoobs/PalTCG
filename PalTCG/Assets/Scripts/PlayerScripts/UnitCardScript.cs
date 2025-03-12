@@ -62,8 +62,21 @@ public class UnitCardScript : MonoBehaviour
         button.onClick.AddListener(SelectForAttack);
     }
 
-    public IEnumerator Attack(GameObject target)
+    public void PrepareEnemyPhases()
     {
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(EnemyTurnActions);
+    }
+
+    public IEnumerator Attack() //Rewire to look at HandScript.Instance.Selected, then add a blocker GameObject that takes the hit if it's not null
+    {
+        GameObject target;
+        
+        if(HandScript.Instance.blocker == null)
+            target = HandScript.Instance.selected;
+        else
+            target = HandScript.Instance.blocker;
+        
         if(cardData.WhenAttack != null)
         {
             for(int i = 0; i < cardData.WhenAttack.Count; i++)
@@ -95,7 +108,7 @@ public class UnitCardScript : MonoBehaviour
         readyForNextAttackAction = true;
     }
     
-    public void EndAttackPhase()
+    public void ResetPhase()
     {
         button.onClick.RemoveAllListeners();
     }
@@ -127,6 +140,13 @@ public class UnitCardScript : MonoBehaviour
             else
                 RemoveFromSelection();
         }
+    }
+
+    public void EnemyTurnActions()
+    {
+        if(HandScript.Instance.state == "blocking" && cardData.traits.blocker)
+            HandScript.Instance.Select(gameObject);
+        // else if()
     }
 
     public void RemoveFromSelection()

@@ -66,10 +66,12 @@ public class StatusEffects: MonoBehaviour
         HandScript.Instance.updateSelection += AllowConfirmations.LookForSingleTarget;
         ConfirmationButtons.Instance.Confirmed += RestTargets;
         ConfirmationButtons.Instance.Confirmed += HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect;
+        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = "choosingAttack";
         ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
         ConfirmationButtons.Instance.Denied += HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect;
+        ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "choosingAttack";
+        ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
         ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
-        //ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
     }
 
     public static void RestTargets()
@@ -94,7 +96,6 @@ public class AllowConfirmations
         ConfirmationButtons.Instance.Confirmed = null;
         ConfirmationButtons.Instance.Denied = null;
         GameManager.Instance.HideConfirmationButtons();
-        HandScript.Instance.state = "choosingAttack";
     }
 }
 

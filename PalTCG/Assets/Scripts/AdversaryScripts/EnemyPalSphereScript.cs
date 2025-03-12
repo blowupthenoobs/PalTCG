@@ -127,5 +127,11 @@ public class EnemyPalSphereScript : MonoBehaviour
         Debug.Log("Waking");
         heldCard.SendMessage("Wake");
     }
+
+    [PunRPC]
+    public void Block()
+    {
+        HandScript.Instance.blocker = heldCard;
+    }
 #endregion
 }
