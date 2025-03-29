@@ -177,7 +177,12 @@ public class UnitCardScript : MonoBehaviour
         resting = false;
         opponentMirror.RPC("Wake", RpcTarget.Others);
     }
-
+    
+    public void AfterBlockActions()
+    {
+        if(cardData.traits.tank)
+            Wake();
+    }
     protected void Die()
     {
         Debug.Log("unit is now dead :(");

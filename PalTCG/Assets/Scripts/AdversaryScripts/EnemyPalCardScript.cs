@@ -7,6 +7,7 @@ using Photon.Pun;
 
 public class EnemyPalCardScript : MonoBehaviour
 {
+    public PhotonView opponentMirror;
     protected Image image;
     public CardData cardData;
     public Color normalColor; //Probably Temp
@@ -55,4 +56,13 @@ public class EnemyPalCardScript : MonoBehaviour
         Debug.Log("unit is now dead :(");
     }
 
+    public void AfterBlockActions()
+    {
+        opponentMirror.RPC("AfterBlockActions", RpcTarget.Others);
+    }
+
+    public void SetMirror(PhotonView view)
+    {
+        opponentMirror = view;
+    }
 }

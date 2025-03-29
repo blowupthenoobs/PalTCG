@@ -176,6 +176,8 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         raid = new List<GameObject>(selection);
         attackers = new List<GameObject>(raid);
+        var blockList = new List<GameObject>();
+
         UnselectSelection();
 
         for(int i = 0; i < attackers.Count; i++)
@@ -190,7 +192,10 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             attackers[i].SendMessage("Rest");
 
             if(blocker != null)
+            {
                 blocker.transform.parent.SendMessage("SendRestEffect");
+                blockList.Add(blocker);
+            }
             blocker = null;
         }
 
@@ -200,6 +205,8 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             attackers.RemoveAt(0);
             raid.Clear();
         }
+
+        //Mirror thing for attackers with blockers
 
         selected = null;
     }
@@ -249,19 +256,19 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         yield return new WaitForSeconds(.15f);
 
-            if(selected != null && state == "default")
+        if(selected != null && state == "default")
+        {
+            if(originalSelect == selected)
             {
-                if(originalSelect == selected)
-                {
-                    selected.SendMessage("Deselect");
-                    selected = null;
-                }
-                else
-                {
-                    originalSelect.SendMessage("Deselect");
-                }
-                
+                selected.SendMessage("Deselect");
+                selected = null;
             }
+            else
+            {
+                originalSelect.SendMessage("Deselect");
+            }
+            
+        }
     }
 #endregion
 

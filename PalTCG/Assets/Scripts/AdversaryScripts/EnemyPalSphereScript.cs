@@ -92,6 +92,7 @@ public class EnemyPalSphereScript : MonoBehaviour
         heldCard = card;
         heldCard.transform.SetParent(transform);
         heldCard.transform.position = transform.position;
+        heldCard.SendMessage("SetMirror", opponentMirror);
     }
 
     public void VerifyAttack()
