@@ -105,7 +105,6 @@ public class EnemyPalSphereScript : MonoBehaviour
     [PunRPC]
     public void UpdateHealth(int newHealth)
     {
-        Debug.Log("Updating health");
         heldCard.GetComponent<EnemyPalCardScript>().cardData.currentHp = newHealth;
         heldCard.GetComponent<EnemyPalCardScript>().health.text = newHealth.ToString();
     }
@@ -125,7 +124,6 @@ public class EnemyPalSphereScript : MonoBehaviour
     [PunRPC]
     public void Wake()
     {
-        Debug.Log("Waking");
         heldCard.SendMessage("Wake");
     }
 
@@ -133,6 +131,12 @@ public class EnemyPalSphereScript : MonoBehaviour
     public void Block()
     {
         HandScript.Instance.blocker = heldCard;
+    }
+
+    [PunRPC]
+    public void HeldUnitDeath()
+    {
+        Destroy(heldCard);
     }
 #endregion
 }

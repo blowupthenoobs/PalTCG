@@ -664,11 +664,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ff67260745c9f446962acdbb052c552, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CardSprites:
+    playerDef: {fileID: 0}
+    playerAlt: {fileID: 0}
+    normalAxel: {fileID: 0}
+    normalLily: {fileID: 0}
+    normalMarcus: {fileID: 0}
+    normalVictor: {fileID: 0}
+    normalZoe: {fileID: 0}
+    overheadZoe: {fileID: 0}
+    lamball: []
+    cattiva: []
+    chikipi: []
+    lifmunk: []
+    tanzee: []
+    depresso: []
+    daedream: []
+    fuddler: []
+    dumud: []
   CardPileBox: {fileID: 1050453569}
   ConfirmationButtons: {fileID: 1348966686}
   TurnText: {fileID: 1083964834}
-  playerDrawPile: {fileID: 322139904}
-  playerDiscardPile: {fileID: 2110461707}
   phase: 
 --- !u!114 &127665058
 MonoBehaviour:
@@ -2908,6 +2924,8 @@ MonoBehaviour:
   - {fileID: 1585594781}
   - {fileID: 174486562}
   - {fileID: 751129135}
+  playerDrawPile: {fileID: 322139904}
+  playerDiscardPile: {fileID: 2110461707}
 --- !u!114 &1004393408
 MonoBehaviour:
   m_ObjectHideFlags: 0

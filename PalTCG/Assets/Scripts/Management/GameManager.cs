@@ -21,8 +21,6 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI TurnText; 
 
     //Game References
-    [SerializeField] GameObject playerDrawPile;
-    public GameObject playerDiscardPile;
 
     //Game Phases
     public UnityAction StartPlayerTurn;
@@ -165,7 +163,7 @@ public class GameManager : MonoBehaviour
     {
         while(amount > 0)
         {
-            playerDrawPile.SendMessage("Draw");
+            HandScript.Instance.playerDrawPile.SendMessage("Draw");
             amount--;
         }
     }

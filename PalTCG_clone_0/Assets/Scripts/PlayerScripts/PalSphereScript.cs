@@ -11,10 +11,11 @@ public class PalSphereScript : MonoBehaviour
     [SerializeField] GameObject waitingSpace;
     [SerializeField] GameObject cardPrefab;
     public GameObject heldCard;
+    private bool isBroken;
 
     public void CheckForCard()
     {
-        if(GameManager.Instance.phase == "PlayerTurn")
+        if(GameManager.Instance.phase == "PlayerTurn" && !isBroken)
         {
             if(HandScript.Instance.selected != null && heldCard == null && HandScript.Instance.state == "default")
             {
@@ -134,6 +135,12 @@ public class PalSphereScript : MonoBehaviour
     public void HurtHeldCard(int damage)
     {
         heldCard.SendMessage("Hurt", damage);
+    }
+
+    [PunRPC]
+    public void AfterBlockActions()
+    {
+        heldCard.SendMessage("AfterBlockActions");
     }
 #endregion
 }

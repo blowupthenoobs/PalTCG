@@ -41,7 +41,7 @@ public class UnitCardScript : MonoBehaviour
     {
         cardData.currentHp -= dmg;
 
-        if(cardData.currentHp < 0)
+        if(cardData.currentHp <= 0)
             Die();
         
         health.text = cardData.currentHp.ToString();
@@ -185,7 +185,10 @@ public class UnitCardScript : MonoBehaviour
     }
     protected void Die()
     {
-        Debug.Log("unit is now dead :(");
+        Debug.Log("Unit is now dead :(");
+        HandScript.Instance.playerDiscardPile.SendMessage("DiscardCard", cardData);
+        opponentMirror.RPC("HeldUnitDeath", RpcTarget.Others);
+        Destroy(gameObject);
     }
 
     public void Deselect()

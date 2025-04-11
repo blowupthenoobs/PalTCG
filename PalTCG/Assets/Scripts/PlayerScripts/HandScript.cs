@@ -42,6 +42,8 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     //Board References
     public List<GameObject> cardSlots = new List<GameObject>();
+    public GameObject playerDrawPile;
+    public GameObject playerDiscardPile;
 
     //Online Stuffs
     private bool readyForNextAttackAction;
@@ -182,7 +184,6 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         for(int i = 0; i < attackers.Count; i++)
         {
-            Debug.Log("new attacker");
             currentAttacker = attackers[i];
             opponentMirror.RPC("LookForBlockers", RpcTarget.Others);
             yield return new WaitUntil(() => readyForNextAttackAction);
@@ -199,11 +200,18 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             blocker = null;
         }
 
+
         while(attackers.Count > 0)
         {
             attackers[0].SendMessage("Deselect");
             attackers.RemoveAt(0);
-            raid.Clear();
+        }
+        raid.Clear();
+
+        while(blockList.Count > 0)
+        {
+            blockList[0].SendMessage("AfterBlockActions");
+            blockList.RemoveAt(0);
         }
 
         //Mirror thing for attackers with blockers
@@ -306,7 +314,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void Discard(GameObject card)
     {
-        GameManager.Instance.playerDiscardPile.SendMessage("DiscardCard", card.GetComponent<CardScript>().cardData);
+        playerDiscardPile.SendMessage("DiscardCard", card.GetComponent<CardScript>().cardData);
         Hand.RemoveAt(Hand.IndexOf(card));
         Destroy(card);
     }

@@ -7,6 +7,7 @@ using Resources;
 
 namespace DefaultUnitData
 {
+    [System.Serializable]
     public class Sprites
     {
         [Header("PlayerCards")]
@@ -28,6 +29,8 @@ namespace DefaultUnitData
         public List<Sprite> tanzee;
         public List<Sprite> depresso;
         public List<Sprite> daedream;
+        public List<Sprite> fuddler;
+        public List<Sprite> dumud;
     }
 
     public class PalAbilitySets
@@ -87,6 +90,24 @@ namespace DefaultUnitData
             PalSkill: new List<UnityAction>()
         );
         public CardAbilities daedream = new CardAbilities
+        (
+            OnDestroy: new List<UnityAction>(),
+            WhenAttack: new List<UnityAction>(),
+            OnAttack: new List<UnityAction>(),
+            OnHurt: new List<UnityAction>(),
+            OnPlay: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>()
+        );
+        public CardAbilities fuddler = new CardAbilities
+        (
+            OnDestroy: new List<UnityAction>(),
+            WhenAttack: new List<UnityAction>(),
+            OnAttack: new List<UnityAction>(),
+            OnHurt: new List<UnityAction>(),
+            OnPlay: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>()
+        );
+        public CardAbilities dumud = new CardAbilities
         (
             OnDestroy: new List<UnityAction>(),
             WhenAttack: new List<UnityAction>(),
@@ -417,6 +438,68 @@ namespace DefaultUnitData
 
 #endregion DarkPals
 
+#region EarthPals
+        public DefaultPal fuddler = new DefaultPal
+        (
+            cost: 1,
+            element: Element.Earth,
+            traits: new Traits
+            (
+                ranch: 1,
+                handyWork: 1,
+                foraging: 0,
+                gardening: 0,
+                watering: 0,
+                mining: 1,
+                lumber: 0,
+                transportation: 1,
+                medicine: 0,
+                kindling: 0,
+                electric: 0,
+                freezing: 0,
+                dragon: 0,
+                bird: false,
+                blocker: true,
+                tank: false
+            ),
+            size: 1,
+            attackPower: 2,
+            maxHp: 7,
+            cardArt: AccountManager.Instance.CardSprites.fuddler,
+            abilities: AccountManager.Instance.PalAbilities.fuddler
+        );
+
+        public DefaultPal dumud = new DefaultPal
+        (
+            cost: 1,
+            element: Element.Earth,
+            traits: new Traits
+            (
+                ranch: 0,
+                handyWork: 1,
+                foraging: 1,
+                gardening: 0,
+                watering: 0,
+                mining: 0,
+                lumber: 0,
+                transportation: 1,
+                medicine: 0,
+                kindling: 0,
+                electric: 0,
+                freezing: 0,
+                dragon: 0,
+                bird: false,
+                blocker: true,
+                tank: true
+            ),
+            size: 1,
+            attackPower: 2,
+            maxHp: 7,
+            cardArt: AccountManager.Instance.CardSprites.dumud,
+            abilities: AccountManager.Instance.PalAbilities.dumud
+        );
+
+#endregion EarthPals
 
         public PalData FindPalData(string palName, int artIndex)
         {
@@ -437,6 +520,10 @@ namespace DefaultUnitData
                     return new PalData(depresso, artIndex, cardID);
                 case "daedream":
                     return new PalData(daedream, artIndex, cardID);
+                case "fuddler":
+                    return new PalData(fuddler, artIndex, cardID);
+                case "dumud":
+                    return new PalData(dumud, artIndex, cardID);
                 default:
                     Debug.Log("doesn't have assigned pal");
                     return new PalData(cattiva, artIndex, "p/cattiva/" + artIndex.ToString());

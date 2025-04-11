@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Resources
 {
-    public enum Element{Basic, Fire, Grass, Water, Ice, Electric, Dark}
+    public enum Element{Basic, Fire, Grass, Water, Ice, Electric, Dark, Earth}
     public struct resources
     {
         public int wood;

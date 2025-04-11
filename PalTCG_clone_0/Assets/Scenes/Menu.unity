@@ -1175,6 +1175,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4897d3f47320dbb458c1384889de02df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CardSprites:
+    playerDef: {fileID: 0}
+    playerAlt: {fileID: 0}
+    normalAxel: {fileID: 21300000, guid: db94778afa24604428e2b24a348c2a3e, type: 3}
+    normalLily: {fileID: 21300000, guid: 5f979f2bbe45e174c8396a27a7370b7a, type: 3}
+    normalMarcus: {fileID: 21300000, guid: 32528fb116fe67e44809ac6ab7ba8925, type: 3}
+    normalVictor: {fileID: 21300000, guid: 027049becad51d64a9762e3512baec31, type: 3}
+    normalZoe: {fileID: 21300000, guid: f2093ae1302b2fd4db8e8cdadd517b2d, type: 3}
+    overheadZoe: {fileID: 21300000, guid: 339066d5d76c6524193ed7bcd0e91c65, type: 3}
+    lamball:
+    - {fileID: 21300000, guid: eda6bd278515823458eb53e2f675695c, type: 3}
+    cattiva:
+    - {fileID: 21300000, guid: 06176dbdbd2bc7a4097b45d186a14999, type: 3}
+    chikipi:
+    - {fileID: 21300000, guid: 59aad104cfd21e5449e23e81e621226a, type: 3}
+    lifmunk:
+    - {fileID: 21300000, guid: 3cda5e1c9303fbf4896961fe1c571560, type: 3}
+    tanzee:
+    - {fileID: 21300000, guid: d04f54fe21e308049b5baa1597dc5d48, type: 3}
+    depresso:
+    - {fileID: 21300000, guid: 79e026f539b452942a10665e99a8380a, type: 3}
+    - {fileID: 21300000, guid: 6c9bd661e567ae64d8ff101befccd3e5, type: 3}
+    daedream:
+    - {fileID: 21300000, guid: 8230b8264ae71e24fbeb31b555ef5c6f, type: 3}
+    fuddler:
+    - {fileID: 21300000, guid: 9666d354da221a649bb652c001d07498, type: 3}
+    dumud:
+    - {fileID: 21300000, guid: 96aee98dbe11e384e9020a545e12f345, type: 3}
   player:
     accountName: 
     stats:
@@ -1205,29 +1233,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df7d4908359b9784789e485c2bcc76f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerDef: {fileID: 21300000, guid: 62ccaa35054f9f642976ef1082e016af, type: 3}
-  playerAlt: {fileID: 21300000, guid: 65373eab33a4ada428a01d62cd6bbf30, type: 3}
-  normalAxel: {fileID: 21300000, guid: db94778afa24604428e2b24a348c2a3e, type: 3}
-  normalLily: {fileID: 21300000, guid: 5f979f2bbe45e174c8396a27a7370b7a, type: 3}
-  normalMarcus: {fileID: 21300000, guid: 32528fb116fe67e44809ac6ab7ba8925, type: 3}
-  normalVictor: {fileID: 21300000, guid: 027049becad51d64a9762e3512baec31, type: 3}
-  normalZoe: {fileID: 21300000, guid: f2093ae1302b2fd4db8e8cdadd517b2d, type: 3}
-  overheadZoe: {fileID: 21300000, guid: 339066d5d76c6524193ed7bcd0e91c65, type: 3}
-  lamballSprites:
-  - {fileID: 21300000, guid: eda6bd278515823458eb53e2f675695c, type: 3}
-  cattivaSprites:
-  - {fileID: 21300000, guid: 06176dbdbd2bc7a4097b45d186a14999, type: 3}
-  chikipiSprites:
-  - {fileID: 21300000, guid: 59aad104cfd21e5449e23e81e621226a, type: 3}
-  lifmunkSprites:
-  - {fileID: 21300000, guid: 3cda5e1c9303fbf4896961fe1c571560, type: 3}
-  tanzeeSprites:
-  - {fileID: 21300000, guid: d04f54fe21e308049b5baa1597dc5d48, type: 3}
-  depressoSprites:
-  - {fileID: 21300000, guid: 79e026f539b452942a10665e99a8380a, type: 3}
-  - {fileID: 21300000, guid: 6c9bd661e567ae64d8ff101befccd3e5, type: 3}
-  daedreamSprites:
-  - {fileID: 21300000, guid: 8230b8264ae71e24fbeb31b555ef5c6f, type: 3}
+  dumudSprites:
+  - {fileID: 21300000, guid: 96aee98dbe11e384e9020a545e12f345, type: 3}
 --- !u!1 &461587024
 GameObject:
   m_ObjectHideFlags: 0

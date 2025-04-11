@@ -7,7 +7,7 @@ using DefaultUnitData;
 public class AccountManager : MonoBehaviour
 {
     public static AccountManager Instance;
-    [HideInInspector] public Sprites CardSprites = new Sprites();
+    public Sprites CardSprites = new Sprites();
     [HideInInspector] public PalAbilitySets PalAbilities = new PalAbilitySets();
 
     public Account player;
