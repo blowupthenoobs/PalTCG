@@ -60,4 +60,10 @@ public class PalCardScript : UnitCardScript
             return false;
     }
 
+    protected override void Die()
+    {
+        transform.parent.gameObject.SendMessage("BreakSphere");
+        base.Die();
+    }
+
 }

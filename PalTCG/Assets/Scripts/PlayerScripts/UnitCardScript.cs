@@ -183,7 +183,7 @@ public class UnitCardScript : MonoBehaviour
         if(cardData.traits.tank)
             Wake();
     }
-    protected void Die()
+    protected virtual void Die()
     {
         Debug.Log("Unit is now dead :(");
         HandScript.Instance.playerDiscardPile.SendMessage("DiscardCard", cardData);

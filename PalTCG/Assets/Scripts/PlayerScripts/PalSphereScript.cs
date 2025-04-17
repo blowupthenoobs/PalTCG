@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 
 using Resources;
 
 public class PalSphereScript : MonoBehaviour
 {
+    protected Image image;
+    public Color normalColor;
+    public Color brokenColor;
     [SerializeField] PhotonView opponentMirror;
     [SerializeField] GameObject waitingSpace;
     [SerializeField] GameObject cardPrefab;
@@ -121,6 +125,12 @@ public class PalSphereScript : MonoBehaviour
     void VerifyButtons()
     {
         ConfirmationButtons.Instance.AllowConfirmation(ResourceProcesses.PalPaymentIsCorrect());
+    }
+
+    public void BreakSphere()
+    {
+        isBroken = true;
+        image.color = brokenColor;
     }
 
 
