@@ -104,6 +104,14 @@ public class CardEffectCoroutines: MonoBehaviour
     
 }
 
+public class BuildingFunctions: MonoBehaviour
+{
+    public static void OpenCraftingBenchMenu()
+    {
+        Debug.Log("Hast beened opened");
+    }
+}
+
 public class CoroutineHelper : MonoBehaviour
 {
     private static CoroutineHelper _instance;

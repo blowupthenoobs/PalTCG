@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
                 StartEnemyAttack.Invoke();
                 break;
             case "EnemyAttack":
-                StartPlayerTurn.Invoke();
+                StartPlayerTurn.Invoke(); //Results in issues when destroy card
                 break;
         }
     }

@@ -27,9 +27,9 @@ public class ScalingGridScript : MonoBehaviour
         
         if(!isVerticle)
         {
-            float percentToMake = (gridSize.x - gridPadding.x) / (defaultGridDimensions.x * maxGridDimensions.x + defaultSpacingDimensions.x * (maxGridDimensions.x - 1));
-            newGridDimensions = defaultGridDimensions * percentToMake;
-            newSpacingDimensions = defaultSpacingDimensions * percentToMake;
+            float percentToChange = (gridSize.x - gridPadding.x) / (defaultGridDimensions.x * maxGridDimensions.x + defaultSpacingDimensions.x * (maxGridDimensions.x - 1));
+            newGridDimensions = defaultGridDimensions * percentToChange;
+            newSpacingDimensions = defaultSpacingDimensions * percentToChange;
         }
 
 

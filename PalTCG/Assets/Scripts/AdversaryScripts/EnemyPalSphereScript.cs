@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 
 using DefaultUnitData;
@@ -8,9 +9,18 @@ using DefaultUnitData;
 public class EnemyPalSphereScript : MonoBehaviour
 {
     public PhotonView opponentMirror;
+    private Image image;
     [SerializeField] GameObject waitingSpace;
     [SerializeField] GameObject cardPrefab;
     public GameObject heldCard;
+    
+    [SerializeField] Color normalColor;
+    [SerializeField] Color brokenColor;
+
+    void Awake()
+    {
+        image = gameObject.GetComponent<Image>();
+    }
 
 #region palsphereFunctions
     public void SelectAsTarget()
@@ -98,6 +108,12 @@ public class EnemyPalSphereScript : MonoBehaviour
     public void VerifyAttack()
     {
         ConfirmationButtons.Instance.AllowConfirmation(HandScript.Instance.selection.Count > 0);
+    }
+
+    [PunRPC]
+    public void BreakPalSphere()
+    {
+        image.color = brokenColor;
     }
 #endregion
 

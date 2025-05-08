@@ -58,6 +58,7 @@ MonoBehaviour:
   - Block
   - AfterBlockActions
   - HeldUnitDeath
+  - BreakPalSphere
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

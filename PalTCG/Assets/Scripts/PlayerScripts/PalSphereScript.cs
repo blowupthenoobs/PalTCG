@@ -17,6 +17,11 @@ public class PalSphereScript : MonoBehaviour
     public GameObject heldCard;
     private bool isBroken;
 
+    public void Awake()
+    {
+        image = gameObject.GetComponent<Image>();
+    }
+
     public void CheckForCard()
     {
         if(GameManager.Instance.phase == "PlayerTurn" && !isBroken)
@@ -45,6 +50,7 @@ public class PalSphereScript : MonoBehaviour
         {
             if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
             {
+                HandScript.Instance.selected.SendMessage("Deselect");
                 HandScript.Instance.selected = null;
             }
         }
@@ -63,10 +69,7 @@ public class PalSphereScript : MonoBehaviour
             waitingSpace.GetComponent<WaitingSpace>().readyCards.RemoveAt(waitingSpace.GetComponent<WaitingSpace>().readyCards.IndexOf(card));
         }
 
-        GameManager.Instance.StartPlayerTurn += heldCard.GetComponent<PalCardScript>().Wake;
-        GameManager.Instance.StartPlayerAttack += heldCard.GetComponent<PalCardScript>().PrepareAttackPhase;
-        GameManager.Instance.StartEnemyTurn += heldCard.GetComponent<PalCardScript>().Wake;
-        GameManager.Instance.StartEnemyTurn += heldCard.GetComponent<PalCardScript>().PrepareEnemyPhases;
+        heldCard.GetComponent<PalCardScript>().SetUpBasicTurnEvents();
     }
 
     void PayForCard()
@@ -131,6 +134,7 @@ public class PalSphereScript : MonoBehaviour
     {
         isBroken = true;
         image.color = brokenColor;
+        opponentMirror.RPC("BreakPalSphere", RpcTarget.Others);
     }
 
 

@@ -1184,6 +1184,10 @@ MonoBehaviour:
     normalVictor: {fileID: 21300000, guid: 027049becad51d64a9762e3512baec31, type: 3}
     normalZoe: {fileID: 21300000, guid: f2093ae1302b2fd4db8e8cdadd517b2d, type: 3}
     overheadZoe: {fileID: 21300000, guid: 339066d5d76c6524193ed7bcd0e91c65, type: 3}
+    craftingBench: {fileID: 21300000, guid: 01dcce9b0f1ec9c41ac3251587e534a2, type: 3}
+    furnace: {fileID: 21300000, guid: 952c80c22fdec3d4f983e8c40641ae1c, type: 3}
+    loggingCamp: {fileID: 21300000, guid: 14571c8960482094699a32c1353be6fc, type: 3}
+    miningPit: {fileID: 21300000, guid: c738ba9a0fd5d814d8aee17478da9cdb, type: 3}
     lamball:
     - {fileID: 21300000, guid: eda6bd278515823458eb53e2f675695c, type: 3}
     cattiva:

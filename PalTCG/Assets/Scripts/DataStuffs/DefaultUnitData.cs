@@ -20,6 +20,12 @@ namespace DefaultUnitData
         public Sprite normalZoe;
         public Sprite overheadZoe;
 
+        [Header("Buildings")]
+        public Sprite craftingBench;
+        public Sprite furnace;
+        public Sprite loggingCamp;
+        public Sprite miningPit;
+
 
         [Header("Pals")]
         public List<Sprite> lamball;
@@ -161,6 +167,22 @@ namespace DefaultUnitData
             this.maxHp = maxHp;
             this.cardArt = cardArt;
             this.abilities = abilities;
+        }
+    }
+
+
+    [System.Serializable]
+    public struct BuildingPreset
+    {
+        public Sprite cardArt;
+        public UnityAction buildingFunction;
+        public float timeToHold;
+
+        public BuildingPreset(Sprite cardArt, UnityAction buildingFunction, float timeToHold)
+        {
+            this.cardArt = cardArt;
+            this.buildingFunction = buildingFunction;
+            this.timeToHold = timeToHold;
         }
     }
 
@@ -501,6 +523,33 @@ namespace DefaultUnitData
 
 #endregion EarthPals
 
+#region Buildings
+    public BuildingPreset craftingBench = new BuildingPreset
+    (
+        cardArt: AccountManager.Instance.CardSprites.craftingBench,
+        buildingFunction: BuildingFunctions.OpenCraftingBenchMenu, //Need to make a place to store it in the abilities script
+        timeToHold: 0
+    );
+    public BuildingPreset furnace = new BuildingPreset
+    (
+        cardArt: AccountManager.Instance.CardSprites.furnace,
+        buildingFunction: null, //Need to make a place to store it in the abilities script
+        timeToHold: 0
+    );
+    public BuildingPreset loggingCamp = new BuildingPreset
+    (
+        cardArt: AccountManager.Instance.CardSprites.loggingCamp,
+        buildingFunction: null, //Need to make a place to store it in the abilities script
+        timeToHold: 5.0f
+    );
+    public BuildingPreset miningPit = new BuildingPreset
+    (
+        cardArt: AccountManager.Instance.CardSprites.miningPit,
+        buildingFunction: null, //Need to make a place to store it in the abilities script
+        timeToHold: 5.0f
+    );
+
+#endregion
         public PalData FindPalData(string palName, int artIndex)
         {
             string cardID = "p/" + palName + "/" + artIndex.ToString();
@@ -578,6 +627,24 @@ namespace DefaultUnitData
             }
 
             return data;
+        }
+
+        public static BuildingPreset GetBuildingInfo(string buildingName)
+        {
+            switch(buildingName)
+            {
+                case "craftingBench":
+                    return new Pals().craftingBench;
+                case "furnace":
+                    return new Pals().furnace;
+                case "loggingCamp":
+                    return new Pals().loggingCamp;
+                case "miningPit":
+                    return new Pals().miningPit;
+                default:
+                    Debug.Log("building not found");
+                    return new Pals().craftingBench;
+            }
         }
     }
     

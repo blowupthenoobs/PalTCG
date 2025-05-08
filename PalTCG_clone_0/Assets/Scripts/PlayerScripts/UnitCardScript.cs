@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using Photon.Pun;
 using TMPro;
 
@@ -15,6 +16,14 @@ public class UnitCardScript : MonoBehaviour
     [SerializeField] TMP_Text health;
     [HideInInspector] public PhotonView opponentMirror;
 
+    
+    private UnityAction StartPlayerTurn;
+    private UnityAction StartEnemyTurn;
+    private UnityAction StartPlayerAttack;
+    private UnityAction StartEnemyAttack;
+    private UnityAction EndPlayerTurn;
+    private UnityAction EndEnemyTurn;
+
     //Effects and state variables
     public bool resting;
 
@@ -26,6 +35,8 @@ public class UnitCardScript : MonoBehaviour
     {
         button = GetComponent<Button>();
         image = gameObject.GetComponent<Image>();
+
+        GiveCardEventActions();
     }
 
     public void SetUpCard(CardData newData)
@@ -188,11 +199,36 @@ public class UnitCardScript : MonoBehaviour
         Debug.Log("Unit is now dead :(");
         HandScript.Instance.playerDiscardPile.SendMessage("DiscardCard", cardData);
         opponentMirror.RPC("HeldUnitDeath", RpcTarget.Others);
+        RemoveCardEventsFromManager();
         Destroy(gameObject);
     }
 
     public void Deselect()
     {
         image.color = normalColor;
+    }
+
+    public void GiveCardEventActions()
+    {
+        StartPlayerTurn += Wake;
+        StartPlayerAttack += PrepareAttackPhase;
+        StartEnemyTurn += Wake;
+        StartEnemyTurn += PrepareEnemyPhases;
+    }
+
+    public void SetUpBasicTurnEvents()
+    {
+        GameManager.Instance.StartPlayerTurn += StartPlayerTurn;
+        GameManager.Instance.StartPlayerAttack += PrepareAttackPhase;
+        GameManager.Instance.StartEnemyTurn += StartPlayerAttack;
+        GameManager.Instance.StartEnemyTurn += StartEnemyTurn;
+    }
+
+    public void RemoveCardEventsFromManager()
+    {
+        GameManager.Instance.StartPlayerTurn -= StartPlayerTurn;
+        GameManager.Instance.StartPlayerAttack -= PrepareAttackPhase;
+        GameManager.Instance.StartEnemyTurn -= StartPlayerAttack;
+        GameManager.Instance.StartEnemyTurn -= StartEnemyTurn;
     }
 }
