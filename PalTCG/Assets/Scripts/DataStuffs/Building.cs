@@ -15,7 +15,7 @@ public class Building : ScriptableObject
     public float timeToHold;
 
 
-    private void SetUpBuilding(string name, GameObject holder)
+    public void SetUpBuilding(string name, GameObject holder)
     {
         buildingType = name;
         gameObject = holder;

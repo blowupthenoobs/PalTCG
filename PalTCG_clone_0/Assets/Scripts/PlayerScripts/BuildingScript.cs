@@ -7,6 +7,10 @@ public class BuildingScript : MonoBehaviour
     public Building data;
     private float heldTime;
 
+    void Awake()
+    {
+        data = (Building)ScriptableObject.CreateInstance(typeof(Building));
+    }
     void Update()
     {
         if(Input.GetMouseButtonUp(0))
