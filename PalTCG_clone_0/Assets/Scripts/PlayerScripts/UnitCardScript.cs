@@ -200,6 +200,7 @@ public class UnitCardScript : MonoBehaviour
         HandScript.Instance.playerDiscardPile.SendMessage("DiscardCard", cardData);
         opponentMirror.RPC("HeldUnitDeath", RpcTarget.Others);
         RemoveCardEventsFromManager();
+        RemoveTraitsFromBuilding();
         Destroy(gameObject);
     }
 
@@ -230,5 +231,35 @@ public class UnitCardScript : MonoBehaviour
         GameManager.Instance.StartPlayerAttack -= PrepareAttackPhase;
         GameManager.Instance.StartEnemyTurn -= StartPlayerAttack;
         GameManager.Instance.StartEnemyTurn -= StartEnemyTurn;
+    }
+
+    public void GiveTraitsToBuildings()
+    {
+        BuildingScript.totalTraits.handyWork += cardData.traits.handyWork;
+        BuildingScript.totalTraits.foraging += cardData.traits.foraging;
+        BuildingScript.totalTraits.gardening += cardData.traits.gardening;
+        BuildingScript.totalTraits.watering += cardData.traits.watering;
+        BuildingScript.totalTraits.mining += cardData.traits.mining;
+        BuildingScript.totalTraits.lumber += cardData.traits.lumber;
+        BuildingScript.totalTraits.transportation += cardData.traits.transportation;
+        BuildingScript.totalTraits.medicine += cardData.traits.medicine;
+        BuildingScript.totalTraits.kindling += cardData.traits.kindling;
+        BuildingScript.totalTraits.electric += cardData.traits.electric;
+        BuildingScript.totalTraits.freezing += cardData.traits.freezing;
+    }
+
+    public void RemoveTraitsFromBuilding()
+    {
+        BuildingScript.totalTraits.handyWork -= cardData.traits.handyWork;
+        BuildingScript.totalTraits.foraging -= cardData.traits.foraging;
+        BuildingScript.totalTraits.gardening -= cardData.traits.gardening;
+        BuildingScript.totalTraits.watering -= cardData.traits.watering;
+        BuildingScript.totalTraits.mining -= cardData.traits.mining;
+        BuildingScript.totalTraits.lumber -= cardData.traits.lumber;
+        BuildingScript.totalTraits.transportation -= cardData.traits.transportation;
+        BuildingScript.totalTraits.medicine -= cardData.traits.medicine;
+        BuildingScript.totalTraits.kindling -= cardData.traits.kindling;
+        BuildingScript.totalTraits.electric -= cardData.traits.electric;
+        BuildingScript.totalTraits.freezing -= cardData.traits.freezing;
     }
 }

@@ -10,7 +10,54 @@ namespace Resources
         public int wood;
         public int stone;
         public int wool;
+
+        public static bool operator <(resources a, resources b) //Method is a lil bit scuffed, but it's only ever used as a currency, so it's fine like this here
+        {
+            if (a.wood >= b.wood)
+                return false;
+            if(a.stone >= b.wood)
+                return false;
+            if(a.wool >= b.wool)
+                return false;
+            return true;
+        }
+
+        public static bool operator >(resources a, resources b)
+        {
+            return !(a <= b);
+        }
+
+        public static bool operator <=(resources a, resources b)
+        {
+            if (a.wood > b.wood)
+                return false;
+            if(a.stone > b.wood)
+                return false;
+            if(a.wool > b.wool)
+                return false;
+            return true;
+        }
+
+        public static bool operator >=(resources a, resources b)
+        {
+            return !(a < b);
+        }
+
+
+
+        // public override int GetHashCode()
+        // {
+        //    return cardID?.GetHashCode() ?? 0;
+        // }
     }
+    
+    struct recipe
+    {
+        resources cost;
+        resources result;
+        List<int> palSphereLevels;
+    }
+
     public struct StatusEffects
     {
         public int burning;

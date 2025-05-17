@@ -527,7 +527,7 @@ namespace DefaultUnitData
     public BuildingPreset craftingBench = new BuildingPreset
     (
         cardArt: AccountManager.Instance.CardSprites.craftingBench,
-        buildingFunction: BuildingFunctions.OpenCraftingBenchMenu, //Need to make a place to store it in the abilities script
+        buildingFunction: BuildingFunctions.OpenCraftingBenchMenu,
         timeToHold: 0
     );
     public BuildingPreset furnace = new BuildingPreset

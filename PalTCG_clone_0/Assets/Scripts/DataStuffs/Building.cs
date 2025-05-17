@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 
 using DefaultUnitData;
-public class Building : ScriptableObject
+public class BuildingData : ScriptableObject
 {
     public string buildingType;
     public Sprite cardArt;
@@ -24,5 +24,7 @@ public class Building : ScriptableObject
 
         cardArt = data.cardArt;
         image.sprite = cardArt;
+        buildingFunction += data.buildingFunction;
+        timeToHold = data.timeToHold;
     }
 }
