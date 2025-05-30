@@ -37,6 +37,16 @@ namespace DefaultUnitData
         public List<Sprite> daedream;
         public List<Sprite> fuddler;
         public List<Sprite> dumud;
+
+        [Header("Icons")]
+        public Sprite wood;
+        public Sprite stone;
+        public Sprite paldium;
+        public Sprite wool;
+        public Sprite cloth;
+        public Sprite poisonGland;
+        public Sprite normalArrows;
+        public Sprite poisonArrows;
     }
 
     public class PalAbilitySets
@@ -241,7 +251,7 @@ namespace DefaultUnitData
     public class Pals
     {
 
-#region BasicPals
+        #region BasicPals
         public DefaultPal lamball = new DefaultPal
         (
             cost: 1,
@@ -332,9 +342,9 @@ namespace DefaultUnitData
             abilities: AccountManager.Instance.PalAbilities.chikipi
         );
 
-#endregion BasicPals
+        #endregion BasicPals
 
-#region GrassPals
+        #region GrassPals
         public DefaultPal lifmunk = new DefaultPal
         (
             cost: 1,
@@ -395,9 +405,9 @@ namespace DefaultUnitData
             abilities: AccountManager.Instance.PalAbilities.tanzee
         );
 
-#endregion GrassPals
+        #endregion GrassPals
 
-#region DarkPals
+        #region DarkPals
         public DefaultPal depresso = new DefaultPal
         (
             cost: 1,
@@ -458,9 +468,9 @@ namespace DefaultUnitData
             abilities: AccountManager.Instance.PalAbilities.daedream
         );
 
-#endregion DarkPals
+        #endregion DarkPals
 
-#region EarthPals
+        #region EarthPals
         public DefaultPal fuddler = new DefaultPal
         (
             cost: 1,
@@ -521,35 +531,35 @@ namespace DefaultUnitData
             abilities: AccountManager.Instance.PalAbilities.dumud
         );
 
-#endregion EarthPals
+        #endregion EarthPals
 
-#region Buildings
-    public BuildingPreset craftingBench = new BuildingPreset
-    (
-        cardArt: AccountManager.Instance.CardSprites.craftingBench,
-        buildingFunction: BuildingFunctions.OpenCraftingBenchMenu,
-        timeToHold: 0
-    );
-    public BuildingPreset furnace = new BuildingPreset
-    (
-        cardArt: AccountManager.Instance.CardSprites.furnace,
-        buildingFunction: null, //Need to make a place to store it in the abilities script
-        timeToHold: 0
-    );
-    public BuildingPreset loggingCamp = new BuildingPreset
-    (
-        cardArt: AccountManager.Instance.CardSprites.loggingCamp,
-        buildingFunction: null, //Need to make a place to store it in the abilities script
-        timeToHold: 5.0f
-    );
-    public BuildingPreset miningPit = new BuildingPreset
-    (
-        cardArt: AccountManager.Instance.CardSprites.miningPit,
-        buildingFunction: null, //Need to make a place to store it in the abilities script
-        timeToHold: 5.0f
-    );
+        #region Buildings
+        public BuildingPreset craftingBench = new BuildingPreset
+        (
+            cardArt: AccountManager.Instance.CardSprites.craftingBench,
+            buildingFunction: BuildingFunctions.OpenCraftingBenchMenu,
+            timeToHold: 0
+        );
+        public BuildingPreset furnace = new BuildingPreset
+        (
+            cardArt: AccountManager.Instance.CardSprites.furnace,
+            buildingFunction: null, //Need to make a place to store it in the abilities script
+            timeToHold: 0
+        );
+        public BuildingPreset loggingCamp = new BuildingPreset
+        (
+            cardArt: AccountManager.Instance.CardSprites.loggingCamp,
+            buildingFunction: null, //Need to make a place to store it in the abilities script
+            timeToHold: 5.0f
+        );
+        public BuildingPreset miningPit = new BuildingPreset
+        (
+            cardArt: AccountManager.Instance.CardSprites.miningPit,
+            buildingFunction: null, //Need to make a place to store it in the abilities script
+            timeToHold: 5.0f
+        );
 
-#endregion
+        #endregion
         public PalData FindPalData(string palName, int artIndex)
         {
             string cardID = "p/" + palName + "/" + artIndex.ToString();
@@ -611,19 +621,19 @@ namespace DefaultUnitData
 
             CardData data = null;
 
-            switch(dataParts[0])
+            switch (dataParts[0])
             {
                 case "p":
                     data = (PalCardData)ScriptableObject.CreateInstance(typeof(PalCardData));
                     ((PalCardData)data).DecomposeData(new Pals().FindPalData(dataParts[1], int.Parse(dataParts[2])));
-                break;
+                    break;
                 case "t":
                     Debug.Log("look for items");
-                break;
+                    break;
                 case "h":
                     data = (PalCardData)ScriptableObject.CreateInstance(typeof(PalCardData));
                     data.cardArt = new Pals().LookForPlayerArt(dataParts[1]);
-                break;
+                    break;
             }
 
             return data;
@@ -631,7 +641,7 @@ namespace DefaultUnitData
 
         public static BuildingPreset GetBuildingInfo(string buildingName)
         {
-            switch(buildingName)
+            switch (buildingName)
             {
                 case "craftingBench":
                     return new Pals().craftingBench;
@@ -646,7 +656,31 @@ namespace DefaultUnitData
                     return new Pals().craftingBench;
             }
         }
-    }
-    
 
+        public static Sprite GetIconSprite(string name)
+        {
+            switch (name)
+            {
+                case "wood":
+                    return AccountManager.Instance.CardSprites.wood;
+                case "stone":
+                    return AccountManager.Instance.CardSprites.stone;
+                case "paldium":
+                    return AccountManager.Instance.CardSprites.paldium;
+                case "wool":
+                    return AccountManager.Instance.CardSprites.wool;
+                case "cloth":
+                    return AccountManager.Instance.CardSprites.cloth;
+                case "poisonGland":
+                    return AccountManager.Instance.CardSprites.poisonGland;
+                case "normalArrows":
+                    return AccountManager.Instance.CardSprites.normalArrows;
+                case "poisonArrows":
+                    return AccountManager.Instance.CardSprites.poisonArrows;
+                default:
+                    Debug.Log("No icon found for: " + name);
+                    return AccountManager.Instance.CardSprites.stone;
+            }
+        }
+    }
 }

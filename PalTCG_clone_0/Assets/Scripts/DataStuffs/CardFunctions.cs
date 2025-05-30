@@ -108,7 +108,7 @@ public class BuildingFunctions: MonoBehaviour
 {
     public static void OpenCraftingBenchMenu()
     {
-        Debug.Log("Hast beened opened");
+        CraftingMenuScript.Instance.OpenCraftingMenu(0);
     }
 }
 

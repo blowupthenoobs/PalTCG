@@ -10,7 +10,6 @@ public class ValueAssigner : MonoBehaviour
 {
     private AccountManager manager;
     private PalAbilitySets abilitySets;
-    public List<Sprite> dumudSprites;
     
     void Start()
     {

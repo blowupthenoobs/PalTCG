@@ -9,16 +9,26 @@ namespace Resources
     {
         public int wood;
         public int stone;
+        public int paldium;
         public int wool;
+        public int cloth;
+        public int poisonGland;
+        public int normalArrows;
+        public int poisonArrows;
 
         public static bool operator <(resources a, resources b) //Method is a lil bit scuffed, but it's only ever used as a currency, so it's fine like this here
         {
-            if (a.wood >= b.wood)
-                return false;
-            if(a.stone >= b.wood)
-                return false;
-            if(a.wool >= b.wool)
-                return false;
+            var fields = typeof(resources).GetFields();
+
+            foreach (var field in fields)
+            {
+                var valueA = field.GetValue(a);
+                var valueB = field.GetValue(b);
+
+                if ((int)valueA >= (int)valueB)
+                    return false;
+            }
+
             return true;
         }
 
@@ -29,12 +39,17 @@ namespace Resources
 
         public static bool operator <=(resources a, resources b)
         {
-            if (a.wood > b.wood)
-                return false;
-            if(a.stone > b.wood)
-                return false;
-            if(a.wool > b.wool)
-                return false;
+            var fields = typeof(resources).GetFields();
+
+            foreach (var field in fields)
+            {
+                var valueA = field.GetValue(a);
+                var valueB = field.GetValue(b);
+
+                if ((int)valueA > (int)valueB)
+                    return false;
+            }
+
             return true;
         }
 
@@ -43,7 +58,21 @@ namespace Resources
             return !(a < b);
         }
 
+        public static resources operator +(resources a, resources b) //I dunno if this actually works
+        {
+            resources result = new resources();
+            var fields = typeof(resources).GetFields();
 
+            foreach (var field in fields)
+            {
+                var valueA = field.GetValue(a);
+                var valueB = field.GetValue(b);
+
+                field.SetValue(result, (int)valueA + (int)valueB);
+            }
+
+            return result;
+        } 
 
         // public override int GetHashCode()
         // {
@@ -51,11 +80,11 @@ namespace Resources
         // }
     }
     
-    struct recipe
+    public struct recipe
     {
-        resources cost;
-        resources result;
-        List<int> palSphereLevels;
+        public resources cost;
+        public resources result;
+        public List<int> palSphereLevels;
     }
 
     public struct StatusEffects
