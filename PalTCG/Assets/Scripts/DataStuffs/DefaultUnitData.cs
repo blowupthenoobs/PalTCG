@@ -555,7 +555,7 @@ namespace DefaultUnitData
         public BuildingPreset miningPit = new BuildingPreset
         (
             cardArt: AccountManager.Instance.CardSprites.miningPit,
-            buildingFunction: null, //Need to make a place to store it in the abilities script
+            buildingFunction: BuildingFunctions.UseMiningPit,
             timeToHold: 5.0f
         );
 

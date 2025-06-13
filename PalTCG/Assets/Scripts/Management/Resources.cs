@@ -58,9 +58,9 @@ namespace Resources
             return !(a < b);
         }
 
-        public static resources operator +(resources a, resources b) //I dunno if this actually works
+        public static resources operator +(resources a, resources b)
         {
-            resources result = new resources();
+            object result = new resources();
             var fields = typeof(resources).GetFields();
 
             foreach (var field in fields)
@@ -71,7 +71,23 @@ namespace Resources
                 field.SetValue(result, (int)valueA + (int)valueB);
             }
 
-            return result;
+            return (resources)result;
+        }
+
+        public static resources operator -(resources a, resources b)
+        {
+            object result = new resources();
+            var fields = typeof(resources).GetFields();
+
+            foreach (var field in fields)
+            {
+                var valueA = field.GetValue(a);
+                var valueB = field.GetValue(b);
+
+                field.SetValue(result, (int)valueA - (int)valueB);
+            }
+
+            return (resources)result;
         } 
 
         // public override int GetHashCode()

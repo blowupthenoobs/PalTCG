@@ -18,5 +18,6 @@ public class BaseScript : MonoBehaviour
     void Start()
     {
         CreateBuilding("craftingBench");
+        CreateBuilding("miningPit");
     }
 }

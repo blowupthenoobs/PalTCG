@@ -6,8 +6,8 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using Photon.Pun;
 
+using Resources;
 using DefaultUnitData;
-
 public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] public GamePreferences Preferences; //Temporarilly set to public
@@ -47,6 +47,9 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     //Online Stuffs
     private bool readyForNextAttackAction;
+
+    //Misc
+    public resources GatheredItems;
 
     void Awake()
     {

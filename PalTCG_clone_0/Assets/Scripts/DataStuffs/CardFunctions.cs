@@ -104,11 +104,16 @@ public class CardEffectCoroutines: MonoBehaviour
     
 }
 
-public class BuildingFunctions: MonoBehaviour
+public class BuildingFunctions : MonoBehaviour
 {
     public static void OpenCraftingBenchMenu()
     {
         CraftingMenuScript.Instance.OpenCraftingMenu(0);
+    }
+
+    public static void UseMiningPit()
+    {
+        HandScript.Instance.GatheredItems.stone++;
     }
 }
 

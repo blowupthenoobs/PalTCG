@@ -12,7 +12,7 @@ public class RecipeItemIconScript : MonoBehaviour
 
     void Awake()
     {
-        icon = gameObject.GetComponent<Image>();    
+        icon = gameObject.GetComponent<Image>();
     }
 
     public void SetIcon(Sprite newLook, int count)

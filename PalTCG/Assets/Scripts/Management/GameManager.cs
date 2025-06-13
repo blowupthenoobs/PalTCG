@@ -11,6 +11,7 @@ using DefaultUnitData;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    [SerializeField] GameObject CraftingMenu;
     public Sprites CardSprites;
     public PalAbilitySets PalAbilities;
 
@@ -35,7 +36,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
@@ -50,6 +51,8 @@ public class GameManager : MonoBehaviour
         StartEnemyTurn += EnemyPhase;
         StartPlayerAttack += PlayerAttackPhase;
         StartEnemyAttack += EnemyAttackPhase;
+
+        CraftingMenu.SetActive(true);
     }
 
     void Start()

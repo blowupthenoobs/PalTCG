@@ -11,6 +11,19 @@ public class RecipeSelectorScript : MonoBehaviour
     [SerializeField] GameObject recipeResults;
     [SerializeField] GameObject recipeItemIcon;
     private Image background;
+    private Color normalColor;
+    [SerializeField] Color selectedColor;
+    public static int nextRecipeIndex;
+    private int heldRecipeIndex;
+
+    void Awake()
+    {
+        background = gameObject.GetComponent<Image>();
+        normalColor = background.color;
+
+        heldRecipeIndex = nextRecipeIndex;
+        nextRecipeIndex++;
+    }
 
     public void CreateRecipeIcons(recipe icons)
     {
@@ -41,5 +54,20 @@ public class RecipeSelectorScript : MonoBehaviour
         }
 
         //Make palsphere logic later
+    }
+
+    public void Click()
+    {
+        CraftingMenuScript.Instance.SelectRecipe(heldRecipeIndex);
+    }
+
+    public void Select()
+    {
+        background.color = selectedColor;
+    }
+
+    public void Deselect()
+    {
+        background.color = normalColor;
     }
 }
