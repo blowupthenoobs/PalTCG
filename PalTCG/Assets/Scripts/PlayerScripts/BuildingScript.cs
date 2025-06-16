@@ -15,25 +15,7 @@ public class BuildingScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     private bool heldClick;
 
 
-    public static Traits totalTraits = new Traits
-    (
-        ranch: 0,
-        handyWork: 1,
-        foraging: 1,
-        gardening: 1,
-        watering: 1,
-        mining: 1,
-        lumber: 1,
-        transportation: 1,
-        medicine: 0,
-        kindling: 0,
-        electric: 0,
-        freezing: 0,
-        dragon: 0,
-        bird: false,
-        blocker: false,
-        tank: false
-    );
+    public static Traits totalTraits;
 
     void Awake()
     {

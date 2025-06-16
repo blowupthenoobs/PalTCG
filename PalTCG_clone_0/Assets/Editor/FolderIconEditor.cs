@@ -20,7 +20,7 @@ public static class FolderIconEditor
         SetFolderIcon("Assets/Scripts/DataStuffs", "Assets/Editor/NotesPerson.png");
         SetFolderIcon("Assets/Scripts/Management", "Assets/Editor/DigimonCoolio.png");
         SetFolderIcon("Assets/Scripts/OnlineStuffs", "Assets/Editor/ArcadeWut.png");
-        // SetFolderIcon("Assets/Scripts/PlayerScripts", "Assets/Editor/ariaSus.png");
+        SetFolderIcon("Assets/Scripts/PlayerScripts", "Assets/Editor/WraithSmug.png");
         SetFolderIcon("Assets/Scripts/UIManagement", "Assets/Editor/AA_Spin.gif");
     }
 

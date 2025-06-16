@@ -53,11 +53,11 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     void Awake()
     {
-        if(Instance == null)
-            Instance=this;
+        if (Instance == null)
+            Instance = this;
         else
             Destroy(gameObject);
-        
+
         originalPos = transform.position;
         duckPos = new Vector3(originalPos.x, originalPos.y - duckAmount * ScreenCalculations.GetScale(gameObject), originalPos.z);
         targetPos = duckPos;
@@ -70,20 +70,20 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         RemoveIndexes();
         CenterCards();
 
-        if(Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1"))
         {
-            if(selected != null && state == "default")
+            if (selected != null && state == "default")
                 StartCoroutine(Click());
         }
 
         transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * ScreenCalculations.GetScale(gameObject) * Time.deltaTime);
-        
+
     }
-    
-#region Selecting&Targeting
+
+    #region Selecting&Targeting
     public void Select(GameObject card)
     {
-        switch(state)
+        switch (state)
         {
             case "default":
                 selected = card;
@@ -91,9 +91,9 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
                 break;
             case "buildingPay":
-                if(card != selected)
+                if (card != selected)
                 {
-                    if(!selection.Contains(card))
+                    if (!selection.Contains(card))
                         selection.Add(card);
                     else
                     {
@@ -106,11 +106,11 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
                 break;
             case "lookingForSphere":
-                if(card.GetComponent<PalSphereScript>() != null)
+                if (card.GetComponent<PalSphereScript>() != null)
                 {
                     selection.Clear();
                     selection.Add(card);
-                    
+
                     updateSelection.Invoke();
                 }
 
@@ -124,15 +124,15 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 updateSelection.Invoke();
                 break;
             case "settingAilment":
-                if(!selection.Contains(card))
+                if (!selection.Contains(card))
                 {
-                    if(updateSelection == AllowConfirmations.LookForSingleTarget && selection.Count > 0)
+                    if (updateSelection == AllowConfirmations.LookForSingleTarget && selection.Count > 0)
                     {
                         selection[0].SendMessage("Deselect");
 
                         selection.Clear();
                     }
-                    
+
                     selection.Add(card);
                     card.SendMessage("Select");
                 }
@@ -142,14 +142,14 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                     card.SendMessage("Deselect");
                 }
 
-                    updateSelection.Invoke();
+                updateSelection.Invoke();
                 break;
             case "blocking":
-                if(card.GetComponent<UnitCardScript>().cardData.traits.blocker)
+                if (card.GetComponent<UnitCardScript>().cardData.traits.blocker)
                 {
                     selection.Clear();
                     selection.Add(card);
-                    
+
                     updateSelection.Invoke();
                 }
                 break;
@@ -157,12 +157,12 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 Debug.Log("invalid state");
                 break;
         }
-        
+
     }
 
     public void ClearSelection()
-    {   
-        if(selected != null)
+    {
+        if (selected != null)
             selected.SendMessage("Deselect");
         selected = null;
         UnselectSelection();
@@ -170,7 +170,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void UnselectSelection()
     {
-        while(selection.Count > 0)
+        while (selection.Count > 0)
         {
             selection[0].SendMessage("Deselect");
             selection.RemoveAt(0);
@@ -185,7 +185,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         UnselectSelection();
 
-        for(int i = 0; i < attackers.Count; i++)
+        for (int i = 0; i < attackers.Count; i++)
         {
             currentAttacker = attackers[i];
             opponentMirror.RPC("LookForBlockers", RpcTarget.Others);
@@ -195,7 +195,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             yield return new WaitUntil(() => currentAttacker == null);
             attackers[i].SendMessage("Rest");
 
-            if(blocker != null)
+            if (blocker != null)
             {
                 blocker.transform.parent.SendMessage("SendRestEffect");
                 blockList.Add(blocker);
@@ -204,14 +204,14 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
 
 
-        while(attackers.Count > 0)
+        while (attackers.Count > 0)
         {
             attackers[0].SendMessage("Deselect");
             attackers.RemoveAt(0);
         }
         raid.Clear();
 
-        while(blockList.Count > 0)
+        while (blockList.Count > 0)
         {
             blockList[0].SendMessage("AfterBlockActions");
             blockList.RemoveAt(0);
@@ -225,7 +225,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     [PunRPC]
     public void LookForBlockers()
     {
-        if(CheckForBlockers())
+        if (CheckForBlockers())
         {
             StartCoroutine("ChooseBlocker");
         }
@@ -267,9 +267,9 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         yield return new WaitForSeconds(.15f);
 
-        if(selected != null && state == "default")
+        if (selected != null && state == "default")
         {
-            if(originalSelect == selected)
+            if (originalSelect == selected)
             {
                 selected.SendMessage("Deselect");
                 selected = null;
@@ -278,23 +278,23 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             {
                 originalSelect.SendMessage("Deselect");
             }
-            
+
         }
     }
-#endregion
+    #endregion
 
-#region HandStuff
+    #region HandStuff
     public void CenterCards()
     {
         float spacing = Preferences.spacing * ScreenCalculations.GetScale(gameObject);
 
         float speed = Preferences.cardMoveSpeed * ScreenCalculations.GetScale(gameObject);
 
-        for(int i = 0; i < Hand.Count; i++)
+        for (int i = 0; i < Hand.Count; i++)
         {
             RectTransform rectTransform = Hand[i].GetComponent<RectTransform>();
             Vector3 newPosition = rectTransform.localPosition;
-            newPosition.x = spacing * ((i+1) - (float)(Hand.Count + 1) / 2 );
+            newPosition.x = spacing * ((i + 1) - (float)(Hand.Count + 1) / 2);
             newPosition.x = Mathf.Lerp(Hand[i].GetComponent<RectTransform>().localPosition.x, newPosition.x, speed * Time.deltaTime);
             rectTransform.localPosition = newPosition;
         }
@@ -303,7 +303,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void Draw(CardData data)
     {
         var newCard = Instantiate(cardPrefab, transform.position, transform.rotation);
-        
+
         newCard.GetComponent<CardScript>().cardData = data;
         newCard.GetComponent<CardScript>().SetUpCard();
         Hand.Add(newCard);
@@ -324,15 +324,15 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     private void RemoveIndexes()
     {
-        for(int i = 0; i < Hand.Count; i++)
+        for (int i = 0; i < Hand.Count; i++)
         {
-            if(Hand[i] == null)
+            if (Hand[i] == null)
                 Hand.RemoveAt(i);
         }
     }
-#endregion
+    #endregion
 
-#region HandMovement
+    #region HandMovement
     public void OnPointerEnter(PointerEventData eventData)
     {
         Raise();
@@ -352,22 +352,38 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         targetPos = originalPos;
     }
-#endregion
+    #endregion
 
-#region BoardChecks
+    #region BoardChecks
     public bool CheckForBlockers()
     {
-        foreach(GameObject space in cardSlots)
+        foreach (GameObject space in cardSlots)
         {
-            if(space.GetComponent<PalSphereScript>().heldCard != null)
+            if (space.GetComponent<PalSphereScript>().heldCard != null)
             {
-                if(!space.GetComponent<PalSphereScript>().heldCard.GetComponent<UnitCardScript>().resting && space.GetComponent<PalSphereScript>().heldCard.GetComponent<UnitCardScript>().cardData.traits.blocker)
+                if (!space.GetComponent<PalSphereScript>().heldCard.GetComponent<UnitCardScript>().resting && space.GetComponent<PalSphereScript>().heldCard.GetComponent<UnitCardScript>().cardData.traits.blocker)
                     return true;
             }
         }
 
         return false;
     }
+
+    // public int CheckBoardTraitCount(string fieldName)
+    // {
+    //     var fields = typeof(Traits).GetFields();
+
+    //     foreach (var field in fields)
+    //     {
+    //         var valueA = field.GetValue(a);
+    //         var valueB = field.GetValue(b);
+
+    //         if ((int)valueA >= (int)valueB)
+    //             return false;
+    //     }
+
+    //     return true;
+    // }
 
 
 #endregion

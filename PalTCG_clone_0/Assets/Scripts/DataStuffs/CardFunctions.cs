@@ -113,7 +113,7 @@ public class BuildingFunctions : MonoBehaviour
 
     public static void UseMiningPit()
     {
-        HandScript.Instance.GatheredItems.stone++;
+        HandScript.Instance.GatheredItems.stone += BuildingScript.totalTraits.mining;
     }
 }
 
