@@ -47,6 +47,22 @@ namespace DefaultUnitData
         public Sprite poisonGland;
         public Sprite normalArrows;
         public Sprite poisonArrows;
+
+
+        public Sprite ranch;
+        public Sprite handyWork;
+        public Sprite foraging;
+        public Sprite gardening;
+        public Sprite watering;
+        public Sprite mining;
+        public Sprite lumber;
+        public Sprite transportation;
+        public Sprite medicine;
+        public Sprite kindling;
+        public Sprite electric;
+        public Sprite freezing;
+        public Sprite dragon;
+        public Sprite bird;
     }
 
     public class PalAbilitySets
@@ -224,7 +240,7 @@ namespace DefaultUnitData
 
         public override bool Equals(object obj)
         {
-            if (obj is PalData otherData)
+            if(obj is PalData otherData)
             {
                 return this.cardID == otherData.cardID;
             }
@@ -540,23 +556,26 @@ namespace DefaultUnitData
             buildingFunction: BuildingFunctions.OpenCraftingBenchMenu,
             timeToHold: 0
         );
+
         public BuildingPreset furnace = new BuildingPreset
         (
             cardArt: AccountManager.Instance.CardSprites.furnace,
             buildingFunction: null, //Need to make a place to store it in the abilities script
             timeToHold: 0
         );
+
         public BuildingPreset loggingCamp = new BuildingPreset
         (
             cardArt: AccountManager.Instance.CardSprites.loggingCamp,
             buildingFunction: null, //Need to make a place to store it in the abilities script
-            timeToHold: 5.0f
+            timeToHold: 2.0f
         );
+
         public BuildingPreset miningPit = new BuildingPreset
         (
             cardArt: AccountManager.Instance.CardSprites.miningPit,
             buildingFunction: BuildingFunctions.UseMiningPit,
-            timeToHold: 5.0f
+            timeToHold: 2.0f
         );
 
         #endregion
@@ -677,6 +696,44 @@ namespace DefaultUnitData
                     return AccountManager.Instance.CardSprites.normalArrows;
                 case "poisonArrows":
                     return AccountManager.Instance.CardSprites.poisonArrows;
+                default:
+                    Debug.Log("No icon found for: " + name);
+                    return AccountManager.Instance.CardSprites.stone;
+            }
+        }
+
+        public static Sprite GetTraitSprite(string name)
+        {
+            switch (name)
+            {
+                case "ranch":
+                    return AccountManager.Instance.CardSprites.ranch;
+                case "handyWork":
+                    return AccountManager.Instance.CardSprites.handyWork;
+                case "foraging":
+                    return AccountManager.Instance.CardSprites.foraging;
+                case "gardening":
+                    return AccountManager.Instance.CardSprites.gardening;
+                case "watering":
+                    return AccountManager.Instance.CardSprites.watering;
+                case "mining":
+                    return AccountManager.Instance.CardSprites.mining;
+                case "lumber":
+                    return AccountManager.Instance.CardSprites.lumber;
+                case "transportation":
+                    return AccountManager.Instance.CardSprites.transportation;
+                case "medicine":
+                    return AccountManager.Instance.CardSprites.medicine;
+                case "kindling":
+                    return AccountManager.Instance.CardSprites.kindling;
+                case "electric":
+                    return AccountManager.Instance.CardSprites.electric;
+                case "freezing":
+                    return AccountManager.Instance.CardSprites.freezing;
+                case "dragon":
+                    return AccountManager.Instance.CardSprites.dragon;
+                case "bird":
+                    return AccountManager.Instance.CardSprites.bird;
                 default:
                     Debug.Log("No icon found for: " + name);
                     return AccountManager.Instance.CardSprites.stone;

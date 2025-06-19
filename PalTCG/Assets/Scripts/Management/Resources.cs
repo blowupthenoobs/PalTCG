@@ -20,12 +20,12 @@ namespace Resources
         {
             var fields = typeof(resources).GetFields();
 
-            foreach (var field in fields)
+            foreach(var field in fields)
             {
                 var valueA = field.GetValue(a);
                 var valueB = field.GetValue(b);
 
-                if ((int)valueA >= (int)valueB)
+                if((int)valueA >= (int)valueB)
                     return false;
             }
 
@@ -34,19 +34,30 @@ namespace Resources
 
         public static bool operator >(resources a, resources b)
         {
-            return !(a <= b);
+            var fields = typeof(resources).GetFields();
+
+            foreach(var field in fields)
+            {
+                var valueA = field.GetValue(a);
+                var valueB = field.GetValue(b);
+
+                if((int)valueA <= (int)valueB)
+                    return false;
+            }
+
+            return true;
         }
 
         public static bool operator <=(resources a, resources b)
         {
             var fields = typeof(resources).GetFields();
 
-            foreach (var field in fields)
+            foreach(var field in fields)
             {
                 var valueA = field.GetValue(a);
                 var valueB = field.GetValue(b);
 
-                if ((int)valueA > (int)valueB)
+                if((int)valueA > (int)valueB)
                     return false;
             }
 
@@ -55,7 +66,18 @@ namespace Resources
 
         public static bool operator >=(resources a, resources b)
         {
-            return !(a < b);
+            var fields = typeof(resources).GetFields();
+
+            foreach(var field in fields)
+            {
+                var valueA = field.GetValue(a);
+                var valueB = field.GetValue(b);
+
+                if((int)valueA < (int)valueB)
+                    return false;
+            }
+
+            return true;
         }
 
         public static resources operator +(resources a, resources b)
@@ -63,7 +85,7 @@ namespace Resources
             object result = new resources();
             var fields = typeof(resources).GetFields();
 
-            foreach (var field in fields)
+            foreach(var field in fields)
             {
                 var valueA = field.GetValue(a);
                 var valueB = field.GetValue(b);
@@ -79,7 +101,7 @@ namespace Resources
             object result = new resources();
             var fields = typeof(resources).GetFields();
 
-            foreach (var field in fields)
+            foreach(var field in fields)
             {
                 var valueA = field.GetValue(a);
                 var valueB = field.GetValue(b);
@@ -148,6 +170,125 @@ namespace Resources
             this.blocker = blocker;
             this.tank = tank;
         }
+
+        public static Traits operator +(Traits a, Traits b)
+        {
+            object result = new Traits();
+            var fields = typeof(Traits).GetFields();
+
+            foreach(var field in fields)
+            {
+                var valueA = field.GetValue(a);
+                var valueB = field.GetValue(b);
+
+                if(valueA is int)
+                {
+                    field.SetValue(result, (int)valueA + (int)valueB);
+                }
+            }
+
+            return (Traits)result;
+        }
+
+        public static Traits operator -(Traits a, Traits b)
+        {
+            object result = new Traits();
+            var fields = typeof(Traits).GetFields();
+
+            foreach(var field in fields)
+            {
+                var valueA = field.GetValue(a);
+                var valueB = field.GetValue(b);
+
+                if(valueA is int)
+                {
+                    if((int)valueA - (int)valueB >= 0)
+                        field.SetValue(result, (int)valueA - (int)valueB);
+                    else
+                        field.SetValue(result, 0); //As to prevent using one trait, losing something with said trait, and being negative blocking u from using other traits
+                }
+                
+            }
+
+            return (Traits)result;
+        }
+
+        public static bool operator <(Traits a, Traits b) //Method is a lil bit scuffed, but it's only ever used as a currency, so it's fine like this here
+        {
+            var fields = typeof(Traits).GetFields();
+
+            foreach(var field in fields)
+            {
+                var valueA = field.GetValue(a);
+                var valueB = field.GetValue(b);
+
+                if(valueA is int)
+                {
+                    if((int)valueA >= (int)valueB)
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool operator >(Traits a, Traits b)
+        {
+            var fields = typeof(Traits).GetFields();
+
+            foreach(var field in fields)
+            {
+                var valueA = field.GetValue(a);
+                var valueB = field.GetValue(b);
+
+                if(valueA is int)
+                {
+                    if((int)valueA <= (int)valueB)
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool operator <=(Traits a, Traits b)
+        {
+            var fields = typeof(Traits).GetFields();
+
+            foreach(var field in fields)
+            {
+                var valueA = field.GetValue(a);
+                var valueB = field.GetValue(b);
+
+                if(valueA is int)
+                {
+                    if((int)valueA > (int)valueB)
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool operator >=(Traits a, Traits b)
+        {
+            var fields = typeof(Traits).GetFields();
+
+            foreach(var field in fields)
+            {
+                var valueA = field.GetValue(a);
+                var valueB = field.GetValue(b);
+
+                if(valueA is int)
+                {
+                    if((int)valueA < (int)valueB)
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
     }
 
     public class ResourceProcesses

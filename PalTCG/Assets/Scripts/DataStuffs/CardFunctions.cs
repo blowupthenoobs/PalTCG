@@ -125,7 +125,7 @@ public class CoroutineHelper : MonoBehaviour
     {
         get
         {
-            if (_instance == null)
+            if(_instance == null)
             {
                 GameObject helperObject = new GameObject("CoroutineHelper");
                 _instance = helperObject.AddComponent<CoroutineHelper>();

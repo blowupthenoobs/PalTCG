@@ -19,7 +19,7 @@ public class RecipeItemIconScript : MonoBehaviour
     {
         icon.sprite = newLook;
 
-        if (count > 1)
+        if(count > 1)
         {
             countText.text = count.ToString();
         }

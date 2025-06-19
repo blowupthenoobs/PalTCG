@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 using Resources;
+using DefaultUnitData;
 public class CraftingMenuScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public static CraftingMenuScript Instance;
@@ -11,13 +15,17 @@ public class CraftingMenuScript : MonoBehaviour, IPointerEnterHandler, IPointerE
     [SerializeField] GameObject RecipePrefab;
     [SerializeField] GameObject AffectedItemsList;
     [SerializeField] GameObject ItemCounterPrefab;
+    [SerializeField] Image UsedTraitIcon;
+    [SerializeField] TMP_Text currentAvailableTrait;
+    private Color normalTextColor;
+    [SerializeField] Color negativeTextColor;
     private List<List<recipe>> recipeSets = new List<List<recipe>>();
     private List<GameObject> currentRecipeList = new List<GameObject>();
     public List<GameObject> affectedItemIcons = new List<GameObject>();
     private int selectedRecipe;
     private int currentMenu;
-    private int handyWorkUsed;
-    private int kindlingUsed;
+    private Traits usedTraits;
+    private List<Traits> selectedMenuTrait = new List<Traits>();
 
     private bool isHoveringUI;
 
@@ -30,6 +38,7 @@ public class CraftingMenuScript : MonoBehaviour, IPointerEnterHandler, IPointerE
 
         SetRecipeLists();
         gameObject.SetActive(false);
+        normalTextColor = currentAvailableTrait.color;
     }
 
     void Update()
@@ -70,6 +79,17 @@ public class CraftingMenuScript : MonoBehaviour, IPointerEnterHandler, IPointerE
         CreateResourceCounters(recipeSets[currentMenu][selectedRecipe]);
     }
 
+    private void SetTraitIcon()
+    {
+        var temp = GetAllUsedIntTraits(selectedMenuTrait[currentMenu]);
+        UsedTraitIcon.sprite = Pals.GetTraitSprite(temp[0].Name);
+
+        int count = ((BuildingScript.totalTraits - usedTraits) >= selectedMenuTrait[currentMenu]).handyWork;
+        currentAvailableTrait.text = "";
+
+        // if()
+    }
+
     private void CreateResourceCounters(recipe affectedResources)
     {
         var fields = typeof(resources).GetFields();
@@ -100,6 +120,18 @@ public class CraftingMenuScript : MonoBehaviour, IPointerEnterHandler, IPointerE
 
                 affectedItemIcons.Add(counter);
             }
+        }
+    }
+
+
+    public void CraftSelectedRecipe()
+    {
+        if ((HandScript.Instance.GatheredItems >= recipeSets[currentMenu][selectedRecipe].cost) && ((BuildingScript.totalTraits - usedTraits) >= selectedMenuTrait[currentMenu]))
+        {
+            HandScript.Instance.GatheredItems -= recipeSets[currentMenu][selectedRecipe].cost;
+            HandScript.Instance.GatheredItems += recipeSets[currentMenu][selectedRecipe].result;
+
+            usedTraits += selectedMenuTrait[currentMenu];
         }
     }
 
@@ -151,12 +183,17 @@ public class CraftingMenuScript : MonoBehaviour, IPointerEnterHandler, IPointerE
                 }
             }
         };
+
+        selectedMenuTrait = new List<Traits>
+        {
+            new Traits{handyWork = 1},
+            new Traits{kindling = 1},
+        };
     }
 
     void ResetUses()
     {
-        handyWorkUsed = 0;
-        kindlingUsed = 0;
+        usedTraits = new Traits();
     }
 
     public void ShowAlteredItemValues()
@@ -184,5 +221,44 @@ public class CraftingMenuScript : MonoBehaviour, IPointerEnterHandler, IPointerE
     public void OnPointerExit(PointerEventData eventData)
     {
         isHoveringUI = false;
+    }
+
+    private List<int> GetAvailableTraits(Traits traitList)
+    {
+        List<Sprite> allUsedTraits = new List<Sprite>();
+        var fields = typeof(Traits).GetFields();
+
+        foreach (var field in fields)
+        {
+            var value = field.GetValue(traitList);
+
+            if (value is int)
+            {
+                if ((int)value > 0)
+                    allUsedTraits.Add(value);
+            }
+        }
+
+        return allUsedTraits;
+    }
+
+
+    private List<FieldInfo> GetAllUsedIntTraits(Traits traitLists)
+    {
+        List<FieldInfo> allUsedTraits = new List<FieldInfo>();
+        var fields = typeof(Traits).GetFields();
+
+        foreach (var field in fields)
+        {
+            var value = field.GetValue(traitList);
+
+            if (value is int)
+            {
+                if ((int)value > 0)
+                    allUsedTraits.Add(field);
+            }
+        }
+
+        return allUsedTraits;
     }
 }

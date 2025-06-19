@@ -42,7 +42,7 @@ public class ResourceCounterScript : MonoBehaviour
         int newValue = ((int)heldValueType.GetValue(HandScript.Instance.GatheredItems) + (int)heldValueType.GetValue(alteration));
         counter.text = newValue.ToString();
 
-        if (newValue < 0)
+        if(newValue < 0)
             counter.color = negativeColor;
     }
 }

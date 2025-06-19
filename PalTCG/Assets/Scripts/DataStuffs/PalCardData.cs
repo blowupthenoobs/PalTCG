@@ -35,7 +35,7 @@ public class PalCardData : CardData
 
     public override bool Equals(object obj)
     {
-        if (obj is PalCardData otherData)
+        if(obj is PalCardData otherData)
         {
             return originalData == otherData.originalData;
         }

@@ -25,14 +25,14 @@ public class BuildingScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     void Update()
     {
         heldClick = Input.GetMouseButton(0);
-        if (isHoveringUI && heldClick)
+        if(isHoveringUI && heldClick)
             heldTime = Mathf.MoveTowards(heldTime, data.timeToHold, Time.deltaTime);
         else
             heldTime = Mathf.MoveTowards(heldTime, 0, Time.deltaTime);
 
         progressBar.fillAmount = (float)(heldTime / data.timeToHold);
 
-        if ((heldTime >= data.timeToHold) && (data.timeToHold > 0))
+        if((heldTime >= data.timeToHold) && (data.timeToHold > 0))
         {
             heldTime = 0;
             data.buildingFunction.Invoke();
@@ -41,11 +41,11 @@ public class BuildingScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void Click()
     {
-        if (data.timeToHold == 0)
+        if(data.timeToHold == 0)
             data.buildingFunction.Invoke();
         else
         {
-            if (data.timeToHold > heldTime)
+            if(data.timeToHold > heldTime)
                 heldTime += Time.deltaTime;
             else
             {

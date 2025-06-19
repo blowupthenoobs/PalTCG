@@ -29,11 +29,11 @@ public class RecipeSelectorScript : MonoBehaviour
     {
         var fields = typeof(resources).GetFields();
 
-        foreach (var field in fields)
+        foreach(var field in fields)
         {
             var value = field.GetValue(icons.cost);
 
-            if ((int)value > 0)
+            if((int)value > 0)
             {
                 var iconObj = Instantiate(recipeItemIcon, recipeCosts.transform.position, transform.rotation);
                 iconObj.GetComponent<RecipeItemIconScript>().SetIcon(Pals.GetIconSprite(field.Name), (int)value);
@@ -41,11 +41,11 @@ public class RecipeSelectorScript : MonoBehaviour
             }
         }
 
-        foreach (var field in fields)
+        foreach(var field in fields)
         {
             var value = field.GetValue(icons.result);
 
-            if ((int)value > 0)
+            if((int)value > 0)
             {
                 var iconObj = Instantiate(recipeItemIcon, recipeResults.transform.position, transform.rotation);
                 iconObj.GetComponent<RecipeItemIconScript>().SetIcon(Pals.GetIconSprite(field.Name), (int)value);
