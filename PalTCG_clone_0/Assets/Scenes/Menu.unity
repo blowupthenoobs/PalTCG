@@ -1215,6 +1215,20 @@ MonoBehaviour:
     poisonGland: {fileID: 21300000, guid: ebd378fbc2c29904d81849e63962b200, type: 3}
     normalArrows: {fileID: 21300000, guid: 068f735e45ef513469095e56a28e9f38, type: 3}
     poisonArrows: {fileID: 21300000, guid: 068f735e45ef513469095e56a28e9f38, type: 3}
+    ranch: {fileID: 21300000, guid: 82fe00965d1c2e5439afca5424088c1e, type: 3}
+    handyWork: {fileID: 21300000, guid: 77b9979a7b22ee3448f51425d21ddd72, type: 3}
+    foraging: {fileID: 21300000, guid: 1b3533d768e214d429da3d7fa8b3281b, type: 3}
+    gardening: {fileID: 21300000, guid: 3bf0957d2795e4c458914cd16c00aff7, type: 3}
+    watering: {fileID: 21300000, guid: 8e11cb22447657c4683587732852c365, type: 3}
+    mining: {fileID: 21300000, guid: 5861e9939b58b1d4c8f2c1c4c2cc8470, type: 3}
+    lumber: {fileID: 21300000, guid: 5610f40fa1baef546a86ff394d129016, type: 3}
+    transportation: {fileID: 21300000, guid: a34d2287205332e46979e83e591cfb8c, type: 3}
+    medicine: {fileID: 21300000, guid: 72c5509bfa1759b4f8f6dbc9eed28470, type: 3}
+    kindling: {fileID: 21300000, guid: 50da649a0eddda148a89236f3c46e189, type: 3}
+    electric: {fileID: 21300000, guid: c14923db5843fa14c93efa022589fd23, type: 3}
+    freezing: {fileID: 21300000, guid: 465adb8acad18ae4b8abe90363b54004, type: 3}
+    dragon: {fileID: 21300000, guid: 72c5509bfa1759b4f8f6dbc9eed28470, type: 3}
+    bird: {fileID: 21300000, guid: 915a3d967dfd579449f52befdad111be, type: 3}
   player:
     accountName: 
     stats:
@@ -1245,8 +1259,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df7d4908359b9784789e485c2bcc76f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dumudSprites:
-  - {fileID: 21300000, guid: 96aee98dbe11e384e9020a545e12f345, type: 3}
 --- !u!1 &461587024
 GameObject:
   m_ObjectHideFlags: 0

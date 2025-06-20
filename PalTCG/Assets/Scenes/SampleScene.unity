@@ -695,6 +695,20 @@ MonoBehaviour:
     poisonGland: {fileID: 0}
     normalArrows: {fileID: 0}
     poisonArrows: {fileID: 0}
+    ranch: {fileID: 0}
+    handyWork: {fileID: 0}
+    foraging: {fileID: 0}
+    gardening: {fileID: 0}
+    watering: {fileID: 0}
+    mining: {fileID: 0}
+    lumber: {fileID: 0}
+    transportation: {fileID: 0}
+    medicine: {fileID: 0}
+    kindling: {fileID: 0}
+    electric: {fileID: 0}
+    freezing: {fileID: 0}
+    dragon: {fileID: 0}
+    bird: {fileID: 0}
   CardPileBox: {fileID: 1050453569}
   ConfirmationButtons: {fileID: 1348966686}
   TurnText: {fileID: 1083964834}
@@ -4748,7 +4762,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1310579647
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4829,6 +4843,7 @@ MonoBehaviour:
   ItemCounterPrefab: {fileID: 2156338216010435255, guid: 0687843693f39ea468d84cd70bd97fe1, type: 3}
   UsedTraitIcon: {fileID: 1423650074}
   currentAvailableTrait: {fileID: 280161622}
+  negativeTextColor: {r: 1, g: 0, b: 0, a: 1}
   affectedItemIcons: []
 --- !u!1 &1320013879
 GameObject:
