@@ -139,6 +139,9 @@ public class CraftingMenuScript : MonoBehaviour, IPointerEnterHandler, IPointerE
             HandScript.Instance.GatheredItems += recipeSets[currentMenu][selectedRecipe].result;
 
             usedTraits += selectedMenuTrait[currentMenu];
+
+            //Play some sort of animation?
+            ShowAlteredItemValues();
         }
     }
 
