@@ -106,12 +106,13 @@ public class GameManager : MonoBehaviour
     }
 
 
-#region GameStates
+    #region GameStates
     void PlayerPhase()
     {
         HandScript.Instance.state = "default";
         phase = "PlayerTurn";
         TurnText.text = phase;
+        BuildingFunctions.RefreshBuildingUses();
     }
 
     void EnemyPhase()

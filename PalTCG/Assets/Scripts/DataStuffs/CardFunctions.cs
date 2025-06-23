@@ -106,6 +106,16 @@ public class CardEffectCoroutines: MonoBehaviour
 
 public class BuildingFunctions : MonoBehaviour
 {
+    static bool canUseMiningPit;
+    static bool canUseLumberFarm;
+
+    public static void RefreshBuildingUses()
+    {
+        CraftingMenuScript.Instance.RefreshTraitUses();
+        canUseMiningPit = true;
+        canUseLumberFarm = true;
+    }
+
     public static void OpenCraftingBenchMenu()
     {
         CraftingMenuScript.Instance.OpenCraftingMenu(0);
@@ -113,7 +123,24 @@ public class BuildingFunctions : MonoBehaviour
 
     public static void UseMiningPit()
     {
-        HandScript.Instance.GatheredItems.stone += BuildingScript.totalTraits.mining;
+        if(canUseMiningPit && HandScript.Instance.state == "default")
+        {
+            canUseMiningPit = false;
+            HandScript.Instance.GatheredItems.stone += BuildingScript.totalTraits.mining;
+        }
+        else
+            Debug.Log("Already used this turn");
+    }
+
+    public static void UseLumberFarm()
+    {
+        if(canUseLumberFarm && HandScript.Instance.state == "default")
+        {
+            canUseLumberFarm = false;
+            HandScript.Instance.GatheredItems.stone += BuildingScript.totalTraits.lumber;
+        }
+        else
+            Debug.Log("Already used this turn");
     }
 }
 

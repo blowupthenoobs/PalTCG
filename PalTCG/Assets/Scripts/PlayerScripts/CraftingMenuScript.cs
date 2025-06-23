@@ -87,11 +87,9 @@ public class CraftingMenuScript : MonoBehaviour, IPointerEnterHandler, IPointerE
         var usedField = GetAllUsedIntTraits(selectedMenuTrait[currentMenu])[0];
         int count = ((int)(usedField.GetValue(BuildingScript.totalTraits)) - (int)(usedField.GetValue(usedTraits)));
 
-        Debug.Log(usedField.Name);
-
         currentAvailableTrait.text = count.ToString();
 
-        if(count >= 0)
+        if (count >= 0)
             currentAvailableTrait.color = normalTextColor;
         else
             currentAvailableTrait.color = negativeTextColor;
@@ -133,7 +131,7 @@ public class CraftingMenuScript : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     public void CraftSelectedRecipe()
     {
-        if ((HandScript.Instance.GatheredItems >= recipeSets[currentMenu][selectedRecipe].cost) && ((BuildingScript.totalTraits - usedTraits) >= selectedMenuTrait[currentMenu]))
+        if ((HandScript.Instance.GatheredItems >= recipeSets[currentMenu][selectedRecipe].cost) && ((BuildingScript.totalTraits - usedTraits) >= selectedMenuTrait[currentMenu]) && HandScript.Instance.state == "default")
         {
             HandScript.Instance.GatheredItems -= recipeSets[currentMenu][selectedRecipe].cost;
             HandScript.Instance.GatheredItems += recipeSets[currentMenu][selectedRecipe].result;
@@ -147,13 +145,13 @@ public class CraftingMenuScript : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     public void CloseCraftingMenu()
     {
-        while(affectedItemIcons.Count > 0)
+        while (affectedItemIcons.Count > 0)
         {
             Destroy(affectedItemIcons[0]);
             affectedItemIcons.RemoveAt(0);
         }
 
-        while(currentRecipeList.Count > 0)
+        while (currentRecipeList.Count > 0)
         {
             Destroy(currentRecipeList[0]);
             currentRecipeList.RemoveAt(0);
@@ -219,14 +217,14 @@ public class CraftingMenuScript : MonoBehaviour, IPointerEnterHandler, IPointerE
 
         currentAvailableTrait.text = count.ToString();
 
-        if(count >= 0)
+        if (count >= 0)
             currentAvailableTrait.color = normalTextColor;
         else
             currentAvailableTrait.color = negativeTextColor;
-        
+
 
         var itemChanges = (recipeSets[currentMenu][selectedRecipe].result - recipeSets[currentMenu][selectedRecipe].cost);
-        foreach(GameObject icon in affectedItemIcons)
+        foreach (GameObject icon in affectedItemIcons)
         {
             icon.SendMessage("ShowAlteredValue", itemChanges);
         }
@@ -239,11 +237,11 @@ public class CraftingMenuScript : MonoBehaviour, IPointerEnterHandler, IPointerE
 
         currentAvailableTrait.text = count.ToString();
 
-        if(count >= 0)
+        if (count >= 0)
             currentAvailableTrait.color = normalTextColor;
         else
             currentAvailableTrait.color = negativeTextColor;
-        
+
 
         foreach (GameObject icon in affectedItemIcons)
         {
@@ -270,13 +268,18 @@ public class CraftingMenuScript : MonoBehaviour, IPointerEnterHandler, IPointerE
         {
             var value = field.GetValue(traitList);
 
-            if(value is int)
+            if (value is int)
             {
-                if((int)value > 0)
+                if ((int)value > 0)
                     allUsedTraits.Add(field);
             }
         }
 
         return allUsedTraits;
+    }
+
+    public void RefreshTraitUses()
+    {
+        usedTraits = new Traits();
     }
 }
