@@ -40,6 +40,11 @@ public class EnemyPalCardScript : MonoBehaviour
         transform.parent.GetComponent<EnemyPalSphereScript>().opponentMirror.RPC("HurtHeldCard", RpcTarget.Others, damage);
         // Debug.Log("took " + damage + " damage");
     }
+
+    public void SendRestEffect()
+    {
+        opponentMirror.RPC("Rest", RpcTarget.Others);
+    }
     
     public void Rest()
     {

@@ -59,6 +59,10 @@ MonoBehaviour:
   - AfterBlockActions
   - HeldUnitDeath
   - BreakPalSphere
+  - OpponentDeath
+  - SetUpCard
+  - Hurt
+  - EffectRest
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

@@ -131,12 +131,6 @@ public class EnemyPalSphereScript : MonoBehaviour
         heldCard.SendMessage("Rest");
     }
 
-
-    public void SendRestEffect()
-    {
-        opponentMirror.RPC("Rest", RpcTarget.Others);
-    }
-
     [PunRPC]
     public void Wake()
     {

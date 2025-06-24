@@ -41,6 +41,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public GameObject blocker;
 
     //Board References
+    public GameObject playerCard;
     public List<GameObject> cardSlots = new List<GameObject>();
     public GameObject playerDrawPile;
     public GameObject playerDiscardPile;
@@ -368,23 +369,5 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         return false;
     }
-
-    // public int CheckBoardTraitCount(string fieldName)
-    // {
-    //     var fields = typeof(Traits).GetFields();
-
-    //     foreach(var field in fields)
-    //     {
-    //         var valueA = field.GetValue(a);
-    //         var valueB = field.GetValue(b);
-
-    //         if((int)valueA >= (int)valueB)
-    //             return false;
-    //     }
-
-    //     return true;
-    // }
-
-
 #endregion
 }

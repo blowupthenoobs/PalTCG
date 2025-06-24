@@ -78,7 +78,7 @@ public class StatusEffects: MonoBehaviour
     {
         for(int i = 0; i < HandScript.Instance.selection.Count; i++)
         {
-            HandScript.Instance.selection[i].transform.parent.SendMessage("SendRestEffect");
+            HandScript.Instance.selection[i].SendMessage("SendRestEffect");
             HandScript.Instance.selection[i].SendMessage("Deselect");
         }
     }

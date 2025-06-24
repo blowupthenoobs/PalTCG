@@ -608,7 +608,7 @@ namespace DefaultUnitData
             }
         }
 
-        public Sprite LookForPlayerArt(string artName)
+        public static Sprite LookForPlayerArt(string artName)
         {
             switch (artName)
             {
@@ -651,7 +651,7 @@ namespace DefaultUnitData
                     break;
                 case "h":
                     data = (PalCardData)ScriptableObject.CreateInstance(typeof(PalCardData));
-                    data.cardArt = new Pals().LookForPlayerArt(dataParts[1]);
+                    data.cardArt = LookForPlayerArt(dataParts[1]);
                     break;
             }
 

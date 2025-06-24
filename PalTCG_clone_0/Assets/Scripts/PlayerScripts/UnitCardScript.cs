@@ -14,7 +14,7 @@ public class UnitCardScript : MonoBehaviour
     public CardData cardData;
     public Color normalColor; //Probably Temp
     public Color selectColor;
-    [SerializeField] TMP_Text health;
+    [SerializeField] protected TMP_Text health;
     [HideInInspector] public PhotonView opponentMirror;
 
 
@@ -196,6 +196,7 @@ public class UnitCardScript : MonoBehaviour
         if(cardData.traits.tank)
             Wake();
     }
+
     protected virtual void Die()
     {
         Debug.Log("Unit is now dead :(");
