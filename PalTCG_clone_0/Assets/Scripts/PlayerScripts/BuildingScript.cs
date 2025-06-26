@@ -32,7 +32,7 @@ public class BuildingScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         progressBar.fillAmount = (float)(heldTime / data.timeToHold);
 
-        if((heldTime >= data.timeToHold) && (data.timeToHold > 0))
+        if((heldTime >= data.timeToHold) && (data.timeToHold > 0) && Input.GetMouseButtonUp(0))
         {
             heldTime = 0;
             data.buildingFunction.Invoke();

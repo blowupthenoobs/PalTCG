@@ -11,7 +11,7 @@ public class BaseScript : MonoBehaviour
     public void CreateBuilding(string buildingName)
     {
         buildings.Add(Instantiate(buildingPrefab, transform.position, transform.rotation));
-        buildings[buildings.Count - 1].transform.parent = gameObject.transform;
+        buildings[buildings.Count - 1].transform.SetParent(gameObject.transform);
 
         buildings[buildings.Count - 1].GetComponent<BuildingScript>().data.SetUpBuilding(buildingName, buildings[buildings.Count - 1]);
     }

@@ -25,7 +25,7 @@ public class CardScript : MonoBehaviour
     
     public void Select()
     {
-        if(!cancelSelect && HandScript.Instance.state != "")
+        if(!cancelSelect && (HandScript.Instance.state == "default" || HandScript.Instance.state == "buildingPay"))
         {
             image.color = selectColor;
             HandScript.Instance.Select(gameObject);

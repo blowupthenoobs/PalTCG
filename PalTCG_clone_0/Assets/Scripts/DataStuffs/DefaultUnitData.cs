@@ -38,6 +38,10 @@ namespace DefaultUnitData
         public List<Sprite> fuddler;
         public List<Sprite> dumud;
 
+        [Header("Tools")]
+        public List<Sprite> pickaxe;
+        public List<Sprite> axe;
+
         [Header("Icons")]
         public Sprite wood;
         public Sprite stone;
@@ -148,6 +152,26 @@ namespace DefaultUnitData
             OnPlay: new List<UnityAction>(),
             PalSkill: new List<UnityAction>()
         );
+
+        public CardAbilities pickaxe = new CardAbilities
+        (
+            OnDestroy: new List<UnityAction>(),
+            WhenAttack: new List<UnityAction>(),
+            OnAttack: new List<UnityAction>(),
+            OnHurt: new List<UnityAction>(),
+            OnPlay: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>()
+        );
+
+        public CardAbilities axe = new CardAbilities
+        (
+            OnDestroy: new List<UnityAction>(),
+            WhenAttack: new List<UnityAction>(),
+            OnAttack: new List<UnityAction>(),
+            OnHurt: new List<UnityAction>(),
+            OnPlay: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>()
+        );
     }
 
     [System.Serializable]
@@ -196,7 +220,27 @@ namespace DefaultUnitData
         }
     }
 
+    [System.Serializable]
+    public struct DefaultTool
+    {
+        public resources cost;
+        public Traits traits;
+        public int attackPower;
+        public int maxHp;
+        public List<Sprite> cardArt;
+        public CardAbilities abilities;
 
+        public DefaultTool(resources cost, Traits traits, int attackPower, int maxHp, List<Sprite> cardArt, CardAbilities abilities)
+        {
+            this.cost = cost;
+            this.traits = traits;
+            this.attackPower = attackPower;
+            this.maxHp = maxHp;
+            this.cardArt = cardArt;
+            this.abilities = abilities;
+        }
+
+    }
     [System.Serializable]
     public struct BuildingPreset
     {
@@ -548,6 +592,36 @@ namespace DefaultUnitData
         );
 
         #endregion EarthPals
+
+        #region Tools
+        public DefaultTool Pickaxe = new DefaultTool
+        (
+            cost: new resources{wood = 2, stone = 2},
+            traits: new Traits
+            (
+                ranch: 0,
+                handyWork: 0,
+                foraging: 0,
+                gardening: 0,
+                watering: 0,
+                mining: 2,
+                lumber: 0,
+                transportation: 0,
+                medicine: 0,
+                kindling: 0,
+                electric: 0,
+                freezing: 0,
+                dragon: 0,
+                bird: false,
+                blocker: false,
+                tank: false
+            ),
+            attackPower: 2,
+            maxHp: 2,
+            cardArt: AccountManager.Instance.CardSprites.axe,
+            abilities: AccountManager.Instance.PalAbilities.axe
+        );
+        #endregion
 
         #region Buildings
         public BuildingPreset craftingBench = new BuildingPreset

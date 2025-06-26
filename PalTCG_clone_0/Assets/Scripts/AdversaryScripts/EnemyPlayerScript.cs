@@ -117,7 +117,6 @@ public class EnemyPlayerScript : MonoBehaviour
     [PunRPC]
     public void UpdateHealth(int newHealth)
     {
-        Debug.Log("called");
         health.text = newHealth.ToString();
     }
 

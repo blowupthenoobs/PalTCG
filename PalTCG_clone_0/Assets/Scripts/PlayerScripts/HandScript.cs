@@ -39,6 +39,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public List<GameObject> raid = new List<GameObject>();
     public List<GameObject> attackers = new List<GameObject>();
     public GameObject blocker;
+    public bool targetWasNull;
 
     //Board References
     public GameObject playerCard;
@@ -194,11 +195,12 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             readyForNextAttackAction = false;
             attackers[i].SendMessage("Attack");
             yield return new WaitUntil(() => currentAttacker == null);
-            attackers[i].SendMessage("Rest");
+            if (!targetWasNull)
+                attackers[i].SendMessage("Rest");
 
-            if(blocker != null)
+            if (blocker != null)
             {
-                blocker.transform.parent.SendMessage("SendRestEffect");
+                blocker.SendMessage("SendRestEffect");
                 blockList.Add(blocker);
             }
             blocker = null;
@@ -221,6 +223,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         //Mirror thing for attackers with blockers
 
         selected = null;
+        state = "choosingAttack";
     }
 
     [PunRPC]

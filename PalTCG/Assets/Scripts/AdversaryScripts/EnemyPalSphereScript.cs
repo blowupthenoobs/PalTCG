@@ -68,7 +68,7 @@ public class EnemyPalSphereScript : MonoBehaviour
         GameManager.Instance.HideConfirmationButtons();
         heldCard.SendMessage("Deselect");
 
-        HandScript.Instance.state = "choosingAttack";
+        HandScript.Instance.state = "runningAttacks";
     }
 
     [PunRPC]

@@ -16,9 +16,11 @@ public class PlayerCardScript : UnitCardScript
         opponentMirror.RPC("UpdateHealth", RpcTarget.OthersBuffered, data.currentHp);
         opponentMirror.RPC("SetUpCard", RpcTarget.OthersBuffered, data.cardID);
         cardData = data;
+
+        SetUpBasicTurnEvents();
     }
 
-    protected virtual void Die()
+    protected override void Die()
     {
         Debug.Log("You lose");
         opponentMirror.RPC("OpponentDeath", RpcTarget.Others);

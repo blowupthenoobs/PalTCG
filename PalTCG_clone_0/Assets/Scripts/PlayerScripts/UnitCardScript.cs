@@ -92,7 +92,7 @@ public class UnitCardScript : MonoBehaviour
 
         if(cardData.WhenAttack != null)
         {
-            for (int i = 0; i < cardData.WhenAttack.Count; i++)
+            for(int i = 0; i < cardData.WhenAttack.Count; i++)
             {
                 cardData.WhenAttack[i].Invoke();
                 yield return new WaitUntil(() => readyForNextAttackAction);
@@ -100,11 +100,14 @@ public class UnitCardScript : MonoBehaviour
             }
         }
 
-        target.SendMessage("Hurt", cardData.currentAtk);
+        if(target != null)
+            target.SendMessage("Hurt", cardData.currentAtk);
+        else
+            HandScript.Instance.targetWasNull = true;
 
-        if(cardData.OnAttack != null)
+        if (cardData.OnAttack != null)
         {
-            for (int i = 0; i < cardData.OnAttack.Count; i++)
+            for(int i = 0; i < cardData.OnAttack.Count; i++)
             {
                 cardData.OnAttack[i].Invoke();
                 yield return new WaitUntil(() => readyForNextAttackAction);
