@@ -20,6 +20,7 @@ public class BaseScript : MonoBehaviour
     {
         CreateBuilding("craftingBench");
         CreateBuilding("miningPit");
+        CreateBuilding("loggingCamp");
 
         BuildingScript.totalTraits = new Traits
         (

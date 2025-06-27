@@ -224,16 +224,20 @@ namespace DefaultUnitData
     public struct DefaultTool
     {
         public resources cost;
+        public string toolType;
         public Traits traits;
+        public int size;
         public int attackPower;
         public int maxHp;
         public List<Sprite> cardArt;
         public CardAbilities abilities;
 
-        public DefaultTool(resources cost, Traits traits, int attackPower, int maxHp, List<Sprite> cardArt, CardAbilities abilities)
+        public DefaultTool(resources cost, string toolType, Traits traits, int size, int attackPower, int maxHp, List<Sprite> cardArt, CardAbilities abilities)
         {
             this.cost = cost;
+            this.toolType = toolType;
             this.traits = traits;
+            this.size = size;
             this.attackPower = attackPower;
             this.maxHp = maxHp;
             this.cardArt = cardArt;
@@ -302,6 +306,56 @@ namespace DefaultUnitData
         }
 
         public static bool operator !=(PalData left, PalData right)
+        {
+            return !(left == right);
+        }
+    }
+
+    public struct ToolData
+    {
+        public string cardID;
+        public string toolType;
+        public resources cost;
+        public Traits traits;
+        public int size;
+        public int attackPower;
+        public int maxHp;
+        public Sprite cardArt;
+        public CardAbilities abilities;
+
+        public ToolData(DefaultTool originalData, int artIndex, string cardID)
+        {
+            this.cardID = cardID;
+            this.toolType = originalData.toolType;
+            this.cost = originalData.cost;
+            this.traits = originalData.traits;
+            this.size = originalData.size;
+            this.attackPower = originalData.attackPower;
+            this.maxHp = originalData.maxHp;
+            this.abilities = originalData.abilities;
+            this.cardArt = originalData.cardArt[artIndex];
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(obj is ToolData otherData)
+            {
+                return this.cardID == otherData.cardID;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+           return cardID?.GetHashCode() ?? 0;
+        }
+
+        public static bool operator ==(ToolData left, ToolData right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(ToolData left, ToolData right)
         {
             return !(left == right);
         }
@@ -594,9 +648,10 @@ namespace DefaultUnitData
         #endregion EarthPals
 
         #region Tools
-        public DefaultTool Pickaxe = new DefaultTool
+        public DefaultTool pickaxe = new DefaultTool
         (
-            cost: new resources{wood = 2, stone = 2},
+            cost: new resources { wood = 2, stone = 2 },
+            toolType: "weapon",
             traits: new Traits
             (
                 ranch: 0,
@@ -616,6 +671,37 @@ namespace DefaultUnitData
                 blocker: false,
                 tank: false
             ),
+            size: 1,
+            attackPower: 2,
+            maxHp: 2,
+            cardArt: AccountManager.Instance.CardSprites.pickaxe,
+            abilities: AccountManager.Instance.PalAbilities.pickaxe
+        );
+
+        public DefaultTool axe = new DefaultTool
+        (
+            cost: new resources { wood = 2, stone = 2 },
+            toolType: "weapon",
+            traits: new Traits
+            (
+                ranch: 0,
+                handyWork: 0,
+                foraging: 0,
+                gardening: 0,
+                watering: 0,
+                mining: 0,
+                lumber: 2,
+                transportation: 0,
+                medicine: 0,
+                kindling: 0,
+                electric: 0,
+                freezing: 0,
+                dragon: 0,
+                bird: false,
+                blocker: false,
+                tank: false
+            ),
+            size: 1,
             attackPower: 2,
             maxHp: 2,
             cardArt: AccountManager.Instance.CardSprites.axe,
