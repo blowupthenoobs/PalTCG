@@ -687,6 +687,8 @@ MonoBehaviour:
     daedream: []
     fuddler: []
     dumud: []
+    pickaxe: []
+    axe: []
     wood: {fileID: 0}
     stone: {fileID: 0}
     paldium: {fileID: 0}
@@ -2038,7 +2040,8 @@ MonoBehaviour:
   readyspot: {fileID: 429631083}
   readyCards: []
   isPlayerSide: 0
-  cardPrefab: {fileID: 3607679034451322415, guid: 979d1c1f96e181b4a8543ed23ce7226b, type: 3}
+  PalCardPrefab: {fileID: 3607679034451322415, guid: 979d1c1f96e181b4a8543ed23ce7226b, type: 3}
+  ToolCardPrefab: {fileID: 3607679034451322415, guid: 979d1c1f96e181b4a8543ed23ce7226b, type: 3}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2685,6 +2688,9 @@ GameObject:
   - component: {fileID: 657195494}
   - component: {fileID: 657195496}
   - component: {fileID: 657195495}
+  - component: {fileID: 657195497}
+  - component: {fileID: 657195499}
+  - component: {fileID: 657195498}
   m_Layer: 5
   m_Name: Ride (OP)
   m_TagString: Untagged
@@ -2749,6 +2755,102 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 657195493}
   m_CullTransparentMesh: 1
+--- !u!114 &657195497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657195493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf58d9ea73b120749bb7041a0c079bf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  opponentMirror: {fileID: 712774005}
+  waitingSpace: {fileID: 491062616}
+  cardPrefab: {fileID: 3607679034451322415, guid: 979d1c1f96e181b4a8543ed23ce7226b, type: 3}
+  heldCard: {fileID: 0}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  brokenColor: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
+--- !u!114 &657195498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657195493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 20
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &657195499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657195493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 657195495}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 657195497}
+        m_TargetAssemblyTypeName: EnemyPalSphereScript, Assembly-CSharp
+        m_MethodName: SelectAsTarget
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &689697788
 GameObject:
   m_ObjectHideFlags: 0
@@ -2835,6 +2937,9 @@ GameObject:
   - component: {fileID: 695658191}
   - component: {fileID: 695658193}
   - component: {fileID: 695658192}
+  - component: {fileID: 695658194}
+  - component: {fileID: 695658195}
+  - component: {fileID: 695658196}
   m_Layer: 5
   m_Name: Weapon
   m_TagString: Untagged
@@ -2899,6 +3004,101 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 695658190}
   m_CullTransparentMesh: 1
+--- !u!114 &695658194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695658190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d272550edba7a6047b796a5569bbfc90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotType: weapon
+  opponentMirror: {fileID: 2128291646}
+  waitingSpace: {fileID: 1375381342}
+  cardPrefab: {fileID: 2608142742448742569, guid: 3dc515fd73da019468280f1b839f5fe8, type: 3}
+  heldCard: {fileID: 0}
+--- !u!114 &695658195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695658190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 695658192}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 695658194}
+        m_TargetAssemblyTypeName: ToolSlotScript, Assembly-CSharp
+        m_MethodName: CheckForCard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &695658196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695658190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 22
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &712773999
 GameObject:
   m_ObjectHideFlags: 0
@@ -2910,6 +3110,9 @@ GameObject:
   - component: {fileID: 712774000}
   - component: {fileID: 712774002}
   - component: {fileID: 712774001}
+  - component: {fileID: 712774003}
+  - component: {fileID: 712774004}
+  - component: {fileID: 712774005}
   m_Layer: 5
   m_Name: Ride
   m_TagString: Untagged
@@ -2974,6 +3177,101 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 712773999}
   m_CullTransparentMesh: 1
+--- !u!114 &712774003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712773999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d272550edba7a6047b796a5569bbfc90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotType: ride
+  opponentMirror: {fileID: 657195498}
+  waitingSpace: {fileID: 1375381342}
+  cardPrefab: {fileID: 2608142742448742569, guid: 3dc515fd73da019468280f1b839f5fe8, type: 3}
+  heldCard: {fileID: 0}
+--- !u!114 &712774004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712773999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 712774001}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 712774003}
+        m_TargetAssemblyTypeName: ToolSlotScript, Assembly-CSharp
+        m_MethodName: CheckForCard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &712774005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712773999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 21
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &723833783
 GameObject:
   m_ObjectHideFlags: 0
@@ -3436,6 +3734,7 @@ MonoBehaviour:
   raid: []
   attackers: []
   blocker: {fileID: 0}
+  targetWasNull: 0
   playerCard: {fileID: 1046175274}
   cardSlots:
   - {fileID: 1730808581}
@@ -3802,6 +4101,7 @@ MonoBehaviour:
   health: {fileID: 326978157}
   opponentMirror: {fileID: 1165730012}
   resting: 0
+  statuses: {fileID: 0}
   photonAssigner: {fileID: 1165730012}
 --- !u!114 &1046175279
 MonoBehaviour:
@@ -5557,7 +5857,8 @@ MonoBehaviour:
   readyspot: {fileID: 858231556}
   readyCards: []
   isPlayerSide: 1
-  cardPrefab: {fileID: 2608142742448742569, guid: def5710fa1ea5d84092d2431f3ff57d1, type: 3}
+  PalCardPrefab: {fileID: 2608142742448742569, guid: def5710fa1ea5d84092d2431f3ff57d1, type: 3}
+  ToolCardPrefab: {fileID: 2608142742448742569, guid: 3dc515fd73da019468280f1b839f5fe8, type: 3}
 --- !u!114 &1375381347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8083,6 +8384,9 @@ GameObject:
   - component: {fileID: 2128291642}
   - component: {fileID: 2128291644}
   - component: {fileID: 2128291643}
+  - component: {fileID: 2128291645}
+  - component: {fileID: 2128291647}
+  - component: {fileID: 2128291646}
   m_Layer: 5
   m_Name: Weapon (OP)
   m_TagString: Untagged
@@ -8147,6 +8451,102 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2128291641}
   m_CullTransparentMesh: 1
+--- !u!114 &2128291645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2128291641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf58d9ea73b120749bb7041a0c079bf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  opponentMirror: {fileID: 695658196}
+  waitingSpace: {fileID: 491062616}
+  cardPrefab: {fileID: 3607679034451322415, guid: 979d1c1f96e181b4a8543ed23ce7226b, type: 3}
+  heldCard: {fileID: 0}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  brokenColor: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
+--- !u!114 &2128291646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2128291641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 19
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &2128291647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2128291641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 2128291643}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2128291645}
+        m_TargetAssemblyTypeName: EnemyPalSphereScript, Assembly-CSharp
+        m_MethodName: SelectAsTarget
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &8171347353093411481
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1207,6 +1207,10 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 9666d354da221a649bb652c001d07498, type: 3}
     dumud:
     - {fileID: 21300000, guid: 96aee98dbe11e384e9020a545e12f345, type: 3}
+    pickaxe:
+    - {fileID: 21300000, guid: e43b195f41e2ba449b2db0543db0b9f8, type: 3}
+    axe:
+    - {fileID: 21300000, guid: 605d9918240dd5b49b0a52d42b56aa4e, type: 3}
     wood: {fileID: 21300000, guid: 6e8274d06c7cde44ab9ab4697c056103, type: 3}
     stone: {fileID: 21300000, guid: 5861e9939b58b1d4c8f2c1c4c2cc8470, type: 3}
     paldium: {fileID: 21300000, guid: c3bcded0eb80f33478ce3b3e9a766e9b, type: 3}

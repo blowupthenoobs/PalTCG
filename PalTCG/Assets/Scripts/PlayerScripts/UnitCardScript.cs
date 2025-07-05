@@ -31,6 +31,8 @@ public class UnitCardScript : MonoBehaviour
     //Coroutine Checks
     private bool readyForNextAttackAction;
 
+    [SerializeField] StatusEffects statuses;
+
 
     void Awake()
     {
@@ -46,15 +48,20 @@ public class UnitCardScript : MonoBehaviour
         image.sprite = cardData.cardArt;
         cardData.currentHp = cardData.maxHp;
         health.text = cardData.currentHp.ToString();
+    }
+
+    public void PlaceOnSpot()
+    {
         opponentMirror.RPC("UpdateHealth", RpcTarget.Others, cardData.currentHp);
         GiveTraitsToBuildings();
+        SetUpBasicTurnEvents();
     }
 
     public void Hurt(int dmg)
     {
         cardData.currentHp -= dmg;
 
-        if(cardData.currentHp <= 0)
+        if (cardData.currentHp <= 0)
             Die();
 
         health.text = cardData.currentHp.ToString();
@@ -202,12 +209,21 @@ public class UnitCardScript : MonoBehaviour
 
     protected virtual void Die()
     {
-        Debug.Log("Unit is now dead :(");
         HandScript.Instance.playerDiscardPile.SendMessage("DiscardCard", cardData);
         opponentMirror.RPC("HeldUnitDeath", RpcTarget.Others);
+        RemoveFromSphere();
+    }
+
+    protected virtual void RemoveFromSphere()
+    {
         RemoveCardEventsFromManager();
         RemoveTraitsFromBuilding();
         Destroy(gameObject);
+    }
+
+    public virtual void SendToPalBox()
+    {
+        Die();
     }
 
     public void Deselect()

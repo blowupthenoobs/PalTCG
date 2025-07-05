@@ -117,6 +117,16 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 }
 
                 break;
+            case "lookingForSlot":
+                if(card.GetComponent<ToolSlotScript>() != null)
+                {
+                    selection.Clear();
+                    selection.Add(card);
+
+                    updateSelection.Invoke();
+                }
+
+                break;
             case "choosingAttack":
                 selected = card;
                 state = "targeting";
@@ -156,7 +166,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 }
                 break;
             default:
-                Debug.Log("invalid state");
+                Debug.Log("invalid state: " + state);
                 break;
         }
 
@@ -167,12 +177,15 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         if(selected != null)
             selected.SendMessage("Deselect");
         selected = null;
-        UnselectSelection();
+
+        // Debug.Log(selection[0]);
+        if(selection.Count > 0)
+            UnselectSelection();
     }
 
     public void UnselectSelection()
     {
-        while (selection.Count > 0)
+        while(selection.Count > 0)
         {
             selection[0].SendMessage("Deselect");
             selection.RemoveAt(0);
@@ -197,7 +210,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             yield return new WaitUntil(() => currentAttacker == null);
             if (!targetWasNull)
                 attackers[i].SendMessage("Rest");
-
+            targetWasNull = false;
             if (blocker != null)
             {
                 blocker.SendMessage("SendRestEffect");

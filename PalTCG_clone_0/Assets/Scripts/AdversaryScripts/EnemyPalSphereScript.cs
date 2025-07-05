@@ -79,21 +79,39 @@ public class EnemyPalSphereScript : MonoBehaviour
     }
 
     [PunRPC]
-    void CreateCard(string palType)
+    void CreateCard(string cardString)
     {
-        var data = (PalCardData)Pals.ConvertToCardData(palType);
+        var data = Pals.ConvertToCardData(cardString);
 
-        if(data.size <= 1)
+        if(data is PalCardData palData)
         {
-            heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
-            PlaceCard(heldCard);
+            if (palData.size <= 1)
+            {
+                heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
+                PlaceCard(heldCard);
 
-            heldCard.SendMessage("SetUpCard", data);
+                heldCard.SendMessage("SetUpCard", palData);
+            }
+            else
+            {
+                waitingSpace.SendMessage("AddToWaitlist", palData);
+            }
         }
-        else
+        else if(data is ToolCardData toolData)
         {
-            waitingSpace.SendMessage("AddToWaitlist", data);
+            if (toolData.size <= 1)
+            {
+                heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
+                PlaceCard(heldCard);
+
+                heldCard.SendMessage("SetUpCard", toolData);
+            }
+            else
+            {
+                waitingSpace.SendMessage("AddToWaitlist", toolData);
+            }
         }
+        
     }
 
     void PlaceCard(GameObject card)

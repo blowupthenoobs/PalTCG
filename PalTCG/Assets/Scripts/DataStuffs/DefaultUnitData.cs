@@ -727,7 +727,7 @@ namespace DefaultUnitData
         public BuildingPreset loggingCamp = new BuildingPreset
         (
             cardArt: AccountManager.Instance.CardSprites.loggingCamp,
-            buildingFunction: null, //Need to make a place to store it in the abilities script
+            buildingFunction: BuildingFunctions.UseLumberFarm,
             timeToHold: 2.0f
         );
 
@@ -765,6 +765,21 @@ namespace DefaultUnitData
                 default:
                     Debug.Log("doesn't have assigned pal");
                     return new PalData(cattiva, artIndex, "p/cattiva/" + artIndex.ToString());
+            }
+        }
+
+        public ToolData FindToolData(string toolName, int artIndex)
+        {
+            string cardID = "t/" + toolName + "/" + artIndex.ToString();
+            switch (toolName)
+            {
+                case "pickaxe":
+                    return new ToolData(pickaxe, artIndex, cardID);
+                case "axe":
+                    return new ToolData(axe, artIndex, cardID);
+                default:
+                    Debug.Log("doesn't have assigned tool:" + toolName);
+                    return new ToolData(pickaxe, artIndex, "t/pickaxe/" + artIndex.ToString());
             }
         }
 
@@ -807,7 +822,8 @@ namespace DefaultUnitData
                     ((PalCardData)data).DecomposeData(new Pals().FindPalData(dataParts[1], int.Parse(dataParts[2])));
                     break;
                 case "t":
-                    Debug.Log("look for items");
+                    data = (ToolCardData)ScriptableObject.CreateInstance(typeof(ToolCardData));
+                    ((ToolCardData)data).DecomposeData(new Pals().FindToolData(dataParts[1], int.Parse(dataParts[2])));
                     break;
                 case "h":
                     data = (PalCardData)ScriptableObject.CreateInstance(typeof(PalCardData));

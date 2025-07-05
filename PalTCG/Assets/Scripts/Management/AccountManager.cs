@@ -28,6 +28,8 @@ public class AccountManager : MonoBehaviour
             Debug.Log("created new account");
             player = new Account();
         }
+
+        ToolSlotScript.allToolSlots.Clear();
     }
 
     private void OnApplicationQuit()

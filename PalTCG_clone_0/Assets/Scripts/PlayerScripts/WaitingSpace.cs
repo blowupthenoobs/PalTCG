@@ -22,23 +22,27 @@ public class WaitingSpace : MonoBehaviour
     [SerializeField] bool isPlayerSide;
 
 
-    [SerializeField] GameObject cardPrefab;
+    [SerializeField] GameObject PalCardPrefab;
+    [SerializeField] GameObject ToolCardPrefab;
 
     void Start() //Do this first to garuentee that GameManager has a value as start happens after awake
     {
-        if(isPlayerSide)
+        if (isPlayerSide)
             GameManager.Instance.StartPlayerTurn += MoveWaitlist;
         else
             GameManager.Instance.StartEnemyTurn += MoveWaitlist;
     }
 
     [PunRPC]
-    public void CreateCardForWaitlist(string palType)
+    public void CreateCardForWaitlist(string cardType)
     {
-        var data = (PalCardData)Pals.ConvertToCardData(palType);
+        var data = Pals.ConvertToCardData(cardType);
 
-        AddToWaitlist(data);
-
+        if(data is PalCardData)
+            AddToWaitlist((PalCardData)data);
+        if(data is ToolCardData)
+            AddToWaitlist((ToolCardData)data);
+            
         //RemoveCards from opponent hand?
     }
 
@@ -46,42 +50,79 @@ public class WaitingSpace : MonoBehaviour
     {
         int size = data.size;
 
-        var heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
+        var heldCard = Instantiate(PalCardPrefab, transform.position, transform.rotation);
 
-        if(size <= 1)
+        if (size <= 1)
         {
             heldCard.transform.position = readyspot.transform.position;
             heldCard.transform.SetParent(readyspot.transform);
             readyCards.Add(heldCard);
 
-            if(isPlayerSide)
+            if (isPlayerSide)
                 heldCard.SendMessage("ReadyToBePlaced");
         }
-        else if(size == 2)
+        else if (size == 2)
         {
             heldCard.transform.position = waiting1.transform.position;
             heldCard.transform.SetParent(waiting1.transform);
             TurnsTillReady1.Add(heldCard);
         }
-        else if(size == 3)
+        else if (size == 3)
         {
             heldCard.transform.position = waiting2.transform.position;
             heldCard.transform.SetParent(waiting2.transform);
             TurnsTillReady2.Add(heldCard);
         }
-        else if(size == 4)
+        else if (size == 4)
         {
             heldCard.transform.position = waiting3.transform.position;
             heldCard.transform.SetParent(waiting3.transform);
             TurnsTillReady3.Add(heldCard);
         }
-        
+
+        heldCard.SendMessage("SetUpCard", data);
+    }
+
+    public void AddToWaitlist(ToolCardData data)
+    {
+        int size = data.size;
+
+        var heldCard = Instantiate(ToolCardPrefab, transform.position, transform.rotation);
+
+        if (size <= 1)
+        {
+            heldCard.transform.position = readyspot.transform.position;
+            heldCard.transform.SetParent(readyspot.transform);
+            readyCards.Add(heldCard);
+
+            if (isPlayerSide)
+                heldCard.SendMessage("ReadyToBePlaced");
+        }
+        else if (size == 2)
+        {
+            heldCard.transform.position = waiting1.transform.position;
+            heldCard.transform.SetParent(waiting1.transform);
+            TurnsTillReady1.Add(heldCard);
+        }
+        else if (size == 3)
+        {
+            heldCard.transform.position = waiting2.transform.position;
+            heldCard.transform.SetParent(waiting2.transform);
+            TurnsTillReady2.Add(heldCard);
+        }
+        else if (size == 4)
+        {
+            heldCard.transform.position = waiting3.transform.position;
+            heldCard.transform.SetParent(waiting3.transform);
+            TurnsTillReady3.Add(heldCard);
+        }
+
         heldCard.SendMessage("SetUpCard", data);
     }
 
     void MoveWaitlist()
     {
-        while(TurnsTillReady1.Count > 0)
+        while (TurnsTillReady1.Count > 0)
         {
             TurnsTillReady1[0].transform.SetParent(readyspot.transform);
             TurnsTillReady1[0].SendMessage("ReadyToBePlaced");
@@ -89,19 +130,35 @@ public class WaitingSpace : MonoBehaviour
             TurnsTillReady1.RemoveAt(0);
         }
 
-        while(TurnsTillReady2.Count > 0)
+        while (TurnsTillReady2.Count > 0)
         {
             TurnsTillReady2[0].transform.SetParent(waiting1.transform);
             TurnsTillReady1.Add(TurnsTillReady2[0]);
             TurnsTillReady2.RemoveAt(0);
         }
 
-        while(TurnsTillReady3.Count > 0)
+        while (TurnsTillReady3.Count > 0)
         {
             TurnsTillReady3[0].transform.SetParent(waiting2.transform);
             TurnsTillReady2.Add(TurnsTillReady3[0]);
             TurnsTillReady3.RemoveAt(0);
         }
+    }
+
+    public void AddToReadySpot(GameObject newCard)
+    {
+        newCard.transform.position = readyspot.transform.position;
+        newCard.transform.SetParent(readyspot.transform);
+
+        if (!readyCards.Contains(newCard))
+        {
+            readyCards.Add(newCard);
+
+            if (isPlayerSide)
+                newCard.SendMessage("ReadyToBePlaced");
+        }
+
+        HandScript.Instance.state = "default";
     }
 
     public void CheckForCard()
@@ -110,48 +167,71 @@ public class WaitingSpace : MonoBehaviour
         {
             if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
             {
-                GameManager.Instance.ShowConfirmationButtons();
-                HandScript.Instance.state = "buildingPay";
-                HandScript.Instance.Raise();
-                HandScript.Instance.updateSelection += VerifyButtons;
-                ConfirmationButtons.Instance.Confirmed += PlaceCard;
-                ConfirmationButtons.Instance.Denied += Disengage;
+                if(HandScript.Instance.selected.GetComponent<CardScript>().cardData is PalCardData)
+                {
+                    GameManager.Instance.ShowConfirmationButtons();
+                    HandScript.Instance.state = "buildingPay";
+                    HandScript.Instance.Raise();
+                    HandScript.Instance.updateSelection += VerifyButtonsForPalCard;
+                    ConfirmationButtons.Instance.Confirmed += PlaceCard;
+                    ConfirmationButtons.Instance.Denied += Disengage;
 
-                VerifyButtons();
+                    VerifyButtonsForPalCard();
+                }
+                else if(HandScript.Instance.selected.GetComponent<CardScript>().cardData is ToolCardData)
+                {
+                    GameManager.Instance.ShowConfirmationButtons();
+                    HandScript.Instance.state = "awaitingDecision";
+                    HandScript.Instance.Raise();
+                    HandScript.Instance.updateSelection += VerifyButtonsForToolCard;
+                    ConfirmationButtons.Instance.Confirmed += PlaceCard;
+                    ConfirmationButtons.Instance.Denied += Disengage;
+
+                    VerifyButtonsForToolCard();
+                }
+                
             }
         }
     }
 
     void PlaceCard()
     {
-        HandScript.Instance.updateSelection -= VerifyButtons;
-        ConfirmationButtons.Instance.Confirmed -= PlaceCard;
-        ConfirmationButtons.Instance.Denied -= Disengage;
+        AllowConfirmations.ClearButtonEffects();
         GameManager.Instance.HideConfirmationButtons();
 
-        var data = (PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
-
-        AddToWaitlist(data);
-        opponentMirror.RPC("CreateCardForWaitlist", RpcTarget.Others, data.originalData.cardID);
-
-        HandScript.Instance.Hand.RemoveAt(HandScript.Instance.Hand.IndexOf(HandScript.Instance.selected));
-        Destroy(HandScript.Instance.selected);
-
-        while(HandScript.Instance.selection.Count > 0)
+        if(HandScript.Instance.selected.GetComponent<CardScript>().cardData is PalCardData palData)
         {
-            var cardToDiscard = HandScript.Instance.selection[0];
-            HandScript.Instance.selection.RemoveAt(0);
-            HandScript.Instance.Discard(cardToDiscard);
-        }  
+            AddToWaitlist(palData);
+            opponentMirror.RPC("CreateCardForWaitlist", RpcTarget.Others, palData.originalData.cardID);
+
+            HandScript.Instance.Hand.RemoveAt(HandScript.Instance.Hand.IndexOf(HandScript.Instance.selected));
+            Destroy(HandScript.Instance.selected);
+
+            while(HandScript.Instance.selection.Count > 0)
+            {
+                var cardToDiscard = HandScript.Instance.selection[0];
+                HandScript.Instance.selection.RemoveAt(0);
+                HandScript.Instance.Discard(cardToDiscard);
+            }
+        }
+        if(HandScript.Instance.selected.GetComponent<CardScript>().cardData is ToolCardData toolData)
+        {
+            AddToWaitlist(toolData);
+            opponentMirror.RPC("CreateCardForWaitlist", RpcTarget.Others, toolData.originalData.cardID);
+
+            HandScript.Instance.Hand.RemoveAt(HandScript.Instance.Hand.IndexOf(HandScript.Instance.selected));
+            Destroy(HandScript.Instance.selected);
+
+            HandScript.Instance.GatheredItems -= toolData.cost;
+        }
+        
 
         HandScript.Instance.state = "default";
     }
 
     void Disengage()
     {
-        HandScript.Instance.updateSelection -= VerifyButtons;
-        ConfirmationButtons.Instance.Confirmed -= PlaceCard;
-        ConfirmationButtons.Instance.Denied -= Disengage;
+        AllowConfirmations.ClearButtonEffects();
         GameManager.Instance.HideConfirmationButtons();
 
         HandScript.Instance.selected.SendMessage("Deselect");
@@ -160,9 +240,13 @@ public class WaitingSpace : MonoBehaviour
         HandScript.Instance.state = "default";
     }
 
-    void VerifyButtons()
+    void VerifyButtonsForPalCard()
     {
         ConfirmationButtons.Instance.AllowConfirmation(ResourceProcesses.PalPaymentIsCorrect());
     }
-
+    
+    void VerifyButtonsForToolCard()
+    {
+        ConfirmationButtons.Instance.AllowConfirmation(HandScript.Instance.GatheredItems >= ((ToolCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData).cost);
+    }
 }

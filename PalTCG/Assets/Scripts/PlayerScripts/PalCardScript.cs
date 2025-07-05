@@ -6,7 +6,6 @@ using Photon.Pun;
 
 public class PalCardScript : UnitCardScript
 {
-    [SerializeField] Resources.StatusEffects statuses;
 
     public void PlaceOnPalSphere()
     {
@@ -14,6 +13,10 @@ public class PalCardScript : UnitCardScript
 
         palSphere.SendMessage("PlaceCard", gameObject);
         GameManager.Instance.HideConfirmationButtons();
+        HandScript.Instance.state = "default";
+
+        HandScript.Instance.selected = null;
+        HandScript.Instance.selection = new List<GameObject>();
     }
     
     public void ReadyToBePlaced()
@@ -31,7 +34,9 @@ public class PalCardScript : UnitCardScript
             HandScript.Instance.Duck();
             HandScript.Instance.updateSelection += VerifyButtons;                
             ConfirmationButtons.Instance.Confirmed += PlaceOnPalSphere;
+            ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
             ConfirmationButtons.Instance.Denied += StopLookingForSphere;
+            ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
 
             VerifyButtons();
         }
@@ -39,11 +44,6 @@ public class PalCardScript : UnitCardScript
 
     void StopLookingForSphere()
     {
-        HandScript.Instance.updateSelection -= VerifyButtons;
-        ConfirmationButtons.Instance.Confirmed -= PlaceOnPalSphere;
-        ConfirmationButtons.Instance.Denied -= StopLookingForSphere;
-        GameManager.Instance.HideConfirmationButtons();
-
         HandScript.Instance.state = "default";
     }
 

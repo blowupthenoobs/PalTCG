@@ -30,15 +30,19 @@ public class PalSphereScript : MonoBehaviour
             {
                 if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
                 {
-                    GameManager.Instance.ShowConfirmationButtons();
-                    HandScript.Instance.state = "buildingPay";
-                    HandScript.Instance.Raise();
-                    HandScript.Instance.updateSelection += VerifyButtons;
-                    ConfirmationButtons.Instance.Confirmed += PayForCard;
-                    ConfirmationButtons.Instance.Denied += Disengage;
-                    ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
+                    if(HandScript.Instance.selected.GetComponent<CardScript>().cardData is PalCardData)
+                    {
+                        GameManager.Instance.ShowConfirmationButtons();
+                        HandScript.Instance.state = "buildingPay";
+                        HandScript.Instance.Raise();
+                        HandScript.Instance.updateSelection += VerifyButtons;
+                        ConfirmationButtons.Instance.Confirmed += PayForCard;
+                        ConfirmationButtons.Instance.Denied += Disengage;
+                        ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
 
-                    VerifyButtons();
+                        VerifyButtons();
+                    }
+                    
                 }
             }
             else if(HandScript.Instance.state == "lookingForSphere")
@@ -69,7 +73,7 @@ public class PalSphereScript : MonoBehaviour
             waitingSpace.GetComponent<WaitingSpace>().readyCards.RemoveAt(waitingSpace.GetComponent<WaitingSpace>().readyCards.IndexOf(card));
         }
 
-        heldCard.GetComponent<PalCardScript>().SetUpBasicTurnEvents();
+        heldCard.GetComponent<PalCardScript>().PlaceOnSpot();
     }
 
     void PayForCard()
@@ -86,9 +90,8 @@ public class PalSphereScript : MonoBehaviour
         if(data.size <= 1)
         {
             heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
-            PlaceCard(heldCard);
-
             heldCard.SendMessage("SetUpCard", data);
+            PlaceCard(heldCard);
         }
         else
         {

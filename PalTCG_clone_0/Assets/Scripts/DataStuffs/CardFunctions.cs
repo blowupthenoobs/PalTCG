@@ -95,6 +95,7 @@ public class AllowConfirmations
     {
         ConfirmationButtons.Instance.Confirmed = null;
         ConfirmationButtons.Instance.Denied = null;
+        HandScript.Instance.updateSelection = null;
         GameManager.Instance.HideConfirmationButtons();
     }
 }
@@ -137,7 +138,7 @@ public class BuildingFunctions : MonoBehaviour
         if(canUseLumberFarm && HandScript.Instance.state == "default")
         {
             canUseLumberFarm = false;
-            HandScript.Instance.GatheredItems.stone += BuildingScript.totalTraits.lumber;
+            HandScript.Instance.GatheredItems.wood += BuildingScript.totalTraits.lumber;
         }
         else
             Debug.Log("Already used this turn");
