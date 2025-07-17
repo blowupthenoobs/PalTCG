@@ -115,6 +115,16 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
                     updateSelection.Invoke();
                 }
+                else if(card.GetComponent<ToolCardScript>() != null)
+                {
+                    if(((ToolCardData)card.GetComponent<ToolCardScript>().cardData).toolType == "ride")
+                    {
+                        selection.Clear();
+                        selection.Add(card);
+
+                        updateSelection.Invoke();
+                    }
+                }
 
                 break;
             case "lookingForSlot":

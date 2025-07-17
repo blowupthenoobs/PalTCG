@@ -45,7 +45,7 @@ public class PalSphereScript : MonoBehaviour
                     
                 }
             }
-            else if(HandScript.Instance.state == "lookingForSphere")
+            else if(HandScript.Instance.state == "lookingForSphere" && heldCard == null)
             {
                 HandScript.Instance.Select(gameObject);
             }
@@ -60,7 +60,7 @@ public class PalSphereScript : MonoBehaviour
         }
     }
 
-    void PlaceCard(GameObject card)
+    private void PlaceCard(GameObject card)
     {
         heldCard = card;
         heldCard.transform.SetParent(transform);
@@ -76,7 +76,7 @@ public class PalSphereScript : MonoBehaviour
         heldCard.GetComponent<PalCardScript>().PlaceOnSpot();
     }
 
-    void PayForCard()
+    private void PayForCard()
     {
         HandScript.Instance.updateSelection -= VerifyButtons;
         ConfirmationButtons.Instance.Confirmed -= PayForCard;
@@ -114,7 +114,7 @@ public class PalSphereScript : MonoBehaviour
         HandScript.Instance.state = "default";
     }
 
-    void Disengage()
+    private void Disengage()
     {
         HandScript.Instance.updateSelection -= VerifyButtons;
         ConfirmationButtons.Instance.Confirmed -= PayForCard;
@@ -128,7 +128,7 @@ public class PalSphereScript : MonoBehaviour
         HandScript.Instance.state = "default";
     }
 
-    void VerifyButtons()
+    private void VerifyButtons()
     {
         ConfirmationButtons.Instance.AllowConfirmation(ResourceProcesses.PalPaymentIsCorrect());
     }
@@ -140,6 +140,10 @@ public class PalSphereScript : MonoBehaviour
         opponentMirror.RPC("BreakPalSphere", RpcTarget.Others);
     }
 
+    public void LoseHeldCard()
+    {
+        heldCard = null;
+    }
 
 #region cardDelegation
     [PunRPC]

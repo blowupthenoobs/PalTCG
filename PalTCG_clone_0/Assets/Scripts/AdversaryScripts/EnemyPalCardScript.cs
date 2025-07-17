@@ -13,6 +13,7 @@ public class EnemyPalCardScript : MonoBehaviour
     public Color normalColor; //Probably Temp
     public Color targetColor;
     public TMP_Text health;
+    public GameObject heldCard;
 
     void Awake()
     {
@@ -37,28 +38,47 @@ public class EnemyPalCardScript : MonoBehaviour
 
     public void Hurt(int damage)
     {
-        transform.parent.GetComponent<EnemyPalSphereScript>().opponentMirror.RPC("HurtHeldCard", RpcTarget.Others, damage);
-        // Debug.Log("took " + damage + " damage");
+        opponentMirror.RPC("HurtHeldCard", RpcTarget.Others, damage);
+    }
+
+    public void UpdateHealth(int newHealth)
+    {
+        if(heldCard == null)
+        {
+            cardData.currentHp = newHealth;
+            health.text = newHealth.ToString(); 
+        }
+        else
+            heldCard.SendMessage("UpdateHealth", newHealth);
     }
 
     public void SendRestEffect()
     {
         opponentMirror.RPC("Rest", RpcTarget.Others);
     }
-    
+
     public void Rest()
     {
-        transform.rotation = Quaternion.Euler(0, 0, -90);
+        if(heldCard == null)
+            transform.rotation = Quaternion.Euler(0, 0, -90);
+        else
+            heldCard.SendMessage("Rest");
     }
 
     public void Wake()
     {
-        transform.rotation = Quaternion.Euler(0, 0, 0);
+        if(heldCard == null)
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        else
+            heldCard.SendMessage("Wake");
     }
 
-    protected void Die()
+    public void Die()
     {
-        Debug.Log("unit is now dead :(");
+        if(heldCard == null)
+            Destroy(gameObject);
+        else
+            heldCard.SendMessage("Die");
     }
 
     public void AfterBlockActions()
@@ -69,5 +89,19 @@ public class EnemyPalCardScript : MonoBehaviour
     public void SetMirror(PhotonView view)
     {
         opponentMirror = view;
+    }
+
+    public void StackCard(GameObject CardToStack)
+    {
+        heldCard = CardToStack;
+        heldCard.transform.SetParent(transform);
+        heldCard.transform.position = transform.position;
+        heldCard.SendMessage("SetMirror", opponentMirror);
+        HideHealthCounter();
+    }
+
+    public void HideHealthCounter()
+    {
+        health.text = "";
     }
 }

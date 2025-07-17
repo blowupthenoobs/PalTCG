@@ -16,20 +16,21 @@ public class UnitCardScript : MonoBehaviour
     public Color selectColor;
     [SerializeField] protected TMP_Text health;
     [HideInInspector] public PhotonView opponentMirror;
+    protected GameObject heldCard;
 
 
-    private UnityAction StartPlayerTurn;
-    private UnityAction StartEnemyTurn;
-    private UnityAction StartPlayerAttack;
-    private UnityAction StartEnemyAttack;
-    private UnityAction EndPlayerTurn;
-    private UnityAction EndEnemyTurn;
+    protected UnityAction StartPlayerTurn;
+    protected UnityAction StartEnemyTurn;
+    protected UnityAction StartPlayerAttack;
+    protected UnityAction StartEnemyAttack;
+    protected UnityAction EndPlayerTurn;
+    protected UnityAction EndEnemyTurn;
 
     //Effects and state variables
     public bool resting;
 
     //Coroutine Checks
-    private bool readyForNextAttackAction;
+    protected bool readyForNextAttackAction;
 
     [SerializeField] StatusEffects statuses;
 
@@ -59,21 +60,32 @@ public class UnitCardScript : MonoBehaviour
 
     public void Hurt(int dmg)
     {
-        cardData.currentHp -= dmg;
+        if(heldCard == null)
+        {
+            cardData.currentHp -= dmg;
 
-        if (cardData.currentHp <= 0)
-            Die();
+            if(cardData.currentHp <= 0)
+                Die();
 
-        health.text = cardData.currentHp.ToString();
-        opponentMirror.RPC("UpdateHealth", RpcTarget.Others, cardData.currentHp);
+            health.text = cardData.currentHp.ToString();
+            opponentMirror.RPC("UpdateHealth", RpcTarget.Others, cardData.currentHp);
+        }
+        else
+            heldCard.SendMessage("Hurt", dmg);
     }
 
     public void Heal(int heal)
     {
-        cardData.currentHp += heal;
+        if(heldCard == null)
+        {
+            cardData.currentHp += heal;
 
-        if(cardData.currentHp > cardData.maxHp)
-            cardData.currentHp = cardData.maxHp;
+            if(cardData.currentHp > cardData.maxHp)
+                cardData.currentHp = cardData.maxHp;
+        }
+        else
+            heldCard.SendMessage("Heal", heal);
+        
     }
 
     public void PrepareAttackPhase()
@@ -189,16 +201,27 @@ public class UnitCardScript : MonoBehaviour
 
     public void Rest()
     {
-        transform.rotation = Quaternion.Euler(0, 0, -90);
-        resting = true;
-        opponentMirror.RPC("NormalRest", RpcTarget.Others);
+        if(heldCard == null)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, -90);
+            resting = true;
+            opponentMirror.RPC("NormalRest", RpcTarget.Others);
+        }
+        else
+            heldCard.SendMessage("Rest");
+        
     }
 
     public void Wake()
     {
-        transform.rotation = Quaternion.Euler(0, 0, 0);
-        resting = false;
-        opponentMirror.RPC("Wake", RpcTarget.Others);
+        if(heldCard == null)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+            resting = false;
+            opponentMirror.RPC("Wake", RpcTarget.Others);
+        }
+        else
+            heldCard.SendMessage("Wake");
     }
 
     public void AfterBlockActions()
@@ -216,6 +239,7 @@ public class UnitCardScript : MonoBehaviour
 
     protected virtual void RemoveFromSphere()
     {
+        transform.parent.gameObject.SendMessage("LoseHeldCard");
         RemoveCardEventsFromManager();
         RemoveTraitsFromBuilding();
         Destroy(gameObject);
@@ -231,7 +255,7 @@ public class UnitCardScript : MonoBehaviour
         image.color = normalColor;
     }
 
-    public void GiveCardEventActions()
+    public virtual void GiveCardEventActions()
     {
         StartPlayerTurn += Wake;
         StartPlayerAttack += PrepareAttackPhase;
@@ -242,9 +266,13 @@ public class UnitCardScript : MonoBehaviour
     public void SetUpBasicTurnEvents()
     {
         GameManager.Instance.StartPlayerTurn += StartPlayerTurn;
-        GameManager.Instance.StartPlayerAttack += PrepareAttackPhase;
-        GameManager.Instance.StartEnemyTurn += StartPlayerAttack;
+        GameManager.Instance.StartPlayerAttack += StartPlayerAttack;
         GameManager.Instance.StartEnemyTurn += StartEnemyTurn;
+    }
+
+    public void HideHealthCounter()
+    {
+        health.text = "";
     }
 
     public void RemoveCardEventsFromManager()

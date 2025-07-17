@@ -39,7 +39,8 @@ public class BaseScript : MonoBehaviour
             dragon: 0,
             bird: false,
             blocker: false,
-            tank: false
+            tank: false,
+            rideable: false
         );
     }
 }

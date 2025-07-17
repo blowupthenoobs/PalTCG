@@ -150,8 +150,9 @@ namespace Resources
 
         public bool blocker;
         public bool tank;
+        public bool rideable;
 
-        public Traits(int ranch, int handyWork, int foraging, int gardening, int watering, int mining, int lumber, int transportation, int medicine, int kindling, int electric, int freezing, int dragon, bool bird, bool blocker, bool tank)
+        public Traits(int ranch, int handyWork, int foraging, int gardening, int watering, int mining, int lumber, int transportation, int medicine, int kindling, int electric, int freezing, int dragon, bool bird, bool blocker, bool tank, bool rideable)
         {
             this.ranch = ranch;
             this.handyWork = handyWork;
@@ -169,6 +170,7 @@ namespace Resources
             this.bird = bird;
             this.blocker = blocker;
             this.tank = tank;
+            this.rideable = rideable;
         }
 
         public static Traits operator +(Traits a, Traits b)

@@ -19,7 +19,6 @@ public class CardListPopupScript : MonoBehaviour
 
     public void GetDefaultData(string deck)
     {
-        Debug.Log("Getting Data");
         string[] cards = deck.Split(",");
 
 
@@ -74,8 +73,6 @@ public class CardListPopupScript : MonoBehaviour
         {
             cardCount.Add(0);
         }
-
-        Debug.Log(pileList.Count.ToString() + " " + cardCount.Count.ToString());
 
         for(int i = 0; i < defaultDeckTypes.Count; i++)
         {

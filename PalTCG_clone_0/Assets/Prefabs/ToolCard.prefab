@@ -231,6 +231,8 @@ MonoBehaviour:
   opponentMirror: {fileID: 0}
   resting: 0
   statuses: {fileID: 0}
+  waitingSpace: {fileID: 0}
+  palCardPrefab: {fileID: 2608142742448742569, guid: def5710fa1ea5d84092d2431f3ff57d1, type: 3}
 --- !u!114 &-2031198440478612101
 MonoBehaviour:
   m_ObjectHideFlags: 0

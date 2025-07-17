@@ -41,7 +41,7 @@ namespace DefaultUnitData
         [Header("Tools")]
         public List<Sprite> pickaxe;
         public List<Sprite> axe;
-
+        public List<Sprite> saddle;
         [Header("Icons")]
         public Sprite wood;
         public Sprite stone;
@@ -164,6 +164,16 @@ namespace DefaultUnitData
         );
 
         public CardAbilities axe = new CardAbilities
+        (
+            OnDestroy: new List<UnityAction>(),
+            WhenAttack: new List<UnityAction>(),
+            OnAttack: new List<UnityAction>(),
+            OnHurt: new List<UnityAction>(),
+            OnPlay: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>()
+        );
+
+        public CardAbilities saddle = new CardAbilities
         (
             OnDestroy: new List<UnityAction>(),
             WhenAttack: new List<UnityAction>(),
@@ -311,6 +321,7 @@ namespace DefaultUnitData
         }
     }
 
+    [System.Serializable]
     public struct ToolData
     {
         public string cardID;
@@ -387,7 +398,8 @@ namespace DefaultUnitData
                 dragon: 0,
                 bird: false,
                 blocker: true,
-                tank: false
+                tank: false,
+                rideable: true
             ),
             size: 1,
             attackPower: 1,
@@ -417,7 +429,8 @@ namespace DefaultUnitData
                 dragon: 0,
                 bird: false,
                 blocker: false,
-                tank: false
+                tank: false,
+                rideable: true
             ),
             size: 1,
             attackPower: 2,
@@ -447,7 +460,8 @@ namespace DefaultUnitData
                 dragon: 0,
                 bird: false,
                 blocker: false,
-                tank: false
+                tank: false,
+                rideable: true
             ),
             size: 1,
             attackPower: 2,
@@ -480,7 +494,8 @@ namespace DefaultUnitData
                 dragon: 0,
                 bird: false,
                 blocker: false,
-                tank: false
+                tank: false,
+                rideable: true
             ),
             size: 1,
             attackPower: 3,
@@ -510,7 +525,8 @@ namespace DefaultUnitData
                 dragon: 0,
                 bird: false,
                 blocker: false,
-                tank: false
+                tank: false,
+                rideable: true
             ),
             size: 1,
             attackPower: 2,
@@ -543,7 +559,8 @@ namespace DefaultUnitData
                 dragon: 0,
                 bird: false,
                 blocker: false,
-                tank: false
+                tank: false,
+                rideable: true
             ),
             size: 1,
             attackPower: 2,
@@ -573,7 +590,8 @@ namespace DefaultUnitData
                 dragon: 0,
                 bird: false,
                 blocker: false,
-                tank: false
+                tank: false,
+                rideable: true
             ),
             size: 1,
             attackPower: 2,
@@ -606,7 +624,8 @@ namespace DefaultUnitData
                 dragon: 0,
                 bird: false,
                 blocker: true,
-                tank: false
+                tank: false,
+                rideable: true
             ),
             size: 1,
             attackPower: 2,
@@ -636,7 +655,8 @@ namespace DefaultUnitData
                 dragon: 0,
                 bird: false,
                 blocker: true,
-                tank: true
+                tank: true,
+                rideable: true
             ),
             size: 1,
             attackPower: 2,
@@ -669,7 +689,8 @@ namespace DefaultUnitData
                 dragon: 0,
                 bird: false,
                 blocker: false,
-                tank: false
+                tank: false,
+                rideable: true
             ),
             size: 1,
             attackPower: 2,
@@ -699,13 +720,45 @@ namespace DefaultUnitData
                 dragon: 0,
                 bird: false,
                 blocker: false,
-                tank: false
+                tank: false,
+                rideable: true
             ),
             size: 1,
             attackPower: 2,
             maxHp: 2,
             cardArt: AccountManager.Instance.CardSprites.axe,
             abilities: AccountManager.Instance.PalAbilities.axe
+        );
+
+        public DefaultTool saddle = new DefaultTool
+        (
+            cost: new resources { wood = 1, paldium = 1 },
+            toolType: "ride",
+            traits: new Traits
+            (
+                ranch: 0,
+                handyWork: 0,
+                foraging: 0,
+                gardening: 0,
+                watering: 0,
+                mining: 0,
+                lumber: 0,
+                transportation: 0,
+                medicine: 0,
+                kindling: 0,
+                electric: 0,
+                freezing: 0,
+                dragon: 0,
+                bird: false,
+                blocker: false,
+                tank: false,
+                rideable: true
+            ),
+            size: 1,
+            attackPower: 0,
+            maxHp: 1,
+            cardArt: AccountManager.Instance.CardSprites.saddle,
+            abilities: AccountManager.Instance.PalAbilities.saddle
         );
         #endregion
 
@@ -777,6 +830,8 @@ namespace DefaultUnitData
                     return new ToolData(pickaxe, artIndex, cardID);
                 case "axe":
                     return new ToolData(axe, artIndex, cardID);
+                case "saddle":
+                    return new ToolData(saddle, artIndex, cardID);
                 default:
                     Debug.Log("doesn't have assigned tool:" + toolName);
                     return new ToolData(pickaxe, artIndex, "t/pickaxe/" + artIndex.ToString());

@@ -137,10 +137,44 @@ public class EnemyPalSphereScript : MonoBehaviour
 
 #region cardDelegation
     [PunRPC]
+    public void StackCard(string cardString)
+    {
+        var data = Pals.ConvertToCardData(cardString);
+
+        if(data is PalCardData palData)
+        {
+            if(palData.size <= 1)
+            {
+                var stackedCard = Instantiate(cardPrefab, transform.position, transform.rotation);
+                heldCard.SendMessage("StackCard", stackedCard);
+
+                stackedCard.SendMessage("SetUpCard", palData);
+            }
+            else
+            {
+                waitingSpace.SendMessage("AddToWaitlist", palData);
+            }
+        }
+        else if(data is ToolCardData toolData)
+        {
+            if (toolData.size <= 1)
+            {
+                heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
+                PlaceCard(heldCard);
+
+                heldCard.SendMessage("SetUpCard", toolData);
+            }
+            else
+            {
+                waitingSpace.SendMessage("AddToWaitlist", toolData);
+            }
+        }
+    }
+
+    [PunRPC]
     public void UpdateHealth(int newHealth)
     {
-        heldCard.GetComponent<EnemyPalCardScript>().cardData.currentHp = newHealth;
-        heldCard.GetComponent<EnemyPalCardScript>().health.text = newHealth.ToString();
+        heldCard.SendMessage("UpdateHealth", newHealth);
     }
 
     [PunRPC]
@@ -164,7 +198,7 @@ public class EnemyPalSphereScript : MonoBehaviour
     [PunRPC]
     public void HeldUnitDeath()
     {
-        Destroy(heldCard);
+        heldCard.SendMessage("Die");
     }
 #endregion
 }

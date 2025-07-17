@@ -11,7 +11,7 @@ public class ToolSlotScript : MonoBehaviour
     protected Image image;
     public string slotType;
     public static List<ToolSlotScript> allToolSlots = new List<ToolSlotScript>();
-    [SerializeField] PhotonView opponentMirror;
+    public PhotonView opponentMirror;
     [SerializeField] GameObject waitingSpace;
     [SerializeField] GameObject cardPrefab;
     public GameObject heldCard;
@@ -26,21 +26,18 @@ public class ToolSlotScript : MonoBehaviour
     {
         if(GameManager.Instance.phase == "PlayerTurn")
         {
-            if(HandScript.Instance.selected != null && heldCard == null && HandScript.Instance.state == "default")
+            if(HandScript.Instance.selected != null && HandScript.Instance.state == "default")
             {
-                if (HandScript.Instance.selected.GetComponent<CardScript>() != null)
+                if(HandScript.Instance.selected.GetComponent<CardScript>().cardData is ToolCardData)
                 {
-                    if(HandScript.Instance.selected.GetComponent<CardScript>().cardData is ToolCardData)
-                    {
-                        GameManager.Instance.ShowConfirmationButtons();
-                        HandScript.Instance.state = "awaitingDecision";
-                        HandScript.Instance.updateSelection += VerifyButtons;
-                        ConfirmationButtons.Instance.Confirmed += PayForCard;
-                        ConfirmationButtons.Instance.Denied += DisengagePurchase;
-                    }
-
-                    VerifyButtons();
+                    GameManager.Instance.ShowConfirmationButtons();
+                    HandScript.Instance.state = "awaitingDecision";
+                    HandScript.Instance.updateSelection += VerifyButtons;
+                    ConfirmationButtons.Instance.Confirmed += PayForCard;
+                    ConfirmationButtons.Instance.Denied += DisengagePurchase;
                 }
+
+                VerifyButtons();
             }
             else if(HandScript.Instance.state == "lookingForSlot")
             {
@@ -65,27 +62,28 @@ public class ToolSlotScript : MonoBehaviour
 
     void PlaceCard(GameObject card)
     {
-        if(heldCard == null)
+        if (heldCard == null)
         {
             heldCard = card;
             heldCard.transform.SetParent(gameObject.transform); //Need to make it search for the matching one
             heldCard.transform.position = transform.position;
             heldCard.GetComponent<ToolCardScript>().opponentMirror = opponentMirror;
 
-            if(waitingSpace.GetComponent<WaitingSpace>().readyCards.Contains(card))
+            if (waitingSpace.GetComponent<WaitingSpace>().readyCards.Contains(card))
             {
                 opponentMirror.RPC("GetCardFromWaitingSpace", RpcTarget.Others, waitingSpace.GetComponent<WaitingSpace>().readyCards.IndexOf(card));
                 waitingSpace.GetComponent<WaitingSpace>().readyCards.RemoveAt(waitingSpace.GetComponent<WaitingSpace>().readyCards.IndexOf(card));
             }
 
             heldCard.GetComponent<ToolCardScript>().PlaceOnSpot();
+            heldCard.GetComponent<ToolCardScript>().waitingSpace = waitingSpace;
         }
         else
         {
             GameManager.Instance.ShowConfirmationButtons();
             HandScript.Instance.state = "awaitingDecision";
             ConfirmationButtons.Instance.Confirmed += (() => heldCard.SendMessage("SendToPalBox"));
-            ConfirmationButtons.Instance.Confirmed += (() => PlaceOnCorrectSpot(card));
+            ConfirmationButtons.Instance.Confirmed += (() => PlaceCard(card));
             ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
             ConfirmationButtons.Instance.Denied += (() => waitingSpace.SendMessage("AddToReadySpot", card));
             ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
@@ -94,7 +92,7 @@ public class ToolSlotScript : MonoBehaviour
         
     }
 
-    void PayForCard()
+    private void PayForCard()
     {
         HandScript.Instance.updateSelection -= VerifyButtons;
         ConfirmationButtons.Instance.Confirmed -= PayForCard;
@@ -102,21 +100,21 @@ public class ToolSlotScript : MonoBehaviour
         ConfirmationButtons.Instance.Denied -= HandScript.Instance.ClearSelection;
         GameManager.Instance.HideConfirmationButtons();
 
-        var data = (ToolCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
-        opponentMirror.RPC("CreateCard", RpcTarget.Others, data.originalData.cardID);
-        
+        var data = (ToolCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;        
 
 
-        if (data.size <= 1)
+        if(data.size <= 1)
         {
             var newCard = Instantiate(cardPrefab, transform.position, transform.rotation);
-            newCard.SendMessage("SetUpCard", data); //If matching spot already has something, it needs to ask whether or not to replace it
-
             var slot = FindMatchingSlot(data.toolType);
+            
+            slot?.opponentMirror.RPC("CreateCard", RpcTarget.Others, data.originalData.cardID);
+            newCard.SendMessage("SetUpCard", data);
             slot?.PlaceCard(newCard);
         }
         else
         {
+            opponentMirror.RPC("CreateCard", RpcTarget.Others, data.originalData.cardID);
             waitingSpace.SendMessage("AddToWaitlist", data);
         }
 
@@ -127,6 +125,11 @@ public class ToolSlotScript : MonoBehaviour
         HandScript.Instance.GatheredItems -= data.cost;
 
         HandScript.Instance.state = "default";
+    }
+
+    public void LoseHeldCard()
+    {
+        heldCard = null;
     }
 
     private ToolSlotScript FindMatchingSlot(string slotName)
