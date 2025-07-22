@@ -25,6 +25,10 @@ namespace DefaultUnitData
         public Sprite furnace;
         public Sprite loggingCamp;
         public Sprite miningPit;
+        public Sprite ranchBuilding;
+        public Sprite feedingBox;
+        public Sprite berryPlantation;
+        public Sprite crusher;
 
 
         [Header("Pals")]
@@ -376,7 +380,7 @@ namespace DefaultUnitData
     public class Pals
     {
 
-        #region BasicPals
+#region BasicPals
         public DefaultPal lamball = new DefaultPal
         (
             cost: 1,
@@ -470,9 +474,9 @@ namespace DefaultUnitData
             abilities: AccountManager.Instance.PalAbilities.chikipi
         );
 
-        #endregion BasicPals
+#endregion BasicPals
 
-        #region GrassPals
+#region GrassPals
         public DefaultPal lifmunk = new DefaultPal
         (
             cost: 1,
@@ -535,9 +539,9 @@ namespace DefaultUnitData
             abilities: AccountManager.Instance.PalAbilities.tanzee
         );
 
-        #endregion GrassPals
+#endregion GrassPals
 
-        #region DarkPals
+#region DarkPals
         public DefaultPal depresso = new DefaultPal
         (
             cost: 1,
@@ -600,9 +604,9 @@ namespace DefaultUnitData
             abilities: AccountManager.Instance.PalAbilities.daedream
         );
 
-        #endregion DarkPals
+#endregion DarkPals
 
-        #region EarthPals
+#region EarthPals
         public DefaultPal fuddler = new DefaultPal
         (
             cost: 1,
@@ -665,9 +669,9 @@ namespace DefaultUnitData
             abilities: AccountManager.Instance.PalAbilities.dumud
         );
 
-        #endregion EarthPals
+#endregion EarthPals
 
-        #region Tools
+#region Tools
         public DefaultTool pickaxe = new DefaultTool
         (
             cost: new resources { wood = 2, stone = 2 },
@@ -760,9 +764,9 @@ namespace DefaultUnitData
             cardArt: AccountManager.Instance.CardSprites.saddle,
             abilities: AccountManager.Instance.PalAbilities.saddle
         );
-        #endregion
+#endregion
 
-        #region Buildings
+#region Buildings
         public BuildingPreset craftingBench = new BuildingPreset
         (
             cardArt: AccountManager.Instance.CardSprites.craftingBench,
@@ -791,7 +795,35 @@ namespace DefaultUnitData
             timeToHold: 2.0f
         );
 
-        #endregion
+        public BuildingPreset ranch = new BuildingPreset
+        (
+            cardArt: AccountManager.Instance.CardSprites.ranchBuilding,
+            buildingFunction: BuildingFunctions.UseMiningPit,
+            timeToHold: 2.0f
+        );
+
+        public BuildingPreset feedingBox = new BuildingPreset
+        (
+            cardArt: AccountManager.Instance.CardSprites.feedingBox,
+            buildingFunction: BuildingFunctions.UseMiningPit,
+            timeToHold: 2.0f
+        );
+
+        public BuildingPreset berryPlantation = new BuildingPreset
+        (
+            cardArt: AccountManager.Instance.CardSprites.berryPlantation,
+            buildingFunction: BuildingFunctions.UseMiningPit,
+            timeToHold: 2.0f
+        );
+
+        public BuildingPreset crusher = new BuildingPreset
+        (
+            cardArt: AccountManager.Instance.CardSprites.crusher,
+            buildingFunction: BuildingFunctions.UseMiningPit,
+            timeToHold: 2.0f
+        );
+
+#endregion
         public PalData FindPalData(string palName, int artIndex)
         {
             string cardID = "p/" + palName + "/" + artIndex.ToString();
@@ -901,6 +933,14 @@ namespace DefaultUnitData
                     return new Pals().loggingCamp;
                 case "miningPit":
                     return new Pals().miningPit;
+                case "ranch":
+                    return new Pals().ranch;
+                case "feedingBox":
+                    return new Pals().feedingBox;
+                case "berryPlantation":
+                    return new Pals().berryPlantation;
+                case "crusher":
+                    return new Pals().crusher;
                 default:
                     Debug.Log("building not found");
                     return new Pals().craftingBench;

@@ -1188,6 +1188,10 @@ MonoBehaviour:
     furnace: {fileID: 21300000, guid: 952c80c22fdec3d4f983e8c40641ae1c, type: 3}
     loggingCamp: {fileID: 21300000, guid: 14571c8960482094699a32c1353be6fc, type: 3}
     miningPit: {fileID: 21300000, guid: c738ba9a0fd5d814d8aee17478da9cdb, type: 3}
+    ranchBuilding: {fileID: 21300000, guid: 5cb1c7fe83a5b6545808ed971f73e615, type: 3}
+    feedingBox: {fileID: 21300000, guid: 488c79a780f0ffb4f8d38f8d311fae0a, type: 3}
+    berryPlantation: {fileID: 21300000, guid: c16e07512afc67045889a5f4b9eaecc9, type: 3}
+    crusher: {fileID: 21300000, guid: 247ca255cd1c9a44aa38dda32fa9ac49, type: 3}
     lamball:
     - {fileID: 21300000, guid: eda6bd278515823458eb53e2f675695c, type: 3}
     cattiva:
@@ -1248,6 +1252,7 @@ MonoBehaviour:
       useKeyboardShortCuts: 0
     earnedItems:
       ownedCardTypes: []
+      ownedBuildingTypes: []
       ownedCardsCount: 
       ownedPlayerCards: []
       ownedFrames: []

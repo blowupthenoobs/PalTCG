@@ -87,13 +87,15 @@ public class AccountManager : MonoBehaviour
     public struct EarnedItems
     {
         public List<string> ownedCardTypes;
+        public List<string> ownedBuildingTypes;
         public List<int> ownedCardsCount;
         public List<string> ownedPlayerCards;
         public List<string> ownedFrames;
 
-        public EarnedItems(List<string> ownedCardTypes, List<int> ownedCardsCount, List<string> ownedPlayerCards, List<string> ownedFrames)
+        public EarnedItems(List<string> ownedCardTypes, List<string> ownedBuildingTypes, List<int> ownedCardsCount, List<string> ownedPlayerCards, List<string> ownedFrames)
         {
             this.ownedCardTypes = ownedCardTypes;
+            this.ownedBuildingTypes = ownedBuildingTypes;
             this.ownedCardsCount = ownedCardsCount;
             this.ownedPlayerCards = ownedPlayerCards;
             this.ownedFrames = ownedFrames;

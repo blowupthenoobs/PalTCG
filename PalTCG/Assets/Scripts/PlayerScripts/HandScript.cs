@@ -20,11 +20,13 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private GameObject target;
 
     public List<GameObject> Hand = new List<GameObject>();
+    public List<GameObject> BuildingDeck = new List<GameObject>();
 
     //Card Stuff
     public string state;
     public List<GameObject> selection = new List<GameObject>();
     [SerializeField] GameObject cardPrefab;
+    [SerializeField] GameObject buildingPrefab;
     public UnityAction updateSelection;
 
     //Moving stuff
@@ -55,7 +57,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
@@ -67,10 +69,16 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         opponentMirror = this.GetComponent<PhotonView>();
     }
 
+    void Start()
+    {
+        CreateBuildingCards();
+    }
+
     void Update()
     {
         RemoveIndexes();
-        CenterCards();
+        CenterNormalCards();
+        CenterBuildingCards();
 
         if(Input.GetButtonDown("Fire1"))
         {
@@ -82,7 +90,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     }
 
-    #region Selecting&Targeting
+#region Selecting&Targeting
     public void Select(GameObject card)
     {
         switch (state)
@@ -210,7 +218,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         UnselectSelection();
 
-        for (int i = 0; i < attackers.Count; i++)
+        for(int i = 0; i < attackers.Count; i++)
         {
             currentAttacker = attackers[i];
             opponentMirror.RPC("LookForBlockers", RpcTarget.Others);
@@ -308,16 +316,36 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         }
     }
-    #endregion
+#endregion
 
-    #region HandStuff
-    public void CenterCards()
+#region HandStuff
+    public void CreateBuildingCards()
     {
-        float spacing = Preferences.spacing * ScreenCalculations.GetScale(gameObject);
+        foreach(string building in AccountManager.Instance.player.earnedItems.ownedBuildingTypes)
+        {
+            var newCard = Instantiate(buildingPrefab, transform.position, transform.rotation);
+
+            newCard.GetComponent<SchematicScript>().cardData = (BuildingData)ScriptableObject.CreateInstance(typeof(BuildingData));
+            newCard.GetComponent<SchematicScript>().cardData.SetUpData(building);
+            newCard.GetComponent<SchematicScript>().SetUpCard();
+            BuildingDeck.Add(newCard);
+            newCard.transform.SetParent(gameObject.transform);
+
+            RectTransform rectTransform = newCard.GetComponent<RectTransform>();
+            Vector3 newPosition = rectTransform.localPosition;
+            newPosition.y = 0;
+            rectTransform.localPosition = newPosition;
+            newCard.SetActive(false);
+        }
+    }
+
+    public void CenterNormalCards()
+    {
+        float spacing = DetermineCardSpacing();
 
         float speed = Preferences.cardMoveSpeed * ScreenCalculations.GetScale(gameObject);
 
-        for (int i = 0; i < Hand.Count; i++)
+        for(int i = 0; i < Hand.Count; i++)
         {
             RectTransform rectTransform = Hand[i].GetComponent<RectTransform>();
             Vector3 newPosition = rectTransform.localPosition;
@@ -325,6 +353,53 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             newPosition.x = Mathf.Lerp(Hand[i].GetComponent<RectTransform>().localPosition.x, newPosition.x, speed * Time.deltaTime);
             rectTransform.localPosition = newPosition;
         }
+    }
+
+    public void CenterBuildingCards()
+    {
+        float spacing = DetermineCardSpacing();
+
+        float speed = Preferences.cardMoveSpeed * ScreenCalculations.GetScale(gameObject);
+
+        for(int i = 0; i < BuildingDeck.Count; i++)
+        {
+            RectTransform rectTransform = BuildingDeck[i].GetComponent<RectTransform>();
+            Vector3 newPosition = rectTransform.localPosition;
+            newPosition.x = spacing * ((i + 1) - (float)(BuildingDeck.Count + 1) / 2);
+            newPosition.x = Mathf.Lerp(BuildingDeck[i].GetComponent<RectTransform>().localPosition.x, newPosition.x, speed * Time.deltaTime);
+            rectTransform.localPosition = newPosition;
+        }
+    }
+
+    public void SwitchToBuildingDeck()
+    {
+        foreach(GameObject card in Hand)
+        {
+            card.SetActive(false);
+        }
+        
+        foreach(GameObject card in BuildingDeck)
+        {
+            card.SetActive(true);
+        }
+    }
+
+    public void SwitchToHand()
+    {
+        foreach(GameObject card in BuildingDeck)
+        {
+            card.SetActive(false);
+        }
+        
+        foreach(GameObject card in Hand)
+        {
+            card.SetActive(true);
+        }
+    }
+
+    private float DetermineCardSpacing()
+    {
+        return (Preferences.spacing * ScreenCalculations.GetScale(gameObject));
     }
 
     public void Draw(CardData data)
@@ -351,15 +426,15 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     private void RemoveIndexes()
     {
-        for (int i = 0; i < Hand.Count; i++)
+        for(int i = 0; i < Hand.Count; i++)
         {
             if(Hand[i] == null)
                 Hand.RemoveAt(i);
         }
     }
-    #endregion
+#endregion
 
-    #region HandMovement
+#region HandMovement
     public void OnPointerEnter(PointerEventData eventData)
     {
         Raise();
@@ -379,9 +454,9 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         targetPos = originalPos;
     }
-    #endregion
+#endregion
 
-    #region BoardChecks
+#region BoardChecks
     public bool CheckForBlockers()
     {
         foreach(GameObject space in cardSlots)

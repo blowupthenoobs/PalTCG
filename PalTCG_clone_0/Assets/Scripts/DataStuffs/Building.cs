@@ -17,14 +17,26 @@ public class BuildingData : ScriptableObject
 
     public void SetUpBuilding(string name, GameObject holder)
     {
-        buildingType = name;
         gameObject = holder;
         image = gameObject.GetComponent<Image>();
+        SetUpData(name);
+        image.sprite = cardArt;
+    }
+
+    public void SetUpData(string name)
+    {
+        buildingType = name;
         var data = Pals.GetBuildingInfo(buildingType);
 
         cardArt = data.cardArt;
-        image.sprite = cardArt;
         buildingFunction += data.buildingFunction;
         timeToHold = data.timeToHold;
+    }
+
+    public void SetToGameObject(GameObject holder)
+    {
+        gameObject = holder;
+        image = gameObject.GetComponent<Image>();
+        image.sprite = cardArt;
     }
 }

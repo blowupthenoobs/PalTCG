@@ -678,6 +678,10 @@ MonoBehaviour:
     furnace: {fileID: 0}
     loggingCamp: {fileID: 0}
     miningPit: {fileID: 0}
+    ranchBuilding: {fileID: 0}
+    feedingBox: {fileID: 0}
+    berryPlantation: {fileID: 0}
+    crusher: {fileID: 0}
     lamball: []
     cattiva: []
     chikipi: []
@@ -689,6 +693,7 @@ MonoBehaviour:
     dumud: []
     pickaxe: []
     axe: []
+    saddle: []
     wood: {fileID: 0}
     stone: {fileID: 0}
     paldium: {fileID: 0}
@@ -2613,6 +2618,7 @@ GameObject:
   - component: {fileID: 634375237}
   - component: {fileID: 634375239}
   - component: {fileID: 634375238}
+  - component: {fileID: 634375240}
   m_Layer: 5
   m_Name: BuildingsDeck
   m_TagString: Untagged
@@ -2677,6 +2683,62 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 634375236}
   m_CullTransparentMesh: 1
+--- !u!114 &634375240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 634375236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 634375238}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1004393407}
+        m_TargetAssemblyTypeName: HandScript, Assembly-CSharp
+        m_MethodName: SwitchToBuildingDeck
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &657195493
 GameObject:
   m_ObjectHideFlags: 0
@@ -3782,9 +3844,11 @@ MonoBehaviour:
   opponentMirror: {fileID: 1004393410}
   selected: {fileID: 0}
   Hand: []
+  BuildingDeck: []
   state: default
   selection: []
   cardPrefab: {fileID: 8127651943919447807, guid: 81464f85c0f3f9c4e8a358520fec5a17, type: 3}
+  buildingPrefab: {fileID: 6762949974886156445, guid: 092a67f3f8470c5459daffbea4161945, type: 3}
   duckAmount: 120
   moveSpeed: 500
   currentAttacker: {fileID: 0}
