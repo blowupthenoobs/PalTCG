@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
+using Resources;
 using DefaultUnitData;
 public class BuildingData : ScriptableObject
 {
     public string buildingType;
+    public resources cost;
     public Sprite cardArt;
     public Image image;
     public GameObject gameObject;

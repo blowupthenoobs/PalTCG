@@ -33,7 +33,7 @@ public class ToolCardData : CardData
 
     public override bool Equals(object obj)
     {
-        if (obj is ToolCardData otherData)
+        if(obj is ToolCardData otherData)
         {
             return originalData == otherData.originalData;
         }

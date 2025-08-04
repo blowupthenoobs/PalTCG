@@ -15,7 +15,7 @@ public class ResourceViewPopUpScript : MonoBehaviour, IPointerEnterHandler, IPoi
         gameObject.SetActive(true);
         var fields = typeof(resources).GetFields();
 
-        foreach (var field in fields)
+        foreach(var field in fields)
         {
             var value = field.GetValue(HandScript.Instance.GatheredItems);
 
@@ -29,7 +29,7 @@ public class ResourceViewPopUpScript : MonoBehaviour, IPointerEnterHandler, IPoi
 
     private void CloseMenu()
     {
-        while (activeCounters.Count > 0)
+        while(activeCounters.Count > 0)
         {
             Destroy(activeCounters[0]);
             activeCounters.RemoveAt(0);
@@ -40,7 +40,7 @@ public class ResourceViewPopUpScript : MonoBehaviour, IPointerEnterHandler, IPoi
 
     void Update()
     {
-        if (Input.GetMouseButtonUp(0) && !isHoveringUI)
+        if(Input.GetMouseButtonUp(0) && !isHoveringUI)
             CloseMenu();
     }
 

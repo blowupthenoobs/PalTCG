@@ -262,12 +262,22 @@ namespace DefaultUnitData
     [System.Serializable]
     public struct BuildingPreset
     {
+        public resources cost;
         public Sprite cardArt;
         public UnityAction buildingFunction;
         public float timeToHold;
 
+        public BuildingPreset(resources cost, Sprite cardArt, UnityAction buildingFunction, float timeToHold)
+        {
+            this.cost = cost;
+            this.cardArt = cardArt;
+            this.buildingFunction = buildingFunction;
+            this.timeToHold = timeToHold;
+        }
+
         public BuildingPreset(Sprite cardArt, UnityAction buildingFunction, float timeToHold)
         {
+            this.cost = new resources();
             this.cardArt = cardArt;
             this.buildingFunction = buildingFunction;
             this.timeToHold = timeToHold;

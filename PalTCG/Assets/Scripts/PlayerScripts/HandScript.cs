@@ -21,6 +21,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public List<GameObject> Hand = new List<GameObject>();
     public List<GameObject> BuildingDeck = new List<GameObject>();
+    private bool holdingBuildings;
 
     //Card Stuff
     public string state;
@@ -57,7 +58,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     void Awake()
     {
-        if (Instance == null)
+        if(Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
@@ -226,10 +227,10 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             readyForNextAttackAction = false;
             attackers[i].SendMessage("Attack");
             yield return new WaitUntil(() => currentAttacker == null);
-            if (!targetWasNull)
+            if(!targetWasNull)
                 attackers[i].SendMessage("Rest");
             targetWasNull = false;
-            if (blocker != null)
+            if(blocker != null)
             {
                 blocker.SendMessage("SendRestEffect");
                 blockList.Add(blocker);
@@ -238,14 +239,14 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
 
 
-        while (attackers.Count > 0)
+        while(attackers.Count > 0)
         {
             attackers[0].SendMessage("Deselect");
             attackers.RemoveAt(0);
         }
         raid.Clear();
 
-        while (blockList.Count > 0)
+        while(blockList.Count > 0)
         {
             blockList[0].SendMessage("AfterBlockActions");
             blockList.RemoveAt(0);
@@ -371,17 +372,27 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
     }
 
+    public void SwitchHands()
+    {
+        if(holdingBuildings)
+            SwitchToHand();
+        else
+            SwitchToBuildingDeck();
+    }
+
     public void SwitchToBuildingDeck()
     {
-        foreach(GameObject card in Hand)
+        foreach (GameObject card in Hand)
         {
             card.SetActive(false);
         }
-        
-        foreach(GameObject card in BuildingDeck)
+
+        foreach (GameObject card in BuildingDeck)
         {
             card.SetActive(true);
         }
+
+        holdingBuildings = true;
     }
 
     public void SwitchToHand()
@@ -395,6 +406,8 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             card.SetActive(true);
         }
+
+        holdingBuildings = false;
     }
 
     private float DetermineCardSpacing()

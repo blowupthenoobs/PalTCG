@@ -44,9 +44,9 @@ public class ToolSlotScript : MonoBehaviour
                 HandScript.Instance.Select(gameObject);
             }
         }
-        else if (HandScript.Instance.selected != null)
+        else if(HandScript.Instance.selected != null)
         {
-            if (HandScript.Instance.selected.GetComponent<CardScript>() != null)
+            if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
             {
                 HandScript.Instance.selected.SendMessage("Deselect");
                 HandScript.Instance.selected = null;
@@ -62,14 +62,14 @@ public class ToolSlotScript : MonoBehaviour
 
     void PlaceCard(GameObject card)
     {
-        if (heldCard == null)
+        if(heldCard == null)
         {
             heldCard = card;
             heldCard.transform.SetParent(gameObject.transform); //Need to make it search for the matching one
             heldCard.transform.position = transform.position;
             heldCard.GetComponent<ToolCardScript>().opponentMirror = opponentMirror;
 
-            if (waitingSpace.GetComponent<WaitingSpace>().readyCards.Contains(card))
+            if(waitingSpace.GetComponent<WaitingSpace>().readyCards.Contains(card))
             {
                 opponentMirror.RPC("GetCardFromWaitingSpace", RpcTarget.Others, waitingSpace.GetComponent<WaitingSpace>().readyCards.IndexOf(card));
                 waitingSpace.GetComponent<WaitingSpace>().readyCards.RemoveAt(waitingSpace.GetComponent<WaitingSpace>().readyCards.IndexOf(card));
@@ -135,9 +135,9 @@ public class ToolSlotScript : MonoBehaviour
     private ToolSlotScript FindMatchingSlot(string slotName)
     {
         ToolSlotScript matchingSlot = null;
-        foreach (ToolSlotScript nextSlot in allToolSlots)
+        foreach(ToolSlotScript nextSlot in allToolSlots)
         {
-            if (nextSlot.slotType == slotName)
+            if(nextSlot.slotType == slotName)
             {
                 matchingSlot = nextSlot;
                 break;

@@ -124,7 +124,7 @@ public class UnitCardScript : MonoBehaviour
         else
             HandScript.Instance.targetWasNull = true;
 
-        if (cardData.OnAttack != null)
+        if(cardData.OnAttack != null)
         {
             for(int i = 0; i < cardData.OnAttack.Count; i++)
             {

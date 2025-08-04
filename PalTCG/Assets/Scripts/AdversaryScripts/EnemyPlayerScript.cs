@@ -28,7 +28,7 @@ public class EnemyPlayerScript : MonoBehaviour
 
     public void SelectAsTarget()
     {
-        if (HandScript.Instance.state == "targeting")
+        if(HandScript.Instance.state == "targeting")
         {
             GameManager.Instance.ShowConfirmationButtons();
             HandScript.Instance.state = "raiding";
@@ -41,7 +41,7 @@ public class EnemyPlayerScript : MonoBehaviour
             ConfirmationButtons.Instance.Denied += DisengageAttacks;
             ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
         }
-        else if (HandScript.Instance.state == "settingAilment")
+        else if(HandScript.Instance.state == "settingAilment")
         {
             HandScript.Instance.Select(gameObject);
         }

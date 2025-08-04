@@ -85,7 +85,7 @@ public class EnemyPalSphereScript : MonoBehaviour
 
         if(data is PalCardData palData)
         {
-            if (palData.size <= 1)
+            if(palData.size <= 1)
             {
                 heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
                 PlaceCard(heldCard);
@@ -99,7 +99,7 @@ public class EnemyPalSphereScript : MonoBehaviour
         }
         else if(data is ToolCardData toolData)
         {
-            if (toolData.size <= 1)
+            if(toolData.size <= 1)
             {
                 heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
                 PlaceCard(heldCard);
@@ -157,7 +157,7 @@ public class EnemyPalSphereScript : MonoBehaviour
         }
         else if(data is ToolCardData toolData)
         {
-            if (toolData.size <= 1)
+            if(toolData.size <= 1)
             {
                 heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
                 PlaceCard(heldCard);

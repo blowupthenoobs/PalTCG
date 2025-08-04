@@ -27,7 +27,7 @@ public class WaitingSpace : MonoBehaviour
 
     void Start() //Do this first to garuentee that GameManager has a value as start happens after awake
     {
-        if (isPlayerSide)
+        if(isPlayerSide)
             GameManager.Instance.StartPlayerTurn += MoveWaitlist;
         else
             GameManager.Instance.StartEnemyTurn += MoveWaitlist;
@@ -52,28 +52,28 @@ public class WaitingSpace : MonoBehaviour
 
         var heldCard = Instantiate(PalCardPrefab, transform.position, transform.rotation);
 
-        if (size <= 1)
+        if(size <= 1)
         {
             heldCard.transform.position = readyspot.transform.position;
             heldCard.transform.SetParent(readyspot.transform);
             readyCards.Add(heldCard);
 
-            if (isPlayerSide)
+            if(isPlayerSide)
                 heldCard.SendMessage("ReadyToBePlaced");
         }
-        else if (size == 2)
+        else if(size == 2)
         {
             heldCard.transform.position = waiting1.transform.position;
             heldCard.transform.SetParent(waiting1.transform);
             TurnsTillReady1.Add(heldCard);
         }
-        else if (size == 3)
+        else if(size == 3)
         {
             heldCard.transform.position = waiting2.transform.position;
             heldCard.transform.SetParent(waiting2.transform);
             TurnsTillReady2.Add(heldCard);
         }
-        else if (size == 4)
+        else if(size == 4)
         {
             heldCard.transform.position = waiting3.transform.position;
             heldCard.transform.SetParent(waiting3.transform);
@@ -89,28 +89,28 @@ public class WaitingSpace : MonoBehaviour
 
         var heldCard = Instantiate(ToolCardPrefab, transform.position, transform.rotation);
 
-        if (size <= 1)
+        if(size <= 1)
         {
             heldCard.transform.position = readyspot.transform.position;
             heldCard.transform.SetParent(readyspot.transform);
             readyCards.Add(heldCard);
 
-            if (isPlayerSide)
+            if(isPlayerSide)
                 heldCard.SendMessage("ReadyToBePlaced");
         }
-        else if (size == 2)
+        else if(size == 2)
         {
             heldCard.transform.position = waiting1.transform.position;
             heldCard.transform.SetParent(waiting1.transform);
             TurnsTillReady1.Add(heldCard);
         }
-        else if (size == 3)
+        else if(size == 3)
         {
             heldCard.transform.position = waiting2.transform.position;
             heldCard.transform.SetParent(waiting2.transform);
             TurnsTillReady2.Add(heldCard);
         }
-        else if (size == 4)
+        else if(size == 4)
         {
             heldCard.transform.position = waiting3.transform.position;
             heldCard.transform.SetParent(waiting3.transform);
@@ -122,7 +122,7 @@ public class WaitingSpace : MonoBehaviour
 
     void MoveWaitlist()
     {
-        while (TurnsTillReady1.Count > 0)
+        while(TurnsTillReady1.Count > 0)
         {
             TurnsTillReady1[0].transform.SetParent(readyspot.transform);
             TurnsTillReady1[0].SendMessage("ReadyToBePlaced");
@@ -130,14 +130,14 @@ public class WaitingSpace : MonoBehaviour
             TurnsTillReady1.RemoveAt(0);
         }
 
-        while (TurnsTillReady2.Count > 0)
+        while(TurnsTillReady2.Count > 0)
         {
             TurnsTillReady2[0].transform.SetParent(waiting1.transform);
             TurnsTillReady1.Add(TurnsTillReady2[0]);
             TurnsTillReady2.RemoveAt(0);
         }
 
-        while (TurnsTillReady3.Count > 0)
+        while(TurnsTillReady3.Count > 0)
         {
             TurnsTillReady3[0].transform.SetParent(waiting2.transform);
             TurnsTillReady2.Add(TurnsTillReady3[0]);
@@ -150,11 +150,11 @@ public class WaitingSpace : MonoBehaviour
         newCard.transform.position = readyspot.transform.position;
         newCard.transform.SetParent(readyspot.transform);
 
-        if (!readyCards.Contains(newCard))
+        if(!readyCards.Contains(newCard))
         {
             readyCards.Add(newCard);
 
-            if (isPlayerSide)
+            if(isPlayerSide)
                 newCard.SendMessage("ReadyToBePlaced");
         }
 
