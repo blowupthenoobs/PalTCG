@@ -47,6 +47,29 @@ public class PalCardScript : UnitCardScript
         HandScript.Instance.state = "default";
     }
 
+    public void PrepareMainPhase()
+    {
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(MainPhaseClick);
+    }
+
+    private void MainPhaseClick()
+    {
+        if(HandScript.Instance.state == "default" && FieldCardContextMenuScript.Instance.activeCard != gameObject)
+        {
+            OpenContextMenu(gameObject);
+        }
+    }
+
+    public override void GiveCardEventActions()
+    {
+        base.GiveCardEventActions();
+        StartPlayerTurn += PrepareMainPhase;
+
+        if(GameManager.Instance.phase == "PlayerTurn")
+            PrepareMainPhase();
+    }
+
     void VerifyButtons()
     {
         ConfirmationButtons.Instance.AllowConfirmation(SphereSelected());

@@ -17,6 +17,8 @@ public class PalSphereScript : MonoBehaviour
     public GameObject heldCard;
     private bool isBroken;
 
+    public GameObject ContextMenuSpot;
+
     public void Awake()
     {
         image = gameObject.GetComponent<Image>();
@@ -143,6 +145,11 @@ public class PalSphereScript : MonoBehaviour
     public void LoseHeldCard()
     {
         heldCard = null;
+    }
+
+    public void OpenContextMenu(GameObject caller)
+    {
+        FieldCardContextMenuScript.Instance.OpenContextMenu(ContextMenuSpot, caller);
     }
 
 #region cardDelegation

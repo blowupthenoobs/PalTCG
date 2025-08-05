@@ -96,7 +96,7 @@ public class ToolCardScript : UnitCardScript
             }
             else
             {
-                //Bring up lil menu thing
+                OpenContextMenu(gameObject);
             }
         }
         else if(HandScript.Instance.state == "lookingForSphere")
@@ -116,8 +116,8 @@ public class ToolCardScript : UnitCardScript
         base.GiveCardEventActions();
         StartPlayerTurn += PrepareMainPhase;
 
-        if(GameManager.Instance.phase == "playerTurn")
-            StartPlayerTurn.Invoke();
+        if(GameManager.Instance.phase == "PlayerTurn")
+            PrepareMainPhase();
     }
 
     public void PlaceOnCorrectSpot(GameObject card)

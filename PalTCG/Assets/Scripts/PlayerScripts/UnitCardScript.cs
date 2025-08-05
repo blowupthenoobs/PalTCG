@@ -255,6 +255,11 @@ public class UnitCardScript : MonoBehaviour
         image.color = normalColor;
     }
 
+    public void OpenContextMenu(GameObject caller)
+    {
+        transform.parent.SendMessage("OpenContextMenu", caller);
+    }
+
     public virtual void GiveCardEventActions()
     {
         StartPlayerTurn += Wake;
