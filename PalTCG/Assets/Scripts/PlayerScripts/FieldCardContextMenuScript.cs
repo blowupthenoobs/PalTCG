@@ -44,6 +44,13 @@ public class FieldCardContextMenuScript : MonoBehaviour, IPointerEnterHandler, I
         StartCoroutine(CancelDissapear());
     }
 
+
+    public void EjectCardFromSpot()
+    {
+        activeCard.SendMessage("EjectFromSpot");
+    }
+
+
     private bool CanUsePalSkills()
     {
         return pallSkillUses > 0;

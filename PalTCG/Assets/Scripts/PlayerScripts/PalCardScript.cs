@@ -18,7 +18,7 @@ public class PalCardScript : UnitCardScript
         HandScript.Instance.selected = null;
         HandScript.Instance.selection = new List<GameObject>();
     }
-    
+
     public void ReadyToBePlaced()
     {
         button.onClick.RemoveAllListeners();
@@ -27,12 +27,12 @@ public class PalCardScript : UnitCardScript
 
     void LookForPalSphere()
     {
-        if(HandScript.Instance.state == "default")
+        if (HandScript.Instance.state == "default")
         {
             GameManager.Instance.ShowConfirmationButtons();
             HandScript.Instance.state = "lookingForSphere";
             HandScript.Instance.Duck();
-            HandScript.Instance.updateSelection += VerifyButtons;                
+            HandScript.Instance.updateSelection += VerifyButtons;
             ConfirmationButtons.Instance.Confirmed += PlaceOnPalSphere;
             ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
             ConfirmationButtons.Instance.Denied += StopLookingForSphere;
@@ -55,7 +55,7 @@ public class PalCardScript : UnitCardScript
 
     private void MainPhaseClick()
     {
-        if(HandScript.Instance.state == "default" && FieldCardContextMenuScript.Instance.activeCard != gameObject)
+        if (HandScript.Instance.state == "default" && FieldCardContextMenuScript.Instance.activeCard != gameObject)
         {
             OpenContextMenu(gameObject);
         }
@@ -66,7 +66,7 @@ public class PalCardScript : UnitCardScript
         base.GiveCardEventActions();
         StartPlayerTurn += PrepareMainPhase;
 
-        if(GameManager.Instance.phase == "PlayerTurn")
+        if (GameManager.Instance.phase == "PlayerTurn")
             PrepareMainPhase();
     }
 
@@ -77,7 +77,7 @@ public class PalCardScript : UnitCardScript
 
     bool SphereSelected()
     {
-        if(HandScript.Instance.selection.Count == 1)
+        if (HandScript.Instance.selection.Count == 1)
             return true;
         else
             return false;
@@ -87,6 +87,11 @@ public class PalCardScript : UnitCardScript
     {
         transform.parent.gameObject.SendMessage("BreakSphere");
         base.Die();
+    }
+
+    public void EjectFromSpot()
+    {
+        SendToPalBox();
     }
 
 }

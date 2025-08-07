@@ -232,9 +232,7 @@ public class UnitCardScript : MonoBehaviour
 
     protected virtual void Die()
     {
-        HandScript.Instance.playerDiscardPile.SendMessage("DiscardCard", cardData);
-        opponentMirror.RPC("HeldUnitDeath", RpcTarget.Others);
-        RemoveFromSphere();
+        SendToPalBox();
     }
 
     protected virtual void RemoveFromSphere()
@@ -247,7 +245,9 @@ public class UnitCardScript : MonoBehaviour
 
     public virtual void SendToPalBox()
     {
-        Die();
+        HandScript.Instance.playerDiscardPile.SendMessage("DiscardCard", cardData);
+        opponentMirror.RPC("HeldUnitDeath", RpcTarget.Others);
+        RemoveFromSphere();
     }
 
     public void Deselect()
