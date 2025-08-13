@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using Photon.Pun;
 using TMPro;
 
 using Resources;
-public class UnitCardScript : MonoBehaviour
+public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     protected Image image;
     protected Button button;
@@ -28,11 +29,18 @@ public class UnitCardScript : MonoBehaviour
 
     //Effects and state variables
     public bool resting;
+    public bool palSKillActive;
 
     //Coroutine Checks
     protected bool readyForNextAttackAction;
+    protected bool moveRejected;
+    protected bool movePassedThrough;
 
     [SerializeField] StatusEffects statuses;
+    public int turnsOnSpot;
+
+    private bool hovered;
+    private bool viewButtonPressed;
 
 
     void Awake()
@@ -41,6 +49,15 @@ public class UnitCardScript : MonoBehaviour
         image = gameObject.GetComponent<Image>();
 
         GiveCardEventActions();
+    }
+
+    void Update()
+    {
+        CheckForAltPress();
+
+        if(viewButtonPressed && hovered)
+            LargeCardViewScript.Instance.FocusCard(cardData.cardArt, gameObject);
+
     }
 
     public void SetUpCard(CardData newData)
@@ -85,7 +102,7 @@ public class UnitCardScript : MonoBehaviour
         }
         else
             heldCard.SendMessage("Heal", heal);
-        
+
     }
 
     public void PrepareAttackPhase()
@@ -100,7 +117,7 @@ public class UnitCardScript : MonoBehaviour
         button.onClick.AddListener(EnemyTurnActions);
     }
 
-    public IEnumerator Attack() //Rewire to look at HandScript.Instance.Selected, then add a blocker GameObject that takes the hit if it's not null
+    public IEnumerator Attack()
     {
         GameObject target;
 
@@ -114,6 +131,16 @@ public class UnitCardScript : MonoBehaviour
             for(int i = 0; i < cardData.WhenAttack.Count; i++)
             {
                 cardData.WhenAttack[i].Invoke();
+                yield return new WaitUntil(() => readyForNextAttackAction);
+                readyForNextAttackAction = false;
+            }
+        }
+
+        if(cardData.WhenSkillAttack != null && palSKillActive)
+        {
+            for(int i = 0; i < cardData.WhenSkillAttack.Count; i++)
+            {
+                cardData.WhenSkillAttack[i].Invoke();
                 yield return new WaitUntil(() => readyForNextAttackAction);
                 readyForNextAttackAction = false;
             }
@@ -134,8 +161,61 @@ public class UnitCardScript : MonoBehaviour
             }
         }
 
+        if(cardData.OnSkillAttack != null && palSKillActive)
+        {
+            for(int i = 0; i < cardData.OnSkillAttack.Count; i++)
+            {
+                cardData.OnSkillAttack[i].Invoke();
+                yield return new WaitUntil(() => readyForNextAttackAction);
+                readyForNextAttackAction = false;
+            }
+        }
+
         yield return null;
         HandScript.Instance.currentAttacker = null;
+    }
+
+    public IEnumerator UseActivatedAbility()
+    {
+        if(cardData.OncePerTurn != null)
+        {
+            for(int i = 0; i < cardData.OncePerTurn.Count; i++)
+            {
+                if(cardData.AbilityUseCounter[i] == 0)
+                {
+                    cardData.OncePerTurn[i].Invoke();
+                    yield return new WaitUntil(() => (movePassedThrough || moveRejected));
+
+                    if(movePassedThrough)
+                        cardData.AbilityUseCounter[i]++;
+
+                    movePassedThrough = false;
+                    moveRejected = false;
+                }
+
+            }
+        }
+    }
+
+    public void DontUseAbility()
+    {
+        moveRejected = true;
+    }
+
+    public void UseAbility()
+    {
+        movePassedThrough = true;
+    }
+
+    public bool CanUseAbilities()
+    {
+        if(cardData.OncePerTurn == null)
+            return false;
+
+        if(!cardData.AbilityUseCounter.Contains(0))
+            return false;
+
+        return true;
     }
 
     public void FinishEffect()
@@ -209,7 +289,7 @@ public class UnitCardScript : MonoBehaviour
         }
         else
             heldCard.SendMessage("Rest");
-        
+
     }
 
     public void Wake()
@@ -260,6 +340,11 @@ public class UnitCardScript : MonoBehaviour
         transform.parent.SendMessage("OpenContextMenu", caller);
     }
 
+    public virtual bool CanBeBooted()
+    {
+        return (turnsOnSpot > 0);
+    }
+
     public virtual void GiveCardEventActions()
     {
         StartPlayerTurn += Wake;
@@ -273,11 +358,19 @@ public class UnitCardScript : MonoBehaviour
         GameManager.Instance.StartPlayerTurn += StartPlayerTurn;
         GameManager.Instance.StartPlayerAttack += StartPlayerAttack;
         GameManager.Instance.StartEnemyTurn += StartEnemyTurn;
+
+        StartPlayerTurn += ResetPalSkill;
+        StartPlayerTurn += () => turnsOnSpot++;
     }
 
     public void HideHealthCounter()
     {
         health.text = "";
+    }
+
+    public void ResetPalSkill()
+    {
+        palSKillActive = false;
     }
 
     public void RemoveCardEventsFromManager()
@@ -316,5 +409,28 @@ public class UnitCardScript : MonoBehaviour
         BuildingScript.totalTraits.kindling -= cardData.traits.kindling;
         BuildingScript.totalTraits.electric -= cardData.traits.electric;
         BuildingScript.totalTraits.freezing -= cardData.traits.freezing;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        hovered = true;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        hovered = false;
+
+        LargeCardViewScript.Instance.CloseZoom(gameObject);
+    }
+
+    private void CheckForAltPress()
+    {
+        viewButtonPressed = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
+
+        if((Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt)) && !viewButtonPressed)
+        {
+            if(!Input.GetKey(KeyCode.LeftAlt) && !Input.GetKey(KeyCode.RightAlt))
+                LargeCardViewScript.Instance.CloseZoom(gameObject);
+        }
     }
 }

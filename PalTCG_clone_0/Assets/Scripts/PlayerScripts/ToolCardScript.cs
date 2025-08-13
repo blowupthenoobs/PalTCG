@@ -124,6 +124,11 @@ public class ToolCardScript : UnitCardScript
     {
         gameObject.transform.parent.SendMessage("PlaceOnCorrectSpot", card);
     }
+    
+    public override bool CanBeBooted()
+    {
+        return true;
+    }
 
     #region saddleStuffs
 

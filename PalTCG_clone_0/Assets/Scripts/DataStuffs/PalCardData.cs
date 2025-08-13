@@ -29,8 +29,20 @@ public class PalCardData : CardData
         OnDestroy = originalData.abilities.OnDestroy;
         WhenAttack = originalData.abilities.WhenAttack;
         OnAttack = originalData.abilities.OnAttack;
-        OnDestroy = originalData.abilities.OnDestroy;
-        OnDestroy = originalData.abilities.OnDestroy;
+        OnHurt = originalData.abilities.OnHurt;
+        OnPlay = originalData.abilities.OnPlay;
+        EndOfTurn = originalData.abilities.EndOfTurn;
+        OncePerTurn = originalData.abilities.OncePerTurn;
+
+        PalSkill = originalData.abilities.PalSkill;
+        WhenSkillAttack = originalData.abilities.WhenSkillAttack;
+        OnSkillAttack = originalData.abilities.OnSkillAttack;
+        EndOfSkillTurn = originalData.abilities.EndOfSkillTurn;
+
+        foreach(UnityAction unused in OncePerTurn)
+        {
+            AbilityUseCounter.Add(0);
+        }
     }
 
     public override bool Equals(object obj)

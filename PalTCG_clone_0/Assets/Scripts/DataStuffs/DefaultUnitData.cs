@@ -82,7 +82,12 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            PalSkill: new List<UnityAction>()
+            EndOfTurn: new List<UnityAction>(),
+            OncePerTurn: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>(),
+            WhenSkillAttack: new List<UnityAction>(),
+            OnSkillAtack: new List<UnityAction>(),
+            EndOfSkillTurn: new List<UnityAction>()
         );
         public CardAbilities cattiva = new CardAbilities
         (
@@ -91,7 +96,12 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            PalSkill: new List<UnityAction>()
+            EndOfTurn: new List<UnityAction>(),
+            OncePerTurn: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>(),
+            WhenSkillAttack: new List<UnityAction>(),
+            OnSkillAtack: new List<UnityAction>(),
+            EndOfSkillTurn: new List<UnityAction>()
         );
         public CardAbilities chikipi = new CardAbilities
         (
@@ -100,7 +110,12 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            PalSkill: new List<UnityAction>()
+            EndOfTurn: new List<UnityAction>(),
+            OncePerTurn: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>(),
+            WhenSkillAttack: new List<UnityAction>(),
+            OnSkillAtack: new List<UnityAction>(),
+            EndOfSkillTurn: new List<UnityAction>()
         );
         public CardAbilities lifmunk = new CardAbilities
         (
@@ -109,7 +124,12 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            PalSkill: new List<UnityAction>()
+            EndOfTurn: new List<UnityAction>(),
+            OncePerTurn: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>(),
+            WhenSkillAttack: new List<UnityAction>(),
+            OnSkillAtack: new List<UnityAction>(),
+            EndOfSkillTurn: new List<UnityAction>()
         );
         public CardAbilities tanzee = new CardAbilities
         (
@@ -118,7 +138,12 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            PalSkill: new List<UnityAction>()
+            EndOfTurn: new List<UnityAction>(),
+            OncePerTurn: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>(),
+            WhenSkillAttack: new List<UnityAction>(),
+            OnSkillAtack: new List<UnityAction>(),
+            EndOfSkillTurn: new List<UnityAction>()
         );
         public CardAbilities depresso = new CardAbilities
         (
@@ -127,7 +152,12 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            PalSkill: new List<UnityAction>()
+            EndOfTurn: new List<UnityAction>(),
+            OncePerTurn: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>(),
+            WhenSkillAttack: new List<UnityAction>(),
+            OnSkillAtack: new List<UnityAction>(),
+            EndOfSkillTurn: new List<UnityAction>()
         );
         public CardAbilities daedream = new CardAbilities
         (
@@ -136,7 +166,12 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            PalSkill: new List<UnityAction>()
+            EndOfTurn: new List<UnityAction>(),
+            OncePerTurn: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>(),
+            WhenSkillAttack: new List<UnityAction>(),
+            OnSkillAtack: new List<UnityAction>(),
+            EndOfSkillTurn: new List<UnityAction>()
         );
         public CardAbilities fuddler = new CardAbilities
         (
@@ -145,7 +180,12 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            PalSkill: new List<UnityAction>()
+            EndOfTurn: new List<UnityAction>(),
+            OncePerTurn: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>(),
+            WhenSkillAttack: new List<UnityAction>(),
+            OnSkillAtack: new List<UnityAction>(),
+            EndOfSkillTurn: new List<UnityAction>()
         );
         public CardAbilities dumud = new CardAbilities
         (
@@ -154,7 +194,12 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            PalSkill: new List<UnityAction>()
+            EndOfTurn: new List<UnityAction>(),
+            OncePerTurn: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>(),
+            WhenSkillAttack: new List<UnityAction>(),
+            OnSkillAtack: new List<UnityAction>(),
+            EndOfSkillTurn: new List<UnityAction>()
         );
 
         public CardAbilities pickaxe = new CardAbilities
@@ -164,7 +209,12 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            PalSkill: new List<UnityAction>()
+            EndOfTurn: new List<UnityAction>(),
+            OncePerTurn: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>(),
+            WhenSkillAttack: new List<UnityAction>(),
+            OnSkillAtack: new List<UnityAction>(),
+            EndOfSkillTurn: new List<UnityAction>()
         );
 
         public CardAbilities axe = new CardAbilities
@@ -174,7 +224,12 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            PalSkill: new List<UnityAction>()
+            EndOfTurn: new List<UnityAction>(),
+            OncePerTurn: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>(),
+            WhenSkillAttack: new List<UnityAction>(),
+            OnSkillAtack: new List<UnityAction>(),
+            EndOfSkillTurn: new List<UnityAction>()
         );
 
         public CardAbilities saddle = new CardAbilities
@@ -184,7 +239,12 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            PalSkill: new List<UnityAction>()
+            EndOfTurn: new List<UnityAction>(),
+            OncePerTurn: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>(),
+            WhenSkillAttack: new List<UnityAction>(),
+            OnSkillAtack: new List<UnityAction>(),
+            EndOfSkillTurn: new List<UnityAction>()
         );
     }
 
@@ -196,16 +256,29 @@ namespace DefaultUnitData
         public List<UnityAction> OnAttack;
         public List<UnityAction> OnHurt;
         public List<UnityAction> OnPlay;
-        public List<UnityAction> PalSkill;
+        public List<UnityAction> EndOfTurn;
+        public List<UnityAction> OncePerTurn;
 
-        public CardAbilities(List<UnityAction> OnDestroy, List<UnityAction> WhenAttack, List<UnityAction> OnAttack, List<UnityAction> OnHurt, List<UnityAction> OnPlay, List<UnityAction> PalSkill)
+
+        public List<UnityAction> PalSkill;
+        public List<UnityAction> WhenSkillAttack;
+        public List<UnityAction> OnSkillAttack;
+        public List<UnityAction> EndOfSkillTurn;
+
+        public CardAbilities(List<UnityAction> OnDestroy, List<UnityAction> WhenAttack, List<UnityAction> OnAttack, List<UnityAction> OnHurt, List<UnityAction> OnPlay, List<UnityAction> EndOfTurn, List<UnityAction> OncePerTurn, List<UnityAction> PalSkill, List<UnityAction> WhenSkillAttack, List<UnityAction> OnSkillAtack, List<UnityAction> EndOfSkillTurn)
         {
             this.OnDestroy = OnDestroy;
             this.WhenAttack = WhenAttack;
             this.OnAttack = OnAttack;
             this.OnHurt = OnHurt;
             this.OnPlay = OnPlay;
+            this.EndOfTurn = EndOfTurn;
+            this.OncePerTurn = OncePerTurn;
+
             this.PalSkill = PalSkill;
+            this.WhenSkillAttack = WhenSkillAttack;
+            this.OnSkillAttack = OnSkillAtack;
+            this.EndOfSkillTurn = EndOfSkillTurn;
         }
     }
     

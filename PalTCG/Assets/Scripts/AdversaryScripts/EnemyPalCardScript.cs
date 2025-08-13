@@ -15,9 +15,21 @@ public class EnemyPalCardScript : MonoBehaviour
     public TMP_Text health;
     public GameObject heldCard;
 
+    public bool hovered;
+    private bool viewButtonPressed;
+
     void Awake()
     {
         image = gameObject.GetComponent<Image>();
+    }
+
+    void Update()
+    {
+        CheckForAltPress();
+
+        if (viewButtonPressed && hovered)
+            LargeCardViewScript.Instance.FocusCard(cardData.cardArt, gameObject);
+
     }
 
     public void SetUpCard(CardData newData)
@@ -43,10 +55,10 @@ public class EnemyPalCardScript : MonoBehaviour
 
     public void UpdateHealth(int newHealth)
     {
-        if(heldCard == null)
+        if (heldCard == null)
         {
             cardData.currentHp = newHealth;
-            health.text = newHealth.ToString(); 
+            health.text = newHealth.ToString();
         }
         else
             heldCard.SendMessage("UpdateHealth", newHealth);
@@ -59,7 +71,7 @@ public class EnemyPalCardScript : MonoBehaviour
 
     public void Rest()
     {
-        if(heldCard == null)
+        if (heldCard == null)
             transform.rotation = Quaternion.Euler(0, 0, -90);
         else
             heldCard.SendMessage("Rest");
@@ -67,7 +79,7 @@ public class EnemyPalCardScript : MonoBehaviour
 
     public void Wake()
     {
-        if(heldCard == null)
+        if (heldCard == null)
             transform.rotation = Quaternion.Euler(0, 0, 0);
         else
             heldCard.SendMessage("Wake");
@@ -75,7 +87,7 @@ public class EnemyPalCardScript : MonoBehaviour
 
     public void Die()
     {
-        if(heldCard == null)
+        if (heldCard == null)
             Destroy(gameObject);
         else
             heldCard.SendMessage("Die");
@@ -103,5 +115,16 @@ public class EnemyPalCardScript : MonoBehaviour
     public void HideHealthCounter()
     {
         health.text = "";
+    }
+
+    private void CheckForAltPress()
+    {
+        viewButtonPressed = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
+
+        if((Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt)) && !viewButtonPressed)
+        {
+            if(!Input.GetKey(KeyCode.LeftAlt) && !Input.GetKey(KeyCode.RightAlt))
+                LargeCardViewScript.Instance.CloseZoom(gameObject);
+        }
     }
 }

@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using Photon.Pun;
 
 using DefaultUnitData;
 
-public class EnemyPalSphereScript : MonoBehaviour
+public class EnemyPalSphereScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public PhotonView opponentMirror;
     private Image image;
@@ -22,12 +23,17 @@ public class EnemyPalSphereScript : MonoBehaviour
         image = gameObject.GetComponent<Image>();
     }
 
+    void Update()
+    {
+        
+    }
+
 #region palsphereFunctions
     public void SelectAsTarget()
     {
-        if(heldCard != null)
+        if (heldCard != null)
         {
-            if(HandScript.Instance.state == "targeting")
+            if (HandScript.Instance.state == "targeting")
             {
                 GameManager.Instance.ShowConfirmationButtons();
                 HandScript.Instance.state = "raiding";
@@ -40,12 +46,12 @@ public class EnemyPalSphereScript : MonoBehaviour
                 ConfirmationButtons.Instance.Denied += DisengageAttacks;
                 ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
             }
-            else if(HandScript.Instance.state == "settingAilment")
+            else if (HandScript.Instance.state == "settingAilment")
             {
                 HandScript.Instance.Select(heldCard);
             }
         }
-        
+
     }
 
     void DisengageAttacks()
@@ -201,4 +207,20 @@ public class EnemyPalSphereScript : MonoBehaviour
         heldCard.SendMessage("Die");
     }
 #endregion
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if(heldCard != null)
+            heldCard.GetComponent<EnemyPalCardScript>().hovered = true;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if(heldCard != null)
+        {   
+            heldCard.GetComponent<EnemyPalCardScript>().hovered = false;
+
+            LargeCardViewScript.Instance.CloseZoom(heldCard);
+        }
+    }
 }

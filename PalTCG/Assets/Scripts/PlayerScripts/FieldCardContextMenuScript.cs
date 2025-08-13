@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class FieldCardContextMenuScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -9,27 +10,33 @@ public class FieldCardContextMenuScript : MonoBehaviour, IPointerEnterHandler, I
     public int pallSkillUses;
     public GameObject activeCard;
 
+    [SerializeField] GameObject PalSkillButton;
+    [SerializeField] GameObject ActivatedAbilityButton;
+    [SerializeField] GameObject BootFromSlotButton;
+
     private bool isHovered;
     private bool switchingCard;
 
     void Awake()
     {
-        if (Instance == null)
+        if(Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
+
+        GameManager.Instance.StartPlayerTurn += ResetPalSkills;
     }
 
     void Update()
     {
-        if (!isHovered && Input.GetMouseButtonUp(0))
+        if(!isHovered && Input.GetMouseButtonUp(0))
             CloseContextMenu();
     }
 
     private void CloseContextMenu()
     {
         if(!switchingCard)
-        { 
+        {
             activeCard = null;
             gameObject.SetActive(false);
         }
@@ -42,19 +49,46 @@ public class FieldCardContextMenuScript : MonoBehaviour, IPointerEnterHandler, I
         gameObject.SetActive(true);
 
         StartCoroutine(CancelDissapear());
+
+        PalSkillButton.GetComponent<Button>().interactable = CanUsePalSkills();
+        ActivatedAbilityButton.GetComponent<Button>().interactable = activeCard.GetComponent<UnitCardScript>().CanUseAbilities();
+        BootFromSlotButton.GetComponent<Button>().interactable = activeCard.GetComponent<UnitCardScript>().CanBeBooted();
     }
 
 
-    public void EjectCardFromSpot()
+
+    public void AskToEjectCard()
     {
-        activeCard.SendMessage("EjectFromSpot");
+        GameManager.Instance.ShowConfirmationButtons();
+        HandScript.Instance.state = "awaitingDecision";
+        ConfirmationButtons.Instance.Confirmed += () => EjectCardFromSpot(activeCard);
+        ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ResetState;
+        ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
+        ConfirmationButtons.Instance.Denied += AllowConfirmations.ResetState;
+        ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
     }
 
+    public void EjectCardFromSpot(GameObject activator)
+    {
+        activator.SendMessage("EjectFromSpot");
+    }
+
+    public void ActivateCardAbilities()
+    {
+        StartCoroutine(activeCard.GetComponent<UnitCardScript>().UseActivatedAbility());
+    }
 
     private bool CanUsePalSkills()
     {
-        return pallSkillUses > 0;
+        return (pallSkillUses > 0 && !activeCard.GetComponent<UnitCardScript>().palSKillActive);
     }
+
+    private void ResetPalSkills()
+    {
+        pallSkillUses = 1;
+    }
+
+
 
     public void OnPointerEnter(PointerEventData eventData)
     {

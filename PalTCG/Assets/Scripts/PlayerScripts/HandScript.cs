@@ -382,12 +382,12 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void SwitchToBuildingDeck()
     {
-        foreach (GameObject card in Hand)
+        foreach(GameObject card in Hand)
         {
             card.SetActive(false);
         }
 
-        foreach (GameObject card in BuildingDeck)
+        foreach(GameObject card in BuildingDeck)
         {
             card.SetActive(true);
         }

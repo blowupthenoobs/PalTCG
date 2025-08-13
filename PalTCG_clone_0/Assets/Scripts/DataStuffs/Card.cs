@@ -25,7 +25,14 @@ public abstract class CardData : ScriptableObject
     public List<UnityAction> OnAttack = new List<UnityAction>();
     public List<UnityAction> OnHurt = new List<UnityAction>();
     public List<UnityAction> OnPlay = new List<UnityAction>();
+    public List<UnityAction> EndOfTurn = new List<UnityAction>();
+    public List<UnityAction> OncePerTurn = new List<UnityAction>();
+    public List<int> AbilityUseCounter = new List<int>();
+
     public List<UnityAction> PalSkill = new List<UnityAction>();
+    public List<UnityAction> WhenSkillAttack = new List<UnityAction>();
+    public List<UnityAction> OnSkillAttack = new List<UnityAction>();
+    public List<UnityAction> EndOfSkillTurn = new List<UnityAction>();
 
     
     public virtual void SetToGameObject()

@@ -91,6 +91,11 @@ public class AllowConfirmations
         ConfirmationButtons.Instance.AllowConfirmation(HandScript.Instance.selection.Count == 1);
     }
 
+    public static void ResetState()
+    {
+        HandScript.Instance.state = "default";
+    }
+
     public static void ClearButtonEffects()
     {
         ConfirmationButtons.Instance.Confirmed = null;
