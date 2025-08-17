@@ -83,7 +83,8 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            EndOfTurn: new List<UnityAction>(),
+            EndOfPlayerTurn: new List<UnityAction>(),
+            EndOfEnemyTurn: new List<UnityAction>(),
             OncePerTurn: new List<UnityAction>(),
             PalSkill: new List<UnityAction>(),
             WhenSkillAttack: new List<UnityAction>(),
@@ -97,7 +98,8 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            EndOfTurn: new List<UnityAction>(),
+            EndOfPlayerTurn: new List<UnityAction>(),
+            EndOfEnemyTurn: new List<UnityAction>(),
             OncePerTurn: new List<UnityAction>(),
             PalSkill: new List<UnityAction>(),
             WhenSkillAttack: new List<UnityAction>(),
@@ -111,7 +113,8 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            EndOfTurn: new List<UnityAction>(),
+            EndOfPlayerTurn: new List<UnityAction>(),
+            EndOfEnemyTurn: new List<UnityAction>(),
             OncePerTurn: new List<UnityAction>(),
             PalSkill: new List<UnityAction>(),
             WhenSkillAttack: new List<UnityAction>(),
@@ -125,7 +128,8 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            EndOfTurn: new List<UnityAction>(),
+            EndOfPlayerTurn: new List<UnityAction>(),
+            EndOfEnemyTurn: new List<UnityAction>(),
             OncePerTurn: new List<UnityAction>(),
             PalSkill: new List<UnityAction>(),
             WhenSkillAttack: new List<UnityAction>(),
@@ -139,7 +143,8 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            EndOfTurn: new List<UnityAction>(),
+            EndOfPlayerTurn: new List<UnityAction>(),
+            EndOfEnemyTurn: new List<UnityAction>(),
             OncePerTurn: new List<UnityAction>(),
             PalSkill: new List<UnityAction>(),
             WhenSkillAttack: new List<UnityAction>(),
@@ -153,7 +158,8 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            EndOfTurn: new List<UnityAction>(),
+            EndOfPlayerTurn: new List<UnityAction>(),
+            EndOfEnemyTurn: new List<UnityAction>(),
             OncePerTurn: new List<UnityAction>(),
             PalSkill: new List<UnityAction>(),
             WhenSkillAttack: new List<UnityAction>(),
@@ -167,7 +173,8 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            EndOfTurn: new List<UnityAction>(),
+            EndOfPlayerTurn: new List<UnityAction>(),
+            EndOfEnemyTurn: new List<UnityAction>(),
             OncePerTurn: new List<UnityAction>(),
             PalSkill: new List<UnityAction>(),
             WhenSkillAttack: new List<UnityAction>(),
@@ -181,7 +188,8 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            EndOfTurn: new List<UnityAction>(),
+            EndOfPlayerTurn: new List<UnityAction>(),
+            EndOfEnemyTurn: new List<UnityAction>(),
             OncePerTurn: new List<UnityAction>(),
             PalSkill: new List<UnityAction>(),
             WhenSkillAttack: new List<UnityAction>(),
@@ -195,7 +203,24 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            EndOfTurn: new List<UnityAction>(),
+            EndOfPlayerTurn: new List<UnityAction>(),
+            EndOfEnemyTurn: new List<UnityAction>(),
+            OncePerTurn: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>(),
+            WhenSkillAttack: new List<UnityAction>(),
+            OnSkillAtack: new List<UnityAction>(),
+            EndOfSkillTurn: new List<UnityAction>()
+        );
+
+        public CardAbilities loupmoon = new CardAbilities
+        (
+            OnDestroy: new List<UnityAction>(),
+            WhenAttack: new List<UnityAction>(),
+            OnAttack: new List<UnityAction>(),
+            OnHurt: new List<UnityAction>(),
+            OnPlay: new List<UnityAction>(),
+            EndOfPlayerTurn: new List<UnityAction>(),
+            EndOfEnemyTurn: new List<UnityAction>(),
             OncePerTurn: new List<UnityAction>(),
             PalSkill: new List<UnityAction>(),
             WhenSkillAttack: new List<UnityAction>(),
@@ -210,7 +235,8 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            EndOfTurn: new List<UnityAction>(),
+            EndOfPlayerTurn: new List<UnityAction>(),
+            EndOfEnemyTurn: new List<UnityAction>(),
             OncePerTurn: new List<UnityAction>(),
             PalSkill: new List<UnityAction>(),
             WhenSkillAttack: new List<UnityAction>(),
@@ -225,7 +251,8 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            EndOfTurn: new List<UnityAction>(),
+            EndOfPlayerTurn: new List<UnityAction>(),
+            EndOfEnemyTurn: new List<UnityAction>(),
             OncePerTurn: new List<UnityAction>(),
             PalSkill: new List<UnityAction>(),
             WhenSkillAttack: new List<UnityAction>(),
@@ -240,7 +267,8 @@ namespace DefaultUnitData
             OnAttack: new List<UnityAction>(),
             OnHurt: new List<UnityAction>(),
             OnPlay: new List<UnityAction>(),
-            EndOfTurn: new List<UnityAction>(),
+            EndOfPlayerTurn: new List<UnityAction>(),
+            EndOfEnemyTurn: new List<UnityAction>(),
             OncePerTurn: new List<UnityAction>(),
             PalSkill: new List<UnityAction>(),
             WhenSkillAttack: new List<UnityAction>(),
@@ -267,14 +295,15 @@ namespace DefaultUnitData
         public List<UnityAction> OnSkillAttack;
         public List<UnityAction> EndOfSkillTurn;
 
-        public CardAbilities(List<UnityAction> OnDestroy, List<UnityAction> WhenAttack, List<UnityAction> OnAttack, List<UnityAction> OnHurt, List<UnityAction> OnPlay, List<UnityAction> EndOfTurn, List<UnityAction> OncePerTurn, List<UnityAction> PalSkill, List<UnityAction> WhenSkillAttack, List<UnityAction> OnSkillAtack, List<UnityAction> EndOfSkillTurn)
+        public CardAbilities(List<UnityAction> OnDestroy, List<UnityAction> WhenAttack, List<UnityAction> OnAttack, List<UnityAction> OnHurt, List<UnityAction> OnPlay, List<UnityAction> EndOfPlayerTurn, List<UnityAction> EndOfEnemyTurn, List<UnityAction> OncePerTurn, List<UnityAction> PalSkill, List<UnityAction> WhenSkillAttack, List<UnityAction> OnSkillAtack, List<UnityAction> EndOfSkillTurn)
         {
             this.OnDestroy = OnDestroy;
             this.WhenAttack = WhenAttack;
             this.OnAttack = OnAttack;
             this.OnHurt = OnHurt;
             this.OnPlay = OnPlay;
-            this.EndOfTurn = EndOfTurn;
+            this.EndOfPlayerTurn = EndOfPlayerTurn;
+            this.EndOfEnemyTurn = EndOfEnemyTurn;
             this.OncePerTurn = OncePerTurn;
 
             this.PalSkill = PalSkill;
