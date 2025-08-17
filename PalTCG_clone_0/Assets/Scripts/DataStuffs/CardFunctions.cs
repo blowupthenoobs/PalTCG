@@ -1,8 +1,10 @@
 using System.Collections;
+using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+using Resources;
 public class HandFunctions : MonoBehaviour
 {
     public static void SendToDiscard()
@@ -49,7 +51,7 @@ public class TargetingMechanisms: MonoBehaviour
     }
 }
 
-public class StatusEffects: MonoBehaviour
+public class StatusEffectAbilities : MonoBehaviour
 {
     private static bool canMoveToNextStep;
     public static void PoisonCard()
@@ -59,28 +61,42 @@ public class StatusEffects: MonoBehaviour
 
     public static IEnumerator PutToSleep()
     {
-        HandScript.Instance.selection.Clear();
-        yield return null;
-        GameManager.Instance.ShowConfirmationButtons();
-        HandScript.Instance.state = "settingAilment";
-        HandScript.Instance.updateSelection += AllowConfirmations.LookForSingleTarget;
-        ConfirmationButtons.Instance.Confirmed += RestTargets;
-        ConfirmationButtons.Instance.Confirmed += HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect;
-        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = "choosingAttack";
-        ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
-        ConfirmationButtons.Instance.Denied += HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect;
-        ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "choosingAttack";
-        ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
-        ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
+        if (HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().statuses.poisoned == 0)
+        {
+            HandScript.Instance.selection.Clear();
+            yield return null;
+            GameManager.Instance.ShowConfirmationButtons();
+            HandScript.Instance.state = "settingAilment";
+            HandScript.Instance.updateSelection += AllowConfirmations.LookForSingleTarget;
+            ConfirmationButtons.Instance.Confirmed += RestTargets;
+            ConfirmationButtons.Instance.Confirmed += HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect;
+            ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = "choosingAttack";
+            ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
+            ConfirmationButtons.Instance.Denied += HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect;
+            ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "choosingAttack";
+            ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
+            ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
+        }
+        else
+        {
+            HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect();
+        }
     }
 
     public static void RestTargets()
     {
-        for(int i = 0; i < HandScript.Instance.selection.Count; i++)
+        for (int i = 0; i < HandScript.Instance.selection.Count; i++)
         {
             HandScript.Instance.selection[i].SendMessage("SendRestEffect");
             HandScript.Instance.selection[i].SendMessage("Deselect");
         }
+    }
+
+    public static void GiveTokens(string tokenType, int tokenCount)
+    {
+        var token = typeof(StatusEffects).GetField(tokenType);
+
+        // ShowNormalValue();
     }
 }
 

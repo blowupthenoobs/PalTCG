@@ -16,6 +16,6 @@ public class ValueAssigner : MonoBehaviour
         manager  = AccountManager.Instance;
         abilitySets = manager.PalAbilities;
 
-        abilitySets.daedream.WhenAttack.Add(() => StartCoroutine(StatusEffects.PutToSleep()));
+        abilitySets.daedream.WhenAttack.Add(() => StartCoroutine(StatusEffectAbilities.PutToSleep()));
     }
 }

@@ -129,7 +129,38 @@ namespace Resources
     {
         public int burning;
         public int poisoned;
-        public GameObject shocked;
+        public List<GameObject> shocked;
+        public int daedreamCurse;
+
+        public static StatusEffects operator +(StatusEffects a, StatusEffects b)
+        {
+            object result = new StatusEffects();
+            var fields = typeof(StatusEffects).GetFields();
+
+            foreach(var field in fields)
+            {
+                var valueA = field.GetValue(a);
+                var valueB = field.GetValue(b);
+
+                if(valueA is int)
+                {
+                    field.SetValue(result, (int)valueA + (int)valueB);
+                }
+                
+                if(valueA is List<GameObject>)
+                {
+                    var temp = new List<GameObject>((List<GameObject>)valueA);
+                    foreach(GameObject item in ((List<GameObject>)valueB))
+                    {
+                        temp.Add(item);
+                    }
+
+                    field.SetValue(result, temp);
+                }
+            }
+
+            return (StatusEffects)result;
+        }
     }
     public struct Traits
     {

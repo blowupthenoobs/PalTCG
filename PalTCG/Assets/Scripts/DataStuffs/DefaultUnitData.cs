@@ -41,6 +41,7 @@ namespace DefaultUnitData
         public List<Sprite> daedream;
         public List<Sprite> fuddler;
         public List<Sprite> dumud;
+        public List<Sprite> loupmoon;
 
         [Header("Tools")]
         public List<Sprite> pickaxe;
@@ -256,7 +257,8 @@ namespace DefaultUnitData
         public List<UnityAction> OnAttack;
         public List<UnityAction> OnHurt;
         public List<UnityAction> OnPlay;
-        public List<UnityAction> EndOfTurn;
+        public List<UnityAction> EndOfPlayerTurn;
+        public List<UnityAction> EndOfEnemyTurn;
         public List<UnityAction> OncePerTurn;
 
 
@@ -486,7 +488,7 @@ namespace DefaultUnitData
                 bird: false,
                 blocker: true,
                 tank: false,
-                rideable: true
+                rideable: false
             ),
             size: 1,
             attackPower: 1,
@@ -517,7 +519,7 @@ namespace DefaultUnitData
                 bird: false,
                 blocker: false,
                 tank: false,
-                rideable: true
+                rideable: false
             ),
             size: 1,
             attackPower: 2,
@@ -548,7 +550,7 @@ namespace DefaultUnitData
                 bird: false,
                 blocker: false,
                 tank: false,
-                rideable: true
+                rideable: false
             ),
             size: 1,
             attackPower: 2,
@@ -582,7 +584,7 @@ namespace DefaultUnitData
                 bird: false,
                 blocker: false,
                 tank: false,
-                rideable: true
+                rideable: false
             ),
             size: 1,
             attackPower: 3,
@@ -613,7 +615,7 @@ namespace DefaultUnitData
                 bird: false,
                 blocker: false,
                 tank: false,
-                rideable: true
+                rideable: false
             ),
             size: 1,
             attackPower: 2,
@@ -647,7 +649,7 @@ namespace DefaultUnitData
                 bird: false,
                 blocker: false,
                 tank: false,
-                rideable: true
+                rideable: false
             ),
             size: 1,
             attackPower: 2,
@@ -678,7 +680,7 @@ namespace DefaultUnitData
                 bird: false,
                 blocker: false,
                 tank: false,
-                rideable: true
+                rideable: false
             ),
             size: 1,
             attackPower: 2,
@@ -686,10 +688,41 @@ namespace DefaultUnitData
             cardArt: AccountManager.Instance.CardSprites.daedream,
             abilities: AccountManager.Instance.PalAbilities.daedream
         );
+        
+        public DefaultPal loupmoon = new DefaultPal
+        (
+            cost: 3,
+            element: Element.Dark,
+            traits: new Traits
+            (
+                ranch: 1,
+                handyWork: 2,
+                foraging: 0,
+                gardening: 0,
+                watering: 0,
+                mining: 0,
+                lumber: 0,
+                transportation: 0,
+                medicine: 0,
+                kindling: 0,
+                electric: 0,
+                freezing: 0,
+                dragon: 0,
+                bird: false,
+                blocker: false,
+                tank: false,
+                rideable: false
+            ),
+            size: 2,
+            attackPower: 5,
+            maxHp: 9,
+            cardArt: AccountManager.Instance.CardSprites.loupmoon,
+            abilities: AccountManager.Instance.PalAbilities.loupmoon
+        );
 
 #endregion DarkPals
 
-#region EarthPals
+        #region EarthPals
         public DefaultPal fuddler = new DefaultPal
         (
             cost: 1,
@@ -712,7 +745,7 @@ namespace DefaultUnitData
                 bird: false,
                 blocker: true,
                 tank: false,
-                rideable: true
+                rideable: false
             ),
             size: 1,
             attackPower: 2,
@@ -743,7 +776,7 @@ namespace DefaultUnitData
                 bird: false,
                 blocker: true,
                 tank: true,
-                rideable: true
+                rideable: false
             ),
             size: 1,
             attackPower: 2,
@@ -777,7 +810,7 @@ namespace DefaultUnitData
                 bird: false,
                 blocker: false,
                 tank: false,
-                rideable: true
+                rideable: false
             ),
             size: 1,
             attackPower: 2,
@@ -808,7 +841,7 @@ namespace DefaultUnitData
                 bird: false,
                 blocker: false,
                 tank: false,
-                rideable: true
+                rideable: false
             ),
             size: 1,
             attackPower: 2,
@@ -839,7 +872,7 @@ namespace DefaultUnitData
                 bird: false,
                 blocker: false,
                 tank: false,
-                rideable: true
+                rideable: false
             ),
             size: 1,
             attackPower: 0,
@@ -930,6 +963,8 @@ namespace DefaultUnitData
                     return new PalData(fuddler, artIndex, cardID);
                 case "dumud":
                     return new PalData(dumud, artIndex, cardID);
+                case "loupmoon":
+                    return new PalData(loupmoon, artIndex, cardID);
                 default:
                     Debug.Log("doesn't have assigned pal");
                     return new PalData(cattiva, artIndex, "p/cattiva/" + artIndex.ToString());

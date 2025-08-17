@@ -31,7 +31,8 @@ public class PalCardData : CardData
         OnAttack = originalData.abilities.OnAttack;
         OnHurt = originalData.abilities.OnHurt;
         OnPlay = originalData.abilities.OnPlay;
-        EndOfTurn = originalData.abilities.EndOfTurn;
+        EndOfPlayerTurn = originalData.abilities.EndOfPlayerTurn;
+        EndOfEnemyTurn = originalData.abilities.EndOfEnemyTurn;
         OncePerTurn = originalData.abilities.OncePerTurn;
 
         PalSkill = originalData.abilities.PalSkill;

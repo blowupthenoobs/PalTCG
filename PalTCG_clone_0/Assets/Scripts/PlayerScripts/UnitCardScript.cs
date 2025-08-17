@@ -36,7 +36,7 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     protected bool moveRejected;
     protected bool movePassedThrough;
 
-    [SerializeField] StatusEffects statuses;
+    public StatusEffects statuses;
     public int turnsOnSpot;
 
     private bool hovered;
