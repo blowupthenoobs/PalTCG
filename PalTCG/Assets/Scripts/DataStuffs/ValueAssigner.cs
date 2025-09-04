@@ -17,5 +17,7 @@ public class ValueAssigner : MonoBehaviour
         abilitySets = manager.PalAbilities;
 
         abilitySets.daedream.WhenAttack.Add(() => StartCoroutine(StatusEffectAbilities.PutToSleep()));
+        abilitySets.depresso.OnAttack.Add(() => StatusEffectAbilities.PoisonCard());
+        abilitySets.daedream.OnAttack.Add(() => StatusEffectAbilities.PoisonCard());
     }
 }

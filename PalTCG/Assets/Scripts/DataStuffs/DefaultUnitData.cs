@@ -515,9 +515,7 @@ namespace DefaultUnitData
                 freezing: 0,
                 dragon: 0,
                 bird: false,
-                blocker: true,
-                tank: false,
-                rideable: false
+                tags: new List<string>{"blocker"}
             ),
             size: 1,
             attackPower: 1,
@@ -546,9 +544,7 @@ namespace DefaultUnitData
                 freezing: 0,
                 dragon: 0,
                 bird: false,
-                blocker: false,
-                tank: false,
-                rideable: false
+                tags: new List<string>{}
             ),
             size: 1,
             attackPower: 2,
@@ -577,9 +573,7 @@ namespace DefaultUnitData
                 freezing: 0,
                 dragon: 0,
                 bird: false,
-                blocker: false,
-                tank: false,
-                rideable: false
+                tags: new List<string>{}
             ),
             size: 1,
             attackPower: 2,
@@ -611,9 +605,7 @@ namespace DefaultUnitData
                 freezing: 0,
                 dragon: 0,
                 bird: false,
-                blocker: false,
-                tank: false,
-                rideable: false
+                tags: new List<string>{}
             ),
             size: 1,
             attackPower: 3,
@@ -642,9 +634,7 @@ namespace DefaultUnitData
                 freezing: 0,
                 dragon: 0,
                 bird: false,
-                blocker: false,
-                tank: false,
-                rideable: false
+                tags: new List<string>{}
             ),
             size: 1,
             attackPower: 2,
@@ -676,9 +666,7 @@ namespace DefaultUnitData
                 freezing: 0,
                 dragon: 0,
                 bird: false,
-                blocker: false,
-                tank: false,
-                rideable: false
+                tags: new List<string>{}
             ),
             size: 1,
             attackPower: 2,
@@ -707,9 +695,7 @@ namespace DefaultUnitData
                 freezing: 0,
                 dragon: 0,
                 bird: false,
-                blocker: false,
-                tank: false,
-                rideable: false
+                tags: new List<string>{}
             ),
             size: 1,
             attackPower: 2,
@@ -738,9 +724,7 @@ namespace DefaultUnitData
                 freezing: 0,
                 dragon: 0,
                 bird: false,
-                blocker: false,
-                tank: false,
-                rideable: false
+                tags: new List<string>{}
             ),
             size: 2,
             attackPower: 5,
@@ -751,7 +735,7 @@ namespace DefaultUnitData
 
 #endregion DarkPals
 
-        #region EarthPals
+#region EarthPals
         public DefaultPal fuddler = new DefaultPal
         (
             cost: 1,
@@ -772,9 +756,7 @@ namespace DefaultUnitData
                 freezing: 0,
                 dragon: 0,
                 bird: false,
-                blocker: true,
-                tank: false,
-                rideable: false
+                tags: new List<string>{"blocker"}
             ),
             size: 1,
             attackPower: 2,
@@ -803,9 +785,7 @@ namespace DefaultUnitData
                 freezing: 0,
                 dragon: 0,
                 bird: false,
-                blocker: true,
-                tank: true,
-                rideable: false
+                tags: new List<string>{"blocker", "tank"}
             ),
             size: 1,
             attackPower: 2,
@@ -837,9 +817,7 @@ namespace DefaultUnitData
                 freezing: 0,
                 dragon: 0,
                 bird: false,
-                blocker: false,
-                tank: false,
-                rideable: false
+                tags: new List<string>{}
             ),
             size: 1,
             attackPower: 2,
@@ -868,9 +846,7 @@ namespace DefaultUnitData
                 freezing: 0,
                 dragon: 0,
                 bird: false,
-                blocker: false,
-                tank: false,
-                rideable: false
+                tags: new List<string>{}
             ),
             size: 1,
             attackPower: 2,
@@ -899,9 +875,7 @@ namespace DefaultUnitData
                 freezing: 0,
                 dragon: 0,
                 bird: false,
-                blocker: false,
-                tank: false,
-                rideable: false
+                tags: new List<string>{}
             ),
             size: 1,
             attackPower: 0,

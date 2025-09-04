@@ -56,7 +56,8 @@ public class StatusEffectAbilities : MonoBehaviour
     private static bool canMoveToNextStep;
     public static void PoisonCard()
     {
-        //does nothing rn
+        GiveTokensToTarget("poisoned", 1);
+        HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect();
     }
 
     public static IEnumerator PutToSleep()
@@ -92,11 +93,19 @@ public class StatusEffectAbilities : MonoBehaviour
         }
     }
 
-    public static void GiveTokens(string tokenType, int tokenCount)
+    public static void GiveTokensToTarget(string tokenType, int tokenCount)
     {
-        var token = typeof(StatusEffects).GetField(tokenType);
 
-        // ShowNormalValue();
+        var target = null;
+
+        if (HandScript.Instance.blocker == null)
+            target = HandScript.Instance.selected;
+        else
+            target = HandScript.Instance.blocker;
+        
+        if(target.GetComponent<EnemyPalSphereScript>() != null)
+            target.transform.parent.GetComponent<EnemyPalSphereScript>().opponentMirror.RPC("GainTokens", RpcTarget.Others, tokenType, tokenCount);
+        //Give the token to targeted enemy
     }
 }
 

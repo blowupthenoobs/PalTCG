@@ -176,7 +176,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 updateSelection.Invoke();
                 break;
             case "blocking":
-                if(card.GetComponent<UnitCardScript>().cardData.traits.blocker)
+                if(card.GetComponent<UnitCardScript>().cardData.traits.tags.Contains("blocker"))
                 {
                     selection.Clear();
                     selection.Add(card);
@@ -476,7 +476,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             if(space.GetComponent<PalSphereScript>().heldCard != null)
             {
-                if(!space.GetComponent<PalSphereScript>().heldCard.GetComponent<UnitCardScript>().resting && space.GetComponent<PalSphereScript>().heldCard.GetComponent<UnitCardScript>().cardData.traits.blocker)
+                if(!space.GetComponent<PalSphereScript>().heldCard.GetComponent<UnitCardScript>().resting && space.GetComponent<PalSphereScript>().heldCard.GetComponent<UnitCardScript>().CanBlock())
                     return true;
             }
         }

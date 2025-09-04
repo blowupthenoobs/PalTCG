@@ -125,6 +125,7 @@ namespace Resources
         public List<int> palSphereLevels;
     }
 
+    [System.Serializable]
     public struct StatusEffects
     {
         public int burning;
@@ -137,26 +138,30 @@ namespace Resources
             object result = new StatusEffects();
             var fields = typeof(StatusEffects).GetFields();
 
-            foreach(var field in fields)
+            foreach (var field in fields)
             {
                 var valueA = field.GetValue(a);
                 var valueB = field.GetValue(b);
 
-                if(valueA is int)
+                if (valueA is int)
                 {
                     field.SetValue(result, (int)valueA + (int)valueB);
                 }
-                
-                if(valueA is List<GameObject>)
-                {
-                    var temp = new List<GameObject>((List<GameObject>)valueA);
-                    foreach(GameObject item in ((List<GameObject>)valueB))
-                    {
-                        temp.Add(item);
-                    }
 
-                    field.SetValue(result, temp);
-                }
+                // if (valueA is List<GameObject>)
+                // {
+                //     var temp = new List<GameObject>((List<GameObject>)valueA);
+                //     var other = new List<GameObject>((List<GameObject>)valueB);
+                //     if(other.Count > 0)
+                //     {
+                //         foreach (GameObject item in other)
+                //         {
+                //             temp.Add(item);
+                //         }
+                //     }
+                    
+                //     field.SetValue(result, temp);
+                // }
             }
 
             return (StatusEffects)result;
@@ -179,11 +184,9 @@ namespace Resources
         public int dragon;
         public bool bird;
 
-        public bool blocker;
-        public bool tank;
-        public bool rideable;
+        public List<string> tags;
 
-        public Traits(int ranch, int handyWork, int foraging, int gardening, int watering, int mining, int lumber, int transportation, int medicine, int kindling, int electric, int freezing, int dragon, bool bird, bool blocker, bool tank, bool rideable)
+        public Traits(int ranch, int handyWork, int foraging, int gardening, int watering, int mining, int lumber, int transportation, int medicine, int kindling, int electric, int freezing, int dragon, bool bird, List<string> tags)
         {
             this.ranch = ranch;
             this.handyWork = handyWork;
@@ -199,9 +202,7 @@ namespace Resources
             this.freezing = freezing;
             this.dragon = dragon;
             this.bird = bird;
-            this.blocker = blocker;
-            this.tank = tank;
-            this.rideable = rideable;
+            this.tags = tags;
         }
 
         public static Traits operator +(Traits a, Traits b)

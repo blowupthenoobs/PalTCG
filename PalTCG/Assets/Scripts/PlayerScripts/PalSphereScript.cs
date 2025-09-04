@@ -26,13 +26,13 @@ public class PalSphereScript : MonoBehaviour
 
     public void CheckForCard()
     {
-        if(GameManager.Instance.phase == "PlayerTurn" && !isBroken)
+        if (GameManager.Instance.phase == "PlayerTurn" && !isBroken)
         {
-            if(HandScript.Instance.selected != null && heldCard == null && HandScript.Instance.state == "default")
+            if (HandScript.Instance.selected != null && heldCard == null && HandScript.Instance.state == "default")
             {
-                if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
+                if (HandScript.Instance.selected.GetComponent<CardScript>() != null)
                 {
-                    if(HandScript.Instance.selected.GetComponent<CardScript>().cardData is PalCardData)
+                    if (HandScript.Instance.selected.GetComponent<CardScript>().cardData is PalCardData)
                     {
                         GameManager.Instance.ShowConfirmationButtons();
                         HandScript.Instance.state = "buildingPay";
@@ -44,17 +44,17 @@ public class PalSphereScript : MonoBehaviour
 
                         VerifyButtons();
                     }
-                    
+
                 }
             }
-            else if(HandScript.Instance.state == "lookingForSphere" && heldCard == null)
+            else if (HandScript.Instance.state == "lookingForSphere" && heldCard == null)
             {
                 HandScript.Instance.Select(gameObject);
             }
         }
-        else if(HandScript.Instance.selected != null)
+        else if (HandScript.Instance.selected != null)
         {
-            if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
+            if (HandScript.Instance.selected.GetComponent<CardScript>() != null)
             {
                 HandScript.Instance.selected.SendMessage("Deselect");
                 HandScript.Instance.selected = null;
@@ -69,7 +69,7 @@ public class PalSphereScript : MonoBehaviour
         heldCard.transform.position = transform.position;
         heldCard.GetComponent<PalCardScript>().opponentMirror = opponentMirror;
 
-        if(waitingSpace.GetComponent<WaitingSpace>().readyCards.Contains(card))
+        if (waitingSpace.GetComponent<WaitingSpace>().readyCards.Contains(card))
         {
             opponentMirror.RPC("GetCardFromWaitingSpace", RpcTarget.Others, waitingSpace.GetComponent<WaitingSpace>().readyCards.IndexOf(card));
             waitingSpace.GetComponent<WaitingSpace>().readyCards.RemoveAt(waitingSpace.GetComponent<WaitingSpace>().readyCards.IndexOf(card));
@@ -89,7 +89,7 @@ public class PalSphereScript : MonoBehaviour
         var data = (PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
         opponentMirror.RPC("CreateCard", RpcTarget.Others, data.originalData.cardID);
 
-        if(data.size <= 1)
+        if (data.size <= 1)
         {
             heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
             heldCard.SendMessage("SetUpCard", data);
@@ -99,19 +99,19 @@ public class PalSphereScript : MonoBehaviour
         {
             waitingSpace.SendMessage("AddToWaitlist", data);
         }
-        
+
 
 
         HandScript.Instance.Hand.RemoveAt(HandScript.Instance.Hand.IndexOf(HandScript.Instance.selected));
         Destroy(HandScript.Instance.selected);
         HandScript.Instance.selected = null;
 
-        while(HandScript.Instance.selection.Count > 0)
+        while (HandScript.Instance.selection.Count > 0)
         {
             var cardToDiscard = HandScript.Instance.selection[0];
             HandScript.Instance.selection.RemoveAt(0);
             HandScript.Instance.Discard(cardToDiscard);
-        }  
+        }
 
         HandScript.Instance.state = "default";
     }
@@ -152,7 +152,7 @@ public class PalSphereScript : MonoBehaviour
         FieldCardContextMenuScript.Instance.OpenContextMenu(ContextMenuSpot, caller);
     }
 
-#region cardDelegation
+    #region cardDelegation
     [PunRPC]
     public void Rest()
     {
@@ -169,6 +169,12 @@ public class PalSphereScript : MonoBehaviour
     public void AfterBlockActions()
     {
         heldCard.SendMessage("AfterBlockActions");
+    }
+    
+    [PunRPC]
+    public void GainTokens(string tokenType, int tokenCount)
+    {
+        heldCard.GetComponent<UnitCardScript>().GainTokens(tokenType, tokenCount);
     }
 #endregion
 }

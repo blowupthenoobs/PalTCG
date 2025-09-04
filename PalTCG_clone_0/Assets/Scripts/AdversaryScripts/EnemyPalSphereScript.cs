@@ -206,11 +206,16 @@ public class EnemyPalSphereScript : MonoBehaviour, IPointerEnterHandler, IPointe
     {
         heldCard.SendMessage("Die");
     }
+    
+    public void GainTokens(string tokenType, int tokenCount)
+    {
+        heldCard.GetComponent<EnemyPalCardScript>().GainTokens(tokenType, tokenCount);
+    }
 #endregion
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if(heldCard != null)
+        if (heldCard != null)
             heldCard.GetComponent<EnemyPalCardScript>().hovered = true;
     }
 

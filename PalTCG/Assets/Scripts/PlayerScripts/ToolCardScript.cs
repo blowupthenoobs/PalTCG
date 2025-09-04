@@ -79,7 +79,7 @@ public class ToolCardScript : UnitCardScript
                     }
                     else if(HandScript.Instance.selected.GetComponent<CardScript>().cardData is PalCardData && ((ToolCardData)cardData).toolType == "ride")
                     {
-                        if(((PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData).traits.rideable)
+                        if(((PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData).traits.tags.Contains("rideable"))
                         {
                             GameManager.Instance.ShowConfirmationButtons();
                             HandScript.Instance.state = "buildingPay";

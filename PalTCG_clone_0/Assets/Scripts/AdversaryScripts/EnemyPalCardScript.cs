@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 
+using Resources;
 public class EnemyPalCardScript : MonoBehaviour
 {
     public PhotonView opponentMirror;
@@ -14,6 +15,8 @@ public class EnemyPalCardScript : MonoBehaviour
     public Color targetColor;
     public TMP_Text health;
     public GameObject heldCard;
+
+    public StatusEffects statuses;
 
     public bool hovered;
     private bool viewButtonPressed;
@@ -62,6 +65,21 @@ public class EnemyPalCardScript : MonoBehaviour
         }
         else
             heldCard.SendMessage("UpdateHealth", newHealth);
+    }
+
+    public void GainTokens(string tokenType, int tokenCount)
+    {
+        if(heldCard == null)
+        {
+            var token = typeof(StatusEffects).GetField(tokenType);
+
+            StatusEffects result = new StatusEffects();
+            token.SetValue(result, tokenCount);
+            statuses += result;
+        }
+        else
+            heldCard.GetComponent<UnitCardScript>().GainTokens(tokenType, tokenCount);
+        
     }
 
     public void SendRestEffect()
@@ -121,9 +139,9 @@ public class EnemyPalCardScript : MonoBehaviour
     {
         viewButtonPressed = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
 
-        if((Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt)) && !viewButtonPressed)
+        if ((Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt)) && !viewButtonPressed)
         {
-            if(!Input.GetKey(KeyCode.LeftAlt) && !Input.GetKey(KeyCode.RightAlt))
+            if (!Input.GetKey(KeyCode.LeftAlt) && !Input.GetKey(KeyCode.RightAlt))
                 LargeCardViewScript.Instance.CloseZoom(gameObject);
         }
     }

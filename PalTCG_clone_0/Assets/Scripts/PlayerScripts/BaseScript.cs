@@ -52,9 +52,7 @@ public class BaseScript : MonoBehaviour
             freezing: 0,
             dragon: 0,
             bird: false,
-            blocker: false,
-            tank: false,
-            rideable: false
+            tags: new List<string>{}
         );
     }
 

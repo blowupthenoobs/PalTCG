@@ -259,7 +259,7 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void EnemyTurnActions()
     {
-        if(HandScript.Instance.state == "blocking" && cardData.traits.blocker)
+        if(HandScript.Instance.state == "blocking" && cardData.traits.tags.Contains("blocker"))
             HandScript.Instance.Select(gameObject);
         // else if()
     }
@@ -304,9 +304,34 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             heldCard.SendMessage("Wake");
     }
 
+    public void GainTokens(string tokenType, int tokenCount)
+    {
+        if (heldCard == null)
+        {
+            var token = typeof(StatusEffects).GetField(tokenType);
+
+            StatusEffects result = new StatusEffects();
+            token.SetValue(result, tokenCount);
+            statuses += result;
+
+            opponentMirror.RPC("GainTokens", RpcTarget.Others, tokenType, tokenCount);
+        }
+        else
+            heldCard.GetComponent<UnitCardScript>().GainTokens(tokenType, tokenCount);
+        
+    }
+
+    public bool CanBlock()
+    {
+        if(heldCard == null)
+            return (cardData.traits.tags.Contains("blocker") && statuses.poisoned == 0);
+        else
+            return heldCard.GetComponent<UnitCardScript>().CanBlock();
+    }
+
     public void AfterBlockActions()
     {
-        if(cardData.traits.tank)
+        if (cardData.traits.tags.Contains("tank"))
             Wake();
     }
 
@@ -355,12 +380,27 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void SetUpBasicTurnEvents()
     {
-        GameManager.Instance.StartPlayerTurn += StartPlayerTurn;
-        GameManager.Instance.StartPlayerAttack += StartPlayerAttack;
-        GameManager.Instance.StartEnemyTurn += StartEnemyTurn;
+        GameManager.Instance.StartPlayerTurn += CallStartPlayerTurnFunctions;
+        GameManager.Instance.StartPlayerAttack += CallStartPlayerAttackFunctions;
+        GameManager.Instance.StartEnemyTurn += CallEnemyTurnStartFunctions;
 
         StartPlayerTurn += ResetPalSkill;
         StartPlayerTurn += () => turnsOnSpot++;
+    }
+
+    private void CallStartPlayerTurnFunctions()
+    {
+        StartPlayerTurn.Invoke();
+    }
+
+    private void CallStartPlayerAttackFunctions()
+    {
+        StartPlayerAttack.Invoke();
+    }
+
+    private void CallEnemyTurnStartFunctions()
+    {
+        StartEnemyTurn.Invoke();
     }
 
     public void HideHealthCounter()
@@ -370,6 +410,7 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void ResetPalSkill()
     {
+        Debug.Log("being called");
         palSKillActive = false;
     }
 
