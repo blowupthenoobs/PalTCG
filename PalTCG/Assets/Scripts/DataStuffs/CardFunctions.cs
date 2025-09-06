@@ -96,14 +96,14 @@ public class StatusEffectAbilities : MonoBehaviour
     public static void GiveTokensToTarget(string tokenType, int tokenCount)
     {
 
-        var target = null;
+        GameObject target = null;
 
         if (HandScript.Instance.blocker == null)
             target = HandScript.Instance.selected;
         else
             target = HandScript.Instance.blocker;
         
-        if(target.GetComponent<EnemyPalSphereScript>() != null)
+        if(target.transform.parent.GetComponent<EnemyPalSphereScript>() != null)
             target.transform.parent.GetComponent<EnemyPalSphereScript>().opponentMirror.RPC("GainTokens", RpcTarget.Others, tokenType, tokenCount);
         //Give the token to targeted enemy
     }

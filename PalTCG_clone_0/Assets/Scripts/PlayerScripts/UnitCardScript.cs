@@ -311,7 +311,7 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             var token = typeof(StatusEffects).GetField(tokenType);
 
             StatusEffects result = new StatusEffects();
-            token.SetValue(result, tokenCount);
+            token.SetValueDirect(__makeref(result), tokenCount);
             statuses += result;
 
             opponentMirror.RPC("GainTokens", RpcTarget.Others, tokenType, tokenCount);
@@ -410,7 +410,6 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void ResetPalSkill()
     {
-        Debug.Log("being called");
         palSKillActive = false;
     }
 

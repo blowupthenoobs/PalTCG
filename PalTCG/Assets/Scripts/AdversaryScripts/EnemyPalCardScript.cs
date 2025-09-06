@@ -74,8 +74,9 @@ public class EnemyPalCardScript : MonoBehaviour
             var token = typeof(StatusEffects).GetField(tokenType);
 
             StatusEffects result = new StatusEffects();
-            token.SetValue(result, tokenCount);
+            token.SetValueDirect(__makeref(result), tokenCount);
             statuses += result;
+            Debug.Log(result);
         }
         else
             heldCard.GetComponent<UnitCardScript>().GainTokens(tokenType, tokenCount);

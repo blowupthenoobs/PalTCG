@@ -207,8 +207,10 @@ public class EnemyPalSphereScript : MonoBehaviour, IPointerEnterHandler, IPointe
         heldCard.SendMessage("Die");
     }
     
+    [PunRPC]
     public void GainTokens(string tokenType, int tokenCount)
     {
+        Debug.Log("Enemy Gained Tokens");
         heldCard.GetComponent<EnemyPalCardScript>().GainTokens(tokenType, tokenCount);
     }
 #endregion

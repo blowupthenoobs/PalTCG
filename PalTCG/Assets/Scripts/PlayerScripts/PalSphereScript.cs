@@ -174,6 +174,7 @@ public class PalSphereScript : MonoBehaviour
     [PunRPC]
     public void GainTokens(string tokenType, int tokenCount)
     {
+        Debug.Log("friendly gained token");
         heldCard.GetComponent<UnitCardScript>().GainTokens(tokenType, tokenCount);
     }
 #endregion

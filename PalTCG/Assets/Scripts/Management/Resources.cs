@@ -147,21 +147,13 @@ namespace Resources
                 {
                     field.SetValue(result, (int)valueA + (int)valueB);
                 }
+                else if (valueA is List<GameObject> listA && valueB is List<GameObject> listB)
+                {
+                    var merged = new List<GameObject>(listA);
+                    merged.AddRange(listB);
 
-                // if (valueA is List<GameObject>)
-                // {
-                //     var temp = new List<GameObject>((List<GameObject>)valueA);
-                //     var other = new List<GameObject>((List<GameObject>)valueB);
-                //     if(other.Count > 0)
-                //     {
-                //         foreach (GameObject item in other)
-                //         {
-                //             temp.Add(item);
-                //         }
-                //     }
-                    
-                //     field.SetValue(result, temp);
-                // }
+                    field.SetValue(result, temp);
+                }
             }
 
             return (StatusEffects)result;
