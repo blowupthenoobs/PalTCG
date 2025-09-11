@@ -37,6 +37,8 @@ namespace DefaultUnitData
         public List<Sprite> chikipi;
         public List<Sprite> lifmunk;
         public List<Sprite> tanzee;
+        public List<Sprite> foxsparks;
+        public List<Sprite> sparkit;
         public List<Sprite> depresso;
         public List<Sprite> daedream;
         public List<Sprite> fuddler;
@@ -122,6 +124,36 @@ namespace DefaultUnitData
             EndOfSkillTurn: new List<UnityAction>()
         );
         public CardAbilities lifmunk = new CardAbilities
+        (
+            OnDestroy: new List<UnityAction>(),
+            WhenAttack: new List<UnityAction>(),
+            OnAttack: new List<UnityAction>(),
+            OnHurt: new List<UnityAction>(),
+            OnPlay: new List<UnityAction>(),
+            EndOfPlayerTurn: new List<UnityAction>(),
+            EndOfEnemyTurn: new List<UnityAction>(),
+            OncePerTurn: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>(),
+            WhenSkillAttack: new List<UnityAction>(),
+            OnSkillAtack: new List<UnityAction>(),
+            EndOfSkillTurn: new List<UnityAction>()
+        );
+        public CardAbilities foxsparks = new CardAbilities
+        (
+            OnDestroy: new List<UnityAction>(),
+            WhenAttack: new List<UnityAction>(),
+            OnAttack: new List<UnityAction>(),
+            OnHurt: new List<UnityAction>(),
+            OnPlay: new List<UnityAction>(),
+            EndOfPlayerTurn: new List<UnityAction>(),
+            EndOfEnemyTurn: new List<UnityAction>(),
+            OncePerTurn: new List<UnityAction>(),
+            PalSkill: new List<UnityAction>(),
+            WhenSkillAttack: new List<UnityAction>(),
+            OnSkillAtack: new List<UnityAction>(),
+            EndOfSkillTurn: new List<UnityAction>()
+        );
+        public CardAbilities sparkit = new CardAbilities
         (
             OnDestroy: new List<UnityAction>(),
             WhenAttack: new List<UnityAction>(),
@@ -645,6 +677,72 @@ namespace DefaultUnitData
 
 #endregion GrassPals
 
+#region FirePals
+        public DefaultPal foxsparks = new DefaultPal
+        (
+            cost: 1,
+            element: Element.Fire,
+            traits: new Traits
+            (
+                ranch: 0,
+                handyWork: 0,
+                foraging: 0,
+                gardening: 0,
+                watering: 0,
+                mining: 0,
+                lumber: 0,
+                transportation: 0,
+                medicine: 0,
+                kindling: 1,
+                electric: 0,
+                freezing: 0,
+                dragon: 0,
+                bird: false,
+                tags: new List<string>()
+            ),
+            size: 1,
+            attackPower: 3,
+            maxHp: 7,
+            cardArt: AccountManager.Instance.CardSprites.foxsparks,
+            abilities: AccountManager.Instance.PalAbilities.foxsparks
+        );
+#endregion FirePals
+
+#region WaterPals
+
+#endregion WaterPals
+
+#region ElectricPals
+    public DefaultPal sparkit = new DefaultPal
+        (
+            cost: 1,
+            element: Element.Electric,
+            traits: new Traits
+            (
+                ranch: 0,
+                handyWork: 1,
+                foraging: 0,
+                gardening: 0,
+                watering: 0,
+                mining: 0,
+                lumber: 0,
+                transportation: 1,
+                medicine: 0,
+                kindling: 0,
+                electric: 1,
+                freezing: 0,
+                dragon: 0,
+                bird: false,
+                tags: new List<string>()
+            ),
+            size: 1,
+            attackPower: 2,
+            maxHp: 8,
+            cardArt: AccountManager.Instance.CardSprites.sparkit,
+            abilities: AccountManager.Instance.PalAbilities.sparkit
+        );
+#endregion ElectricPals
+
 #region DarkPals
         public DefaultPal depresso = new DefaultPal
         (
@@ -958,6 +1056,10 @@ namespace DefaultUnitData
                     return new PalData(lifmunk, artIndex, cardID);
                 case "tanzee":
                     return new PalData(tanzee, artIndex, cardID);
+                case "foxsparks":
+                    return new PalData(foxsparks, artIndex, cardID);
+                case "sparkit":
+                    return new PalData(sparkit, artIndex, cardID);
                 case "depresso":
                     return new PalData(depresso, artIndex, cardID);
                 case "daedream":

@@ -33,30 +33,59 @@ public class HandFunctions : MonoBehaviour
     }
 }
 
-public class TargetingMechanisms: MonoBehaviour
+public class TargetingMechanisms : MonoBehaviour
 {
     public static void SelectTarget()
     {
-        //For hurt and death effects, will set the target to the attacker
+        //
     }
 
     public static void TargetAllEnemies()
     {
-        //For hurt and death effects, will set the target to the attacker
+        //
     }
 
     public static void TargetAttacker()
     {
         //For hurt and death effects, will set the target to the attacker
     }
+
+    public static GameObject TargetAttackedEnemy()
+    {
+        GameObject target = null;
+
+        if (HandScript.Instance.blocker == null)
+            target = HandScript.Instance.selected;
+        else
+            target = HandScript.Instance.blocker;
+
+        return target;
+    }
 }
 
 public class StatusEffectAbilities : MonoBehaviour
 {
     private static bool canMoveToNextStep;
+    public static void BurnCard()
+    {
+        GiveTokensToTarget("burning", 1);
+        HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect();
+    }
     public static void PoisonCard()
     {
-        GiveTokensToTarget("poisoned", 1);
+        GiveTokensToTarget("poisoned", 2);
+        HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect();
+    }
+
+    public static void ShockTarget()
+    {
+        var target = TargetingMechanisms.TargetAttackedEnemy();
+        
+        if(target.transform.parent.GetComponent<EnemyPalSphereScript>() != null)
+            target.transform.parent.GetComponent<EnemyPalSphereScript>().opponentMirror.RPC("GetShocked", RpcTarget.Others);
+
+        HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().opponentMirror.RPC("ShockOtherCard", RpcTarget.Others);
+
         HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect();
     }
 
@@ -96,12 +125,17 @@ public class StatusEffectAbilities : MonoBehaviour
     public static void GiveTokensToTarget(string tokenType, int tokenCount)
     {
 
-        GameObject target = null;
+        GameObject target = TargetingMechanisms.TargetAttackedEnemy();
+        
+        if(target.transform.parent.GetComponent<EnemyPalSphereScript>() != null)
+            target.transform.parent.GetComponent<EnemyPalSphereScript>().opponentMirror.RPC("GainTokens", RpcTarget.Others, tokenType, tokenCount);
+        //Give the token to targeted enemy
+    }
+    
+    public static void GiveMinStatusToTarget(string tokenType, int tokenCount)
+    {
 
-        if (HandScript.Instance.blocker == null)
-            target = HandScript.Instance.selected;
-        else
-            target = HandScript.Instance.blocker;
+        GameObject target = TargetingMechanisms.TargetAttackedEnemy();
         
         if(target.transform.parent.GetComponent<EnemyPalSphereScript>() != null)
             target.transform.parent.GetComponent<EnemyPalSphereScript>().opponentMirror.RPC("GainTokens", RpcTarget.Others, tokenType, tokenCount);
@@ -130,9 +164,30 @@ public class AllowConfirmations
     }
 }
 
-public class CardEffectCoroutines: MonoBehaviour
+public class CardMovement : MonoBehaviour
 {
-    
+    public static void EquipAsItemPalSkill(string slotType)
+    {
+        GameObject cardToMove = FieldCardContextMenuScript.Instance.activeCard;
+
+        HandScript.Instance.state = "awaitingDecision";
+        ConfirmationButtons.Instance.Confirmed += () => cardToMove.SendMessage("ActivatePalSkill");
+        ConfirmationButtons.Instance.Confirmed += () => MoveToItemSlot(cardToMove, slotType);
+        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = "default";
+        ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
+        ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "default";
+        ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
+}
+
+    public static void MoveToItemSlot(GameObject cardToMove, string slotType)
+    {
+        ToolSlotScript.ForceEquipCardToCorrectSlot(cardToMove, slotType);
+    }
+}
+
+public class CardEffectCoroutines : MonoBehaviour
+{
+
 }
 
 public class BuildingFunctions : MonoBehaviour

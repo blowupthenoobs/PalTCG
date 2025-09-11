@@ -35,16 +35,21 @@ public class EnemyPalSphereScript : MonoBehaviour, IPointerEnterHandler, IPointe
         {
             if (HandScript.Instance.state == "targeting")
             {
-                GameManager.Instance.ShowConfirmationButtons();
-                HandScript.Instance.state = "raiding";
-                HandScript.Instance.selection.Add(HandScript.Instance.selected);
-                HandScript.Instance.selected = heldCard;
-                heldCard.SendMessage("Select");
-                HandScript.Instance.updateSelection += VerifyAttack;
-                ConfirmationButtons.Instance.Confirmed += StartRaid;
-                ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.StartCoroutine(HandScript.Instance.Attack());
-                ConfirmationButtons.Instance.Denied += DisengageAttacks;
-                ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
+                if (HandScript.Instance.selected.GetComponent<UnitCardScript>().statuses.shocked.Count == 0 || HandScript.Instance.selected.GetComponent<UnitCardScript>().statuses.shocked.Contains(heldCard))
+                { //Kinda works, at some point caused issues for unknown reasons (might be fixable when clearing statuses)
+                    GameManager.Instance.ShowConfirmationButtons();
+                    HandScript.Instance.state = "raiding";
+                    HandScript.Instance.selection.Add(HandScript.Instance.selected);
+                    HandScript.Instance.selected = heldCard;
+                    heldCard.SendMessage("Select");
+                    HandScript.Instance.updateSelection += VerifyAttack;
+                    ConfirmationButtons.Instance.Confirmed += StartRaid;
+                    ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.StartCoroutine(HandScript.Instance.Attack());
+                    ConfirmationButtons.Instance.Denied += DisengageAttacks;
+                    ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
+                }
+                else
+                    Debug.Log("invalid target due to shocking");
             }
             else if (HandScript.Instance.state == "settingAilment")
             {
@@ -212,6 +217,18 @@ public class EnemyPalSphereScript : MonoBehaviour, IPointerEnterHandler, IPointe
     {
         Debug.Log("Enemy Gained Tokens");
         heldCard.GetComponent<EnemyPalCardScript>().GainTokens(tokenType, tokenCount);
+    }
+
+    [PunRPC]
+    public void GetShocked()
+    {
+        heldCard.GetComponent<EnemyPalCardScript>().StartCoroutine("GetShocked");
+    }
+
+    [PunRPC]
+    public void ShockOtherCard()
+    {
+        EnemyPalCardScript.Shocker = heldCard;
     }
 #endregion
 

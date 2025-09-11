@@ -1202,6 +1202,10 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 3cda5e1c9303fbf4896961fe1c571560, type: 3}
     tanzee:
     - {fileID: 21300000, guid: d04f54fe21e308049b5baa1597dc5d48, type: 3}
+    foxsparks:
+    - {fileID: 21300000, guid: 7299426a1bd6cbb478362b7736a4918c, type: 3}
+    sparkit:
+    - {fileID: 21300000, guid: 20e5c82de962f034eba84430634f1462, type: 3}
     depresso:
     - {fileID: 21300000, guid: 79e026f539b452942a10665e99a8380a, type: 3}
     - {fileID: 21300000, guid: 6c9bd661e567ae64d8ff101befccd3e5, type: 3}

@@ -170,12 +170,24 @@ public class PalSphereScript : MonoBehaviour
     {
         heldCard.SendMessage("AfterBlockActions");
     }
-    
+
     [PunRPC]
     public void GainTokens(string tokenType, int tokenCount)
     {
         Debug.Log("friendly gained token");
         heldCard.GetComponent<UnitCardScript>().GainTokens(tokenType, tokenCount);
+    }
+
+    [PunRPC]
+    public void GetShocked()
+    {
+        heldCard.GetComponent<UnitCardScript>().StartCoroutine("GetShocked");
+    }
+    
+    [PunRPC]
+    public void ShockOtherCard()
+    {
+        heldCard.SendMessage("ShockOtherCard");
     }
 #endregion
 }

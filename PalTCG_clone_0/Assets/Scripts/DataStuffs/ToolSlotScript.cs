@@ -60,6 +60,13 @@ public class ToolSlotScript : MonoBehaviour
         slot?.PlaceCard(card);
     }
 
+    public static void ForceEquipCardToCorrectSlot(GameObject card, string toolType)
+    {
+        var slot = FindMatchingSlot(toolType);
+
+        slot?.ForcePlaceCard(card);
+    }
+
     void PlaceCard(GameObject card)
     {
         if(heldCard == null)
@@ -92,6 +99,20 @@ public class ToolSlotScript : MonoBehaviour
         
     }
 
+    public void ForcePlaceCard(GameObject card)
+    {
+        if(heldCard != null)
+            heldCard.SendMessage("SendToPalBox");
+        
+        heldCard = card;
+        heldCard.transform.SetParent(gameObject.transform); //Need to make it search for the matching one
+        heldCard.transform.position = transform.position;
+        heldCard.GetComponent<ToolCardScript>().opponentMirror = opponentMirror;
+
+        heldCard.GetComponent<ToolCardScript>().PlaceOnSpot();
+        heldCard.GetComponent<ToolCardScript>().waitingSpace = waitingSpace;
+    }
+
     private void PayForCard()
     {
         HandScript.Instance.updateSelection -= VerifyButtons;
@@ -100,14 +121,14 @@ public class ToolSlotScript : MonoBehaviour
         ConfirmationButtons.Instance.Denied -= HandScript.Instance.ClearSelection;
         GameManager.Instance.HideConfirmationButtons();
 
-        var data = (ToolCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;        
+        var data = (ToolCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
 
 
-        if(data.size <= 1)
+        if (data.size <= 1)
         {
             var newCard = Instantiate(cardPrefab, transform.position, transform.rotation);
             var slot = FindMatchingSlot(data.toolType);
-            
+
             slot?.opponentMirror.RPC("CreateCard", RpcTarget.Others, data.originalData.cardID);
             newCard.SendMessage("SetUpCard", data);
             slot?.PlaceCard(newCard);
@@ -132,7 +153,7 @@ public class ToolSlotScript : MonoBehaviour
         heldCard = null;
     }
 
-    private ToolSlotScript FindMatchingSlot(string slotName)
+    private static ToolSlotScript FindMatchingSlot(string slotName)
     {
         ToolSlotScript matchingSlot = null;
         foreach(ToolSlotScript nextSlot in allToolSlots)

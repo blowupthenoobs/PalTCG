@@ -152,8 +152,31 @@ namespace Resources
                     var merged = new List<GameObject>(listA);
                     merged.AddRange(listB);
 
-                    field.SetValue(result, temp);
+                    field.SetValue(result, merged);
                 }
+            }
+
+            return (StatusEffects)result;
+        }
+
+        public static StatusEffects operator *(StatusEffects a, StatusEffects b) //For setting to a min value
+        {
+            object result = new StatusEffects();
+            var fields = typeof(StatusEffects).GetFields();
+
+            foreach (var field in fields)
+            {
+                var valueA = field.GetValue(a);
+                var valueB = field.GetValue(b);
+
+                if(valueA is int oldVal)
+                {
+                    if (oldVal < (int)valueB)
+                        field.SetValue(result, valueB);
+                    else
+                        field.SetValue(result, valueA);
+                }
+                
             }
 
             return (StatusEffects)result;

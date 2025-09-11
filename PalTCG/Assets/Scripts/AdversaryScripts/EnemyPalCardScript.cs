@@ -20,6 +20,9 @@ public class EnemyPalCardScript : MonoBehaviour
 
     public bool hovered;
     private bool viewButtonPressed;
+    
+    //Effect stuff
+    [HideInInspector] public static GameObject Shocker;
 
     void Awake()
     {
@@ -81,6 +84,21 @@ public class EnemyPalCardScript : MonoBehaviour
         else
             heldCard.GetComponent<UnitCardScript>().GainTokens(tokenType, tokenCount);
         
+    }
+
+    public IEnumerator GetShocked()
+    {
+        yield return new WaitUntil(() => UnitCardScript.Shocker != null);
+
+        if (heldCard == null)
+        {
+            if (!statuses.shocked.Contains(UnitCardScript.Shocker))
+                statuses.shocked.Add(UnitCardScript.Shocker);
+
+            UnitCardScript.Shocker = null;
+        }
+        else
+            heldCard.GetComponent<EnemyPalCardScript>().StartCoroutine("GetShocked");
     }
 
     public void SendRestEffect()

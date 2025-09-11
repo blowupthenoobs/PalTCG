@@ -42,6 +42,9 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     private bool hovered;
     private bool viewButtonPressed;
 
+    //Effect stuffs
+    public static GameObject Shocker;
+
 
     void Awake()
     {
@@ -79,7 +82,7 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if(heldCard == null)
         {
-            cardData.currentHp -= dmg;
+            cardData.currentHp -= dmg + statuses.burning;
 
             if(cardData.currentHp <= 0)
                 Die();
@@ -244,13 +247,18 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             }
             else if(HandScript.Instance.state == "raiding")
             {
-                if(HandScript.Instance.selected != gameObject && !HandScript.Instance.selection.Contains(gameObject))
+                if(statuses.shocked.Count == 0 || statuses.shocked.Contains(HandScript.Instance.selected)) //Kinda works
                 {
-                    image.color = selectColor;
-                    HandScript.Instance.Select(gameObject);
+                    if (HandScript.Instance.selected != gameObject && !HandScript.Instance.selection.Contains(gameObject))
+                    {
+                        image.color = selectColor;
+                        HandScript.Instance.Select(gameObject);
+                    }
+                    else
+                        RemoveFromSelection();
                 }
                 else
-                    RemoveFromSelection();
+                    Debug.Log("Invalid target to shocking");
             }
             else
                 RemoveFromSelection();
@@ -321,9 +329,34 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         
     }
 
-    public bool CanBlock()
+    public IEnumerator GetShocked()
+    {
+        yield return new WaitUntil(() => EnemyPalCardScript.Shocker != null);
+
+        if(heldCard == null)
+        {
+            if(!statuses.shocked.Contains(EnemyPalCardScript.Shocker))
+                statuses.shocked.Add(EnemyPalCardScript.Shocker);
+
+            opponentMirror.RPC("GetShocked", RpcTarget.Others);
+            EnemyPalCardScript.Shocker.GetComponent<EnemyPalCardScript>().opponentMirror.RPC("ShockOtherCard", RpcTarget.Others);
+            EnemyPalCardScript.Shocker = null;
+        }
+        else
+            heldCard.SendMessage("GetShocked");
+    }
+
+    public void ShockOtherCard()
     {
         if(heldCard == null)
+            Shocker = gameObject;
+        else
+            heldCard.SendMessage("ShockOtherCard");
+    }
+
+    public bool CanBlock()
+    {
+        if (heldCard == null)
             return (cardData.traits.tags.Contains("blocker") && statuses.poisoned == 0);
         else
             return heldCard.GetComponent<UnitCardScript>().CanBlock();
@@ -411,6 +444,12 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public void ResetPalSkill()
     {
         palSKillActive = false;
+    }
+
+    public void ActivatePalSkill()
+    {
+        palSKillActive = true;
+        FieldCardContextMenuScript.Instance.pallSkillUses--;
     }
 
     public void RemoveCardEventsFromManager()
