@@ -66,6 +66,7 @@ public class FieldCardContextMenuScript : MonoBehaviour, IPointerEnterHandler, I
         ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
         ConfirmationButtons.Instance.Denied += AllowConfirmations.ResetState;
         ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
+        ConfirmationButtons.Instance.AllowConfirmation(true);
     }
 
     public void EjectCardFromSpot(GameObject activator)
@@ -76,6 +77,11 @@ public class FieldCardContextMenuScript : MonoBehaviour, IPointerEnterHandler, I
     public void ActivateCardAbilities()
     {
         StartCoroutine(activeCard.GetComponent<UnitCardScript>().UseActivatedAbility());
+    }
+
+    public void ActivatePalSkillAbilities()
+    {
+        StartCoroutine(activeCard.GetComponent<UnitCardScript>().UsePalSkills());
     }
 
     private bool CanUsePalSkills()

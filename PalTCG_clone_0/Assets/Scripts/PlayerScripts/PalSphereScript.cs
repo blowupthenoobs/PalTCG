@@ -6,15 +6,11 @@ using Photon.Pun;
 
 using Resources;
 
-public class PalSphereScript : MonoBehaviour
+public class PalSphereScript : CardHolderScript
 {
     protected Image image;
     public Color normalColor;
     public Color brokenColor;
-    [SerializeField] PhotonView opponentMirror;
-    [SerializeField] GameObject waitingSpace;
-    [SerializeField] GameObject cardPrefab;
-    public GameObject heldCard;
     private bool isBroken;
 
     public GameObject ContextMenuSpot;
@@ -151,43 +147,4 @@ public class PalSphereScript : MonoBehaviour
     {
         FieldCardContextMenuScript.Instance.OpenContextMenu(ContextMenuSpot, caller);
     }
-
-    #region cardDelegation
-    [PunRPC]
-    public void Rest()
-    {
-        heldCard.SendMessage("Rest");
-    }
-
-    [PunRPC]
-    public void HurtHeldCard(int damage)
-    {
-        heldCard.SendMessage("Hurt", damage);
-    }
-
-    [PunRPC]
-    public void AfterBlockActions()
-    {
-        heldCard.SendMessage("AfterBlockActions");
-    }
-
-    [PunRPC]
-    public void GainTokens(string tokenType, int tokenCount)
-    {
-        Debug.Log("friendly gained token");
-        heldCard.GetComponent<UnitCardScript>().GainTokens(tokenType, tokenCount);
-    }
-
-    [PunRPC]
-    public void GetShocked()
-    {
-        heldCard.GetComponent<UnitCardScript>().StartCoroutine("GetShocked");
-    }
-    
-    [PunRPC]
-    public void ShockOtherCard()
-    {
-        heldCard.SendMessage("ShockOtherCard");
-    }
-#endregion
 }

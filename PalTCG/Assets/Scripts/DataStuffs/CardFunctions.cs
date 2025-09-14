@@ -170,17 +170,21 @@ public class CardMovement : MonoBehaviour
     {
         GameObject cardToMove = FieldCardContextMenuScript.Instance.activeCard;
 
+        GameManager.Instance.ShowConfirmationButtons();
         HandScript.Instance.state = "awaitingDecision";
         ConfirmationButtons.Instance.Confirmed += () => cardToMove.SendMessage("ActivatePalSkill");
         ConfirmationButtons.Instance.Confirmed += () => MoveToItemSlot(cardToMove, slotType);
+        ConfirmationButtons.Instance.Confirmed += () => cardToMove.SendMessage("UseAbility");
         ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = "default";
         ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
+        ConfirmationButtons.Instance.Denied += () => cardToMove.SendMessage("UseAbility");
         ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "default";
         ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
 }
 
     public static void MoveToItemSlot(GameObject cardToMove, string slotType)
     {
+        cardToMove.transform.parent.gameObject.SendMessage("PrepareCardForMoving");
         ToolSlotScript.ForceEquipCardToCorrectSlot(cardToMove, slotType);
     }
 }

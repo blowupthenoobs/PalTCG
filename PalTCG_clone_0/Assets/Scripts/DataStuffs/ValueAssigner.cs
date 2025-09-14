@@ -15,8 +15,10 @@ public class ValueAssigner : MonoBehaviour
     {
         manager  = AccountManager.Instance;
         abilitySets = manager.PalAbilities;
+        abilitySets.lamball.PalSkill.Add(() => CardMovement.EquipAsItemPalSkill("weapon"));
 
         abilitySets.foxsparks.OnAttack.Add(() => StatusEffectAbilities.BurnCard());
+        abilitySets.foxsparks.PalSkill.Add(() => CardMovement.EquipAsItemPalSkill("weapon"));
         abilitySets.sparkit.OnAttack.Add(() => StatusEffectAbilities.ShockTarget());
 
         abilitySets.daedream.WhenAttack.Add(() => StartCoroutine(StatusEffectAbilities.PutToSleep()));

@@ -200,6 +200,20 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         }
     }
 
+    public IEnumerator UsePalSkills()
+    {
+        if(cardData.PalSkill != null)
+        {
+            for(int i = 0; i < cardData.PalSkill.Count; i++)
+            {
+                cardData.PalSkill[i].Invoke();
+                yield return new WaitUntil(() => movePassedThrough);
+
+                movePassedThrough = false;
+            }
+        }
+    }
+
     public void DontUseAbility()
     {
         moveRejected = true;

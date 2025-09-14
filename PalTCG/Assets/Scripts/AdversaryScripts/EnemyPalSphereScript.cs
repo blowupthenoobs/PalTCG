@@ -18,6 +18,9 @@ public class EnemyPalSphereScript : MonoBehaviour, IPointerEnterHandler, IPointe
     [SerializeField] Color normalColor;
     [SerializeField] Color brokenColor;
 
+    //Effect stuffs
+    public static GameObject CardToMove;
+
     void Awake()
     {
         image = gameObject.GetComponent<Image>();
@@ -185,7 +188,7 @@ public class EnemyPalSphereScript : MonoBehaviour, IPointerEnterHandler, IPointe
     [PunRPC]
     public void UpdateHealth(int newHealth)
     {
-        heldCard.SendMessage("UpdateHealth", newHealth);
+        heldCard.SendMessage("UpdateHealth", newHealth, SendMessageOptions.DontRequireReceiver);
     }
 
     [PunRPC]
@@ -229,6 +232,21 @@ public class EnemyPalSphereScript : MonoBehaviour, IPointerEnterHandler, IPointe
     public void ShockOtherCard()
     {
         EnemyPalCardScript.Shocker = heldCard;
+    }
+
+    [PunRPC]
+    public void PrepareCardForMoving()
+    {
+        CardToMove = heldCard;
+        heldCard = null;
+    }
+
+    [PunRPC]
+    public void RecieveMovingCard()
+    {
+        if(CardToMove != null)
+            PlaceCard(CardToMove);
+        CardToMove = null;
     }
 #endregion
 

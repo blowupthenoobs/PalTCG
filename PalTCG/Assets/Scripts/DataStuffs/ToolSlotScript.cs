@@ -6,15 +6,11 @@ using Photon.Pun;
 
 using Resources;
 using DefaultUnitData;
-public class ToolSlotScript : MonoBehaviour
+public class ToolSlotScript : CardHolderScript
 {
     protected Image image;
     public string slotType;
     public static List<ToolSlotScript> allToolSlots = new List<ToolSlotScript>();
-    public PhotonView opponentMirror;
-    [SerializeField] GameObject waitingSpace;
-    [SerializeField] GameObject cardPrefab;
-    public GameObject heldCard;
 
     public void Awake()
     {
@@ -83,6 +79,7 @@ public class ToolSlotScript : MonoBehaviour
             }
 
             heldCard.GetComponent<ToolCardScript>().PlaceOnSpot();
+            
             heldCard.GetComponent<ToolCardScript>().waitingSpace = waitingSpace;
         }
         else
@@ -107,10 +104,14 @@ public class ToolSlotScript : MonoBehaviour
         heldCard = card;
         heldCard.transform.SetParent(gameObject.transform); //Need to make it search for the matching one
         heldCard.transform.position = transform.position;
-        heldCard.GetComponent<ToolCardScript>().opponentMirror = opponentMirror;
+        heldCard.GetComponent<UnitCardScript>().opponentMirror = opponentMirror;
 
-        heldCard.GetComponent<ToolCardScript>().PlaceOnSpot();
-        heldCard.GetComponent<ToolCardScript>().waitingSpace = waitingSpace;
+        heldCard.GetComponent<UnitCardScript>().PlaceOnSpot();
+        
+        if(heldCard.GetComponent<ToolSlotScript>() != null)
+            heldCard.GetComponent<ToolCardScript>().waitingSpace = waitingSpace;
+
+        opponentMirror.RPC("RecieveMovingCard", RpcTarget.Others);
     }
 
     private void PayForCard()
@@ -191,25 +192,4 @@ public class ToolSlotScript : MonoBehaviour
     {
         Debug.Log("This doesn't break");
     }
-
-
-    #region cardDelegation
-    [PunRPC]
-    public void Rest()
-    {
-        heldCard.SendMessage("Rest");
-    }
-
-    [PunRPC]
-    public void HurtHeldCard(int damage)
-    {
-        heldCard.SendMessage("Hurt", damage);
-    }
-
-    [PunRPC]
-    public void AfterBlockActions()
-    {
-        heldCard.SendMessage("AfterBlockActions");
-    }
-    #endregion
 }

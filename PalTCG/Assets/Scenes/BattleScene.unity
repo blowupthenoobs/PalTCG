@@ -694,10 +694,13 @@ MonoBehaviour:
     chikipi: []
     lifmunk: []
     tanzee: []
+    foxsparks: []
+    sparkit: []
     depresso: []
     daedream: []
     fuddler: []
     dumud: []
+    loupmoon: []
     pickaxe: []
     axe: []
     saddle: []
@@ -3179,11 +3182,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d272550edba7a6047b796a5569bbfc90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotType: weapon
   opponentMirror: {fileID: 2128291646}
   waitingSpace: {fileID: 1375381342}
   cardPrefab: {fileID: 2608142742448742569, guid: 3dc515fd73da019468280f1b839f5fe8, type: 3}
   heldCard: {fileID: 0}
+  slotType: weapon
 --- !u!114 &695658195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3352,11 +3355,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d272550edba7a6047b796a5569bbfc90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotType: ride
   opponentMirror: {fileID: 657195498}
   waitingSpace: {fileID: 1375381342}
   cardPrefab: {fileID: 2608142742448742569, guid: 3dc515fd73da019468280f1b839f5fe8, type: 3}
   heldCard: {fileID: 0}
+  slotType: ride
 --- !u!114 &712774004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4267,7 +4270,11 @@ MonoBehaviour:
   opponentMirror: {fileID: 1165730012}
   resting: 0
   palSKillActive: 0
-  statuses: {fileID: 0}
+  statuses:
+    burning: 0
+    poisoned: 0
+    shocked: []
+    daedreamCurse: 0
   turnsOnSpot: 0
   photonAssigner: {fileID: 1165730012}
 --- !u!114 &1046175279
@@ -8279,13 +8286,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1522594947}
+        m_TargetAssemblyTypeName: FieldCardContextMenuScript, Assembly-CSharp
+        m_MethodName: ActivatePalSkillAbilities
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
