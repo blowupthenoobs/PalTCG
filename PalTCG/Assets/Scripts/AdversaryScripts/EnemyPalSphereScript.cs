@@ -34,11 +34,11 @@ public class EnemyPalSphereScript : MonoBehaviour, IPointerEnterHandler, IPointe
 #region palsphereFunctions
     public void SelectAsTarget()
     {
-        if (heldCard != null)
+        if(heldCard != null)
         {
-            if (HandScript.Instance.state == "targeting")
+            if(HandScript.Instance.state == "targeting")
             {
-                if (HandScript.Instance.selected.GetComponent<UnitCardScript>().statuses.shocked.Count == 0 || HandScript.Instance.selected.GetComponent<UnitCardScript>().statuses.shocked.Contains(heldCard))
+                if(HandScript.Instance.selected.GetComponent<UnitCardScript>().statuses.shocked.Count == 0 || HandScript.Instance.selected.GetComponent<UnitCardScript>().statuses.shocked.Contains(heldCard))
                 { //Kinda works, at some point caused issues for unknown reasons (might be fixable when clearing statuses)
                     GameManager.Instance.ShowConfirmationButtons();
                     HandScript.Instance.state = "raiding";
@@ -54,7 +54,7 @@ public class EnemyPalSphereScript : MonoBehaviour, IPointerEnterHandler, IPointe
                 else
                     Debug.Log("invalid target due to shocking");
             }
-            else if (HandScript.Instance.state == "settingAilment")
+            else if(HandScript.Instance.state == "settingAilment")
             {
                 HandScript.Instance.Select(heldCard);
             }
@@ -188,7 +188,7 @@ public class EnemyPalSphereScript : MonoBehaviour, IPointerEnterHandler, IPointe
     [PunRPC]
     public void UpdateHealth(int newHealth)
     {
-        heldCard.SendMessage("UpdateHealth", newHealth, SendMessageOptions.DontRequireReceiver);
+        heldCard?.SendMessage("UpdateHealth", newHealth, SendMessageOptions.DontRequireReceiver);
     }
 
     [PunRPC]
@@ -218,7 +218,6 @@ public class EnemyPalSphereScript : MonoBehaviour, IPointerEnterHandler, IPointe
     [PunRPC]
     public void GainTokens(string tokenType, int tokenCount)
     {
-        Debug.Log("Enemy Gained Tokens");
         heldCard.GetComponent<EnemyPalCardScript>().GainTokens(tokenType, tokenCount);
     }
 
@@ -232,6 +231,18 @@ public class EnemyPalSphereScript : MonoBehaviour, IPointerEnterHandler, IPointe
     public void ShockOtherCard()
     {
         EnemyPalCardScript.Shocker = heldCard;
+    }
+
+    [PunRPC]
+    public void PlayerTurnRemoveStatuses()
+    {
+        heldCard.SendMessage("PlayerTurnRemoveStatuses");
+    }
+
+    [PunRPC]
+    public void EnemyTurnRemoveStatuses()
+    {
+        heldCard.SendMessage("EnemyTurnRemoveStatuses");
     }
 
     [PunRPC]
@@ -252,7 +263,7 @@ public class EnemyPalSphereScript : MonoBehaviour, IPointerEnterHandler, IPointe
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (heldCard != null)
+        if(heldCard != null)
             heldCard.GetComponent<EnemyPalCardScript>().hovered = true;
     }
 

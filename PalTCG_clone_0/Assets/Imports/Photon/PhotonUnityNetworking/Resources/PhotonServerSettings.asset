@@ -68,6 +68,10 @@ MonoBehaviour:
   - GainTokens
   - GetShocked
   - ShockOtherCard
+  - PrepareCardForMoving
+  - RecieveMovingCard
+  - EnemyTurnRemoveStatuses
+  - PlayerTurnRemoveStatuses
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

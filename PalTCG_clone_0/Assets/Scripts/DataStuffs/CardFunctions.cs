@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
@@ -54,7 +55,7 @@ public class TargetingMechanisms : MonoBehaviour
     {
         GameObject target = null;
 
-        if (HandScript.Instance.blocker == null)
+        if(HandScript.Instance.blocker == null)
             target = HandScript.Instance.selected;
         else
             target = HandScript.Instance.blocker;
@@ -66,51 +67,42 @@ public class TargetingMechanisms : MonoBehaviour
 public class StatusEffectAbilities : MonoBehaviour
 {
     private static bool canMoveToNextStep;
-    public static void BurnCard()
+    public static void BurnCard(int power = 1)
     {
-        GiveTokensToTarget("burning", 1);
-        HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect();
+        GiveTokensToTarget("burning", power);
+        AbilityActivation.readyForNextAttackAction = true;
     }
     public static void PoisonCard()
     {
         GiveTokensToTarget("poisoned", 2);
-        HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect();
+        AbilityActivation.readyForNextAttackAction = true;
     }
 
     public static void ShockTarget()
     {
         var target = TargetingMechanisms.TargetAttackedEnemy();
         
-        if(target.transform.parent.GetComponent<EnemyPalSphereScript>() != null)
-            target.transform.parent.GetComponent<EnemyPalSphereScript>().opponentMirror.RPC("GetShocked", RpcTarget.Others);
+        target.transform.GetComponent<EnemyPalCardScript>().opponentMirror.RPC("GetShocked", RpcTarget.Others);
 
         HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().opponentMirror.RPC("ShockOtherCard", RpcTarget.Others);
 
-        HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect();
+        AbilityActivation.readyForNextAttackAction = true;
     }
 
-    public static IEnumerator PutToSleep()
+    public static void PutToSleep()
     {
-        if (HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().statuses.poisoned == 0)
-        {
-            HandScript.Instance.selection.Clear();
-            yield return null;
-            GameManager.Instance.ShowConfirmationButtons();
-            HandScript.Instance.state = "settingAilment";
-            HandScript.Instance.updateSelection += AllowConfirmations.LookForSingleTarget;
-            ConfirmationButtons.Instance.Confirmed += RestTargets;
-            ConfirmationButtons.Instance.Confirmed += HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect;
-            ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = "choosingAttack";
-            ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
-            ConfirmationButtons.Instance.Denied += HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect;
-            ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "choosingAttack";
-            ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
-            ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
-        }
-        else
-        {
-            HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect();
-        }
+        HandScript.Instance.selection.Clear();
+        GameManager.Instance.ShowConfirmationButtons();
+        HandScript.Instance.state = "settingAilment";
+        HandScript.Instance.updateSelection += AllowConfirmations.LookForSingleTarget;
+        ConfirmationButtons.Instance.Confirmed += RestTargets;
+        ConfirmationButtons.Instance.Confirmed += () => AbilityActivation.readyForNextAttackAction = true;
+        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = "choosingAttack";
+        ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
+        ConfirmationButtons.Instance.Denied += () => AbilityActivation.readyForNextAttackAction = true;
+        ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "choosingAttack";
+        ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
+        ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
     }
 
     public static void RestTargets()
@@ -186,6 +178,58 @@ public class CardMovement : MonoBehaviour
     {
         cardToMove.transform.parent.gameObject.SendMessage("PrepareCardForMoving");
         ToolSlotScript.ForceEquipCardToCorrectSlot(cardToMove, slotType);
+    }
+}
+
+public class AbilityActivation : MonoBehaviour
+{
+    public static bool readyForNextAttackAction;
+    public static IEnumerator RunWhenAttackAbilities(List<string> traitList)
+    {
+        yield return null;
+
+        if(HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().statuses.poisoned == 0)
+        {
+            if(traitList.Contains("daedream"))
+            {
+                for (int i = 0; i < traitList.Count(n => n == "daedream"); i++)
+                {
+                    StatusEffectAbilities.PutToSleep();
+                    yield return new WaitUntil(() => readyForNextAttackAction);
+                }
+            }
+        }
+
+        HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect();
+    }
+
+    public static IEnumerator RunOnAttackAbilities(List<string> traitList)
+    {
+        yield return null;
+        if(HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().statuses.poisoned == 0)
+        {
+            if(traitList.Contains("burn"))
+                StatusEffectAbilities.BurnCard(traitList.Count(n => n == "burn"));
+            if(traitList.Contains("toxic"))
+                StatusEffectAbilities.PoisonCard();
+            if(traitList.Contains("stun"))
+                StatusEffectAbilities.ShockTarget();
+        }
+
+
+        HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect();
+    }
+
+    public static IEnumerator UsePalSkills(string palSkill)
+    {
+        yield return null;
+
+        if(new[] { "lamball", "foxsparks" }.Contains(palSkill))
+        {
+            CardMovement.EquipAsItemPalSkill("weapon");
+            yield break;
+        }
+
     }
 }
 

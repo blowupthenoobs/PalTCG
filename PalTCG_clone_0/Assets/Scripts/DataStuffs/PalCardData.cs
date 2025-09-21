@@ -12,6 +12,7 @@ public class PalCardData : CardData
     public int cost;
     public Resources.Element element;
     public int size;
+    public string palSkill;
 
     public void DecomposeData(PalData newData)
     {
@@ -26,24 +27,7 @@ public class PalCardData : CardData
         maxHp = originalData.maxHp;
         cardID = originalData.cardID;
 
-        OnDestroy = originalData.abilities.OnDestroy;
-        WhenAttack = originalData.abilities.WhenAttack;
-        OnAttack = originalData.abilities.OnAttack;
-        OnHurt = originalData.abilities.OnHurt;
-        OnPlay = originalData.abilities.OnPlay;
-        EndOfPlayerTurn = originalData.abilities.EndOfPlayerTurn;
-        EndOfEnemyTurn = originalData.abilities.EndOfEnemyTurn;
-        OncePerTurn = originalData.abilities.OncePerTurn;
-
-        PalSkill = originalData.abilities.PalSkill;
-        WhenSkillAttack = originalData.abilities.WhenSkillAttack;
-        OnSkillAttack = originalData.abilities.OnSkillAttack;
-        EndOfSkillTurn = originalData.abilities.EndOfSkillTurn;
-
-        foreach(UnityAction unused in OncePerTurn)
-        {
-            AbilityUseCounter.Add(0);
-        }
+        palSkill = cardID.Split("/")[1];
     }
 
     public override bool Equals(object obj)

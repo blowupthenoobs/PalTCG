@@ -23,12 +23,6 @@ public class ToolCardData : CardData
         currentAtk = originalData.attackPower;
         maxHp = originalData.maxHp;
         cardID = originalData.cardID;
-
-        OnDestroy = originalData.abilities.OnDestroy;
-        WhenAttack = originalData.abilities.WhenAttack;
-        OnAttack = originalData.abilities.OnAttack;
-        OnDestroy = originalData.abilities.OnDestroy;
-        OnDestroy = originalData.abilities.OnDestroy;
     }
 
     public override bool Equals(object obj)

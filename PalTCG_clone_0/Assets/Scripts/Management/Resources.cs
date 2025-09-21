@@ -143,11 +143,11 @@ namespace Resources
                 var valueA = field.GetValue(a);
                 var valueB = field.GetValue(b);
 
-                if (valueA is int)
+                if(valueA is int)
                 {
                     field.SetValue(result, (int)valueA + (int)valueB);
                 }
-                else if (valueA is List<GameObject> listA && valueB is List<GameObject> listB)
+                else if(valueA is List<GameObject> listA && valueB is List<GameObject> listB)
                 {
                     var merged = new List<GameObject>(listA);
                     merged.AddRange(listB);
@@ -171,7 +171,7 @@ namespace Resources
 
                 if(valueA is int oldVal)
                 {
-                    if (oldVal < (int)valueB)
+                    if(oldVal < (int)valueB)
                         field.SetValue(result, valueB);
                     else
                         field.SetValue(result, valueA);

@@ -8,7 +8,6 @@ public class AccountManager : MonoBehaviour
 {
     public static AccountManager Instance;
     public Sprites CardSprites = new Sprites();
-    [HideInInspector] public PalAbilitySets PalAbilities = new PalAbilitySets();
 
     public Account player;
 

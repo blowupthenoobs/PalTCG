@@ -15,25 +15,10 @@ public abstract class CardData : ScriptableObject
     public Image image;
     public GameObject gameObject;
     public Traits traits;
+    public List<bool> usedAbilities = new List<bool>();
     public int maxHp;
     public int currentHp;
     public int currentAtk;
-
-    //PalCard Stuffs
-    public List<UnityAction> OnDestroy = new List<UnityAction>();
-    public List<UnityAction> WhenAttack = new List<UnityAction>();
-    public List<UnityAction> OnAttack = new List<UnityAction>();
-    public List<UnityAction> OnHurt = new List<UnityAction>();
-    public List<UnityAction> OnPlay = new List<UnityAction>();
-    public List<UnityAction> EndOfPlayerTurn = new List<UnityAction>();
-    public List<UnityAction> EndOfEnemyTurn = new List<UnityAction>();
-    public List<UnityAction> OncePerTurn = new List<UnityAction>();
-    public List<int> AbilityUseCounter = new List<int>();
-
-    public List<UnityAction> PalSkill = new List<UnityAction>();
-    public List<UnityAction> WhenSkillAttack = new List<UnityAction>();
-    public List<UnityAction> OnSkillAttack = new List<UnityAction>();
-    public List<UnityAction> EndOfSkillTurn = new List<UnityAction>();
 
     
     public virtual void SetToGameObject()
@@ -44,10 +29,5 @@ public abstract class CardData : ScriptableObject
     public virtual void Discard()
     {
         Destroy(gameObject);
-    }
-
-    public virtual void Effect(GameObject target)
-    {
-        Debug.Log("No Effect Set");
     }
 }

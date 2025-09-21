@@ -184,6 +184,10 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                     updateSelection.Invoke();
                 }
                 break;
+            case "endOfTurnAbilities":
+                selected = card;
+                updateSelection.Invoke();
+                break;
             default:
                 Debug.Log("invalid state: " + state);
                 break;
@@ -197,7 +201,6 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             selected.SendMessage("Deselect");
         selected = null;
 
-        // Debug.Log(selection[0]);
         if(selection.Count > 0)
             UnselectSelection();
     }
@@ -222,7 +225,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         for(int i = 0; i < attackers.Count; i++)
         {
             currentAttacker = attackers[i];
-            opponentMirror.RPC("LookForBlockers", RpcTarget.Others);
+            FieldAbilityHandlerScript.Instance.enemyHandler.RPC("LookForBlockers", RpcTarget.Others);
             yield return new WaitUntil(() => readyForNextAttackAction);
             readyForNextAttackAction = false;
             attackers[i].SendMessage("Attack");
@@ -259,42 +262,9 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     }
 
     [PunRPC]
-    public void LookForBlockers()
-    {
-        if(CheckForBlockers())
-        {
-            StartCoroutine("ChooseBlocker");
-        }
-        else
-            opponentMirror.RPC("PassAction", RpcTarget.Others);
-    }
-
-    [PunRPC]
     public void PassAction()
     {
         readyForNextAttackAction = true;
-    }
-
-    public IEnumerator ChooseBlocker()
-    {
-        yield return null;
-        state = "blocking";
-        GameManager.Instance.ShowConfirmationButtons();
-        updateSelection += AllowConfirmations.LookForSingleTarget;
-        ConfirmationButtons.Instance.Confirmed += SetBlocker;
-        ConfirmationButtons.Instance.Confirmed += () => opponentMirror.RPC("PassAction", RpcTarget.Others);
-        ConfirmationButtons.Instance.Confirmed += () => state = "";
-        ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
-        ConfirmationButtons.Instance.Denied += () => opponentMirror.RPC("PassAction", RpcTarget.Others);
-        ConfirmationButtons.Instance.Denied += () => state = "";
-        ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
-
-        updateSelection.Invoke();
-    }
-
-    private void SetBlocker()
-    {
-        selection[0].GetComponent<UnitCardScript>().opponentMirror.RPC("Block", RpcTarget.Others);
     }
 
     public IEnumerator Click()
@@ -466,22 +436,6 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void Raise()
     {
         targetPos = originalPos;
-    }
-#endregion
-
-#region BoardChecks
-    public bool CheckForBlockers()
-    {
-        foreach(GameObject space in cardSlots)
-        {
-            if(space.GetComponent<PalSphereScript>().heldCard != null)
-            {
-                if(!space.GetComponent<PalSphereScript>().heldCard.GetComponent<UnitCardScript>().resting && space.GetComponent<PalSphereScript>().heldCard.GetComponent<UnitCardScript>().CanBlock())
-                    return true;
-            }
-        }
-
-        return false;
     }
 #endregion
 }

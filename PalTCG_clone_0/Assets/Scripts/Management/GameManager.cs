@@ -10,10 +10,10 @@ using DefaultUnitData;
 
 public class GameManager : MonoBehaviour
 {
+    public bool readyToFinishEndPhase;
     public static GameManager Instance;
     [SerializeField] GameObject CraftingMenu;
     public Sprites CardSprites;
-    public PalAbilitySets PalAbilities;
 
 
     //Visuals and Confirmation
@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     public UnityAction testAction;
 
     public string phase = "PlayerTurn";
+    public bool readyForNextAttackAction;
 
     void Awake()
     {
@@ -44,7 +45,6 @@ public class GameManager : MonoBehaviour
         HideConfirmationButtons();
 
         CardSprites = AccountManager.Instance.CardSprites;
-        PalAbilities = AccountManager.Instance.PalAbilities;
 
         StartPlayerTurn += PlayerPhase;
         StartPlayerTurn += () => DrawCards(2);
@@ -83,15 +83,33 @@ public class GameManager : MonoBehaviour
                 StartPlayerAttack.Invoke();
                 break;
             case "PlayerAttack":
+                EndPlayerTurn.Invoke();
                 StartEnemyTurn.Invoke();
                 break;
             case "EnemyTurn":
                 StartEnemyAttack.Invoke();
                 break;
             case "EnemyAttack":
+                EndEnemyTurn.Invoke();
                 StartPlayerTurn.Invoke(); //Results in issues when destroy card
                 break;
         }
+    }
+
+    public IEnumerator PreparePhaseSwitch()
+    {
+        yield return null;
+        phase = "limbo";
+
+        FieldAbilityHandlerScript.Instance.RunEndOfTurnAbilities();
+        yield return new WaitUntil(() => readyForNextAttackAction);
+        readyForNextAttackAction = false;
+
+        //Ask enemy if they have end of turn abilities
+        // yield return new WaitUntil(readyForNextAttackAction);
+        readyForNextAttackAction = false;
+
+        SwitchPhases();
     }
 
 
@@ -106,7 +124,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    #region GameStates
+#region GameStates
     void PlayerPhase()
     {
         HandScript.Instance.state = "default";

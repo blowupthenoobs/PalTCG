@@ -4,8 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 
+using DefaultUnitData;
 public class PalCardScript : UnitCardScript
 {
+    public bool palSKillActive;
 
     public void PlaceOnPalSphere()
     {
@@ -81,6 +83,33 @@ public class PalCardScript : UnitCardScript
             return true;
         else
             return false;
+    }
+
+    public override void SetUpBasicTurnEvents()
+    {
+        base.SetUpBasicTurnEvents();
+        StartPlayerTurn += ResetPalSkill;
+    }
+
+    public void UsePalSkill()
+    {
+        Pals.palSkill[((PalCardData)cardData).palSkill].Invoke();
+    }
+
+    public override bool CanUsePalSkills()
+    {
+        return !palSKillActive;
+    }
+
+    public void ResetPalSkill()
+    {
+        palSKillActive = false;
+    }
+
+    public void ActivatePalSkill()
+    {
+        palSKillActive = true;
+        FieldCardContextMenuScript.Instance.pallSkillUses--;
     }
 
     protected override void Die()

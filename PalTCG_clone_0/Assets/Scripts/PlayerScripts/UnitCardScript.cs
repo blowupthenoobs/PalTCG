@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,7 +30,6 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     //Effects and state variables
     public bool resting;
-    public bool palSKillActive;
 
     //Coroutine Checks
     protected bool readyForNextAttackAction;
@@ -120,6 +120,12 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         button.onClick.AddListener(EnemyTurnActions);
     }
 
+    public void PrepareEndPhase()
+    {
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(SelectForEndPhaseAbility);
+    }
+
     public IEnumerator Attack()
     {
         GameObject target;
@@ -129,50 +135,42 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         else
             target = HandScript.Instance.blocker;
 
-        if(cardData.WhenAttack != null)
-        {
-            for(int i = 0; i < cardData.WhenAttack.Count; i++)
-            {
-                cardData.WhenAttack[i].Invoke();
-                yield return new WaitUntil(() => readyForNextAttackAction);
-                readyForNextAttackAction = false;
-            }
-        }
+        StartCoroutine(AbilityActivation.RunWhenAttackAbilities(cardData.traits.tags));
+        yield return new WaitUntil(() => readyForNextAttackAction);
+        readyForNextAttackAction = false;
 
-        if(cardData.WhenSkillAttack != null && palSKillActive)
-        {
-            for(int i = 0; i < cardData.WhenSkillAttack.Count; i++)
-            {
-                cardData.WhenSkillAttack[i].Invoke();
-                yield return new WaitUntil(() => readyForNextAttackAction);
-                readyForNextAttackAction = false;
-            }
-        }
+
+        // if(cardData.WhenSkillAttack != null && palSKillActive)
+        // {
+        //     for(int i = 0; i < cardData.WhenSkillAttack.Count; i++)
+        //     {
+        //         cardData.WhenSkillAttack[i].Invoke();
+        //         yield return new WaitUntil(() => readyForNextAttackAction);
+        //         readyForNextAttackAction = false;
+        //     }
+        // }
+
 
         if(target != null)
             target.SendMessage("Hurt", cardData.currentAtk);
         else
             HandScript.Instance.targetWasNull = true;
 
-        if(cardData.OnAttack != null)
-        {
-            for(int i = 0; i < cardData.OnAttack.Count; i++)
-            {
-                cardData.OnAttack[i].Invoke();
-                yield return new WaitUntil(() => readyForNextAttackAction);
-                readyForNextAttackAction = false;
-            }
-        }
 
-        if(cardData.OnSkillAttack != null && palSKillActive)
-        {
-            for(int i = 0; i < cardData.OnSkillAttack.Count; i++)
-            {
-                cardData.OnSkillAttack[i].Invoke();
-                yield return new WaitUntil(() => readyForNextAttackAction);
-                readyForNextAttackAction = false;
-            }
-        }
+        StartCoroutine(AbilityActivation.RunOnAttackAbilities(cardData.traits.tags));
+        yield return new WaitUntil(() => readyForNextAttackAction);
+        readyForNextAttackAction = false;
+
+
+        // if(cardData.OnSkillAttack != null && palSKillActive)
+        // {
+        //     for(int i = 0; i < cardData.OnSkillAttack.Count; i++)
+        //     {
+        //         cardData.OnSkillAttack[i].Invoke();
+        //         yield return new WaitUntil(() => readyForNextAttackAction);
+        //         readyForNextAttackAction = false;
+        //     }
+        // }
 
         yield return null;
         HandScript.Instance.currentAttacker = null;
@@ -180,38 +178,30 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public IEnumerator UseActivatedAbility()
     {
-        if(cardData.OncePerTurn != null)
-        {
-            for(int i = 0; i < cardData.OncePerTurn.Count; i++)
-            {
-                if(cardData.AbilityUseCounter[i] == 0)
-                {
-                    cardData.OncePerTurn[i].Invoke();
-                    yield return new WaitUntil(() => (movePassedThrough || moveRejected));
+        // if(cardData.OncePerTurn != null)
+        // {
+        //     for(int i = 0; i < cardData.OncePerTurn.Count; i++)
+        //     {
+        //         if(cardData.AbilityUseCounter[i] == 0)
+        //         {
+        //             cardData.OncePerTurn[i].Invoke();
+        //             yield return new WaitUntil(() => (movePassedThrough || moveRejected));
 
-                    if(movePassedThrough)
-                        cardData.AbilityUseCounter[i]++;
+        //             if(movePassedThrough)
+        //                 cardData.AbilityUseCounter[i]++;
 
-                    movePassedThrough = false;
-                    moveRejected = false;
-                }
+        //             movePassedThrough = false;
+        //             moveRejected = false;
+        //         }
 
-            }
-        }
+        //     }
+        // }
+        yield return null;
     }
 
-    public IEnumerator UsePalSkills()
+    public virtual bool CanUsePalSkills()
     {
-        if(cardData.PalSkill != null)
-        {
-            for(int i = 0; i < cardData.PalSkill.Count; i++)
-            {
-                cardData.PalSkill[i].Invoke();
-                yield return new WaitUntil(() => movePassedThrough);
-
-                movePassedThrough = false;
-            }
-        }
+        return false;
     }
 
     public void DontUseAbility()
@@ -226,13 +216,41 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public bool CanUseAbilities()
     {
-        if(cardData.OncePerTurn == null)
-            return false;
+        // if(cardData.OncePerTurn == null)
+        //     return false;
 
-        if(!cardData.AbilityUseCounter.Contains(0))
-            return false;
+        // if(!cardData.AbilityUseCounter.Contains(0))
+        return false;
 
-        return true;
+        // return true;
+    }
+
+    public bool CheckForUsuableTraits(List<string> traits)
+    {
+        for(int i = 0; i < cardData.traits.tags.Count; i++)
+        {
+            if(traits.Contains(cardData.traits.tags[i]) && !cardData.usedAbilities[i])
+                return true;
+        }
+
+        return false;
+    }
+
+    public IEnumerator RunThroughTurnEndAbilities()
+    {
+        yield return null;
+
+        for(int i = 0; i < cardData.traits.tags.Count; i++)
+        {
+            if(FieldAbilityHandlerScript.turnEndAbilities.Keys.Contains(cardData.traits.tags[i]) && !cardData.usedAbilities[i])
+            {
+                FieldAbilityHandlerScript.turnEndAbilities[cardData.traits.tags[i]].Invoke();
+                yield return new WaitUntil(() => readyForNextAttackAction);
+                readyForNextAttackAction = false;
+            }
+        }
+
+        FieldAbilityHandlerScript.Instance.RunEndOfTurnAbilities();
     }
 
     public void FinishEffect()
@@ -243,6 +261,20 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public void ResetPhase()
     {
         button.onClick.RemoveAllListeners();
+    }
+
+    public void SelectForEndPhaseAbility()
+    {
+        if(CheckForUsuableTraits(FieldAbilityHandlerScript.turnEndAbilities.Keys.ToList()) && HandScript.Instance.state == "endOfTurnAbilities")
+        {
+            if(HandScript.Instance.selected != gameObject && !HandScript.Instance.selection.Contains(gameObject))
+            {
+                image.color = selectColor;
+                HandScript.Instance.Select(gameObject);
+            }
+            else
+                RemoveFromSelection();
+        }
     }
 
     public void SelectForAttack()
@@ -263,7 +295,7 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             {
                 if(statuses.shocked.Count == 0 || statuses.shocked.Contains(HandScript.Instance.selected)) //Kinda works
                 {
-                    if (HandScript.Instance.selected != gameObject && !HandScript.Instance.selection.Contains(gameObject))
+                    if(HandScript.Instance.selected != gameObject && !HandScript.Instance.selection.Contains(gameObject))
                     {
                         image.color = selectColor;
                         HandScript.Instance.Select(gameObject);
@@ -328,7 +360,7 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void GainTokens(string tokenType, int tokenCount)
     {
-        if (heldCard == null)
+        if(heldCard == null)
         {
             var token = typeof(StatusEffects).GetField(tokenType);
 
@@ -340,7 +372,7 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         }
         else
             heldCard.GetComponent<UnitCardScript>().GainTokens(tokenType, tokenCount);
-        
+
     }
 
     public IEnumerator GetShocked()
@@ -368,9 +400,29 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             heldCard.SendMessage("ShockOtherCard");
     }
 
+    public virtual void PlayerTurnRemoveStatuses()
+    {
+        statuses.shocked.Clear();
+
+        if(statuses.poisoned > 0)
+            statuses.poisoned--;
+
+        opponentMirror.RPC("PlayerTurnRemoveStatuses", RpcTarget.Others);
+    }
+
+    public virtual void EnemyTurnRemoveStatuses()
+    {
+        if(statuses.poisoned > 0)
+            statuses.poisoned--;
+
+        statuses.burning = 0;
+
+        opponentMirror.RPC("EnemyTurnRemoveStatuses", RpcTarget.Others);
+    }
+
     public bool CanBlock()
     {
-        if (heldCard == null)
+        if(heldCard == null)
             return (cardData.traits.tags.Contains("blocker") && statuses.poisoned == 0);
         else
             return heldCard.GetComponent<UnitCardScript>().CanBlock();
@@ -378,7 +430,7 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void AfterBlockActions()
     {
-        if (cardData.traits.tags.Contains("tank"))
+        if(cardData.traits.tags.Contains("tank"))
             Wake();
     }
 
@@ -423,15 +475,18 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         StartPlayerAttack += PrepareAttackPhase;
         StartEnemyTurn += Wake;
         StartEnemyTurn += PrepareEnemyPhases;
+        EndPlayerTurn += PlayerTurnRemoveStatuses;
+        EndEnemyTurn += EnemyTurnRemoveStatuses;
     }
 
-    public void SetUpBasicTurnEvents()
+    public virtual void SetUpBasicTurnEvents()
     {
         GameManager.Instance.StartPlayerTurn += CallStartPlayerTurnFunctions;
         GameManager.Instance.StartPlayerAttack += CallStartPlayerAttackFunctions;
+        GameManager.Instance.EndPlayerTurn += CallPlayerTurnEndFunctions;
         GameManager.Instance.StartEnemyTurn += CallEnemyTurnStartFunctions;
+        GameManager.Instance.EndEnemyTurn += CallEnemyTurnEndFunctions;
 
-        StartPlayerTurn += ResetPalSkill;
         StartPlayerTurn += () => turnsOnSpot++;
     }
 
@@ -445,25 +500,24 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         StartPlayerAttack.Invoke();
     }
 
+    private void CallPlayerTurnEndFunctions()
+    {
+        EndPlayerTurn.Invoke();
+    }
+
     private void CallEnemyTurnStartFunctions()
     {
         StartEnemyTurn.Invoke();
     }
 
+    private void CallEnemyTurnEndFunctions()
+    {
+        EndEnemyTurn.Invoke();
+    }
+
     public void HideHealthCounter()
     {
         health.text = "";
-    }
-
-    public void ResetPalSkill()
-    {
-        palSKillActive = false;
-    }
-
-    public void ActivatePalSkill()
-    {
-        palSKillActive = true;
-        FieldCardContextMenuScript.Instance.pallSkillUses--;
     }
 
     public void RemoveCardEventsFromManager()

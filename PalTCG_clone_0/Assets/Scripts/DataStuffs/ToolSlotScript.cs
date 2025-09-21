@@ -125,7 +125,7 @@ public class ToolSlotScript : CardHolderScript
         var data = (ToolCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
 
 
-        if (data.size <= 1)
+        if(data.size <= 1)
         {
             var newCard = Instantiate(cardPrefab, transform.position, transform.rotation);
             var slot = FindMatchingSlot(data.toolType);

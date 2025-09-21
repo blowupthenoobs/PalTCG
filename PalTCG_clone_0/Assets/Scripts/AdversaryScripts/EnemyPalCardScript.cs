@@ -33,7 +33,7 @@ public class EnemyPalCardScript : MonoBehaviour
     {
         CheckForAltPress();
 
-        if (viewButtonPressed && hovered)
+        if(viewButtonPressed && hovered)
             LargeCardViewScript.Instance.FocusCard(cardData.cardArt, gameObject);
 
     }
@@ -61,7 +61,7 @@ public class EnemyPalCardScript : MonoBehaviour
 
     public void UpdateHealth(int newHealth)
     {
-        if (heldCard == null)
+        if(heldCard == null)
         {
             cardData.currentHp = newHealth;
             health.text = newHealth.ToString();
@@ -79,7 +79,6 @@ public class EnemyPalCardScript : MonoBehaviour
             StatusEffects result = new StatusEffects();
             token.SetValueDirect(__makeref(result), tokenCount);
             statuses += result;
-            Debug.Log(result);
         }
         else
             heldCard.GetComponent<UnitCardScript>().GainTokens(tokenType, tokenCount);
@@ -90,15 +89,37 @@ public class EnemyPalCardScript : MonoBehaviour
     {
         yield return new WaitUntil(() => UnitCardScript.Shocker != null);
 
-        if (heldCard == null)
+        if(heldCard == null)
         {
-            if (!statuses.shocked.Contains(UnitCardScript.Shocker))
+            if(!statuses.shocked.Contains(UnitCardScript.Shocker))
                 statuses.shocked.Add(UnitCardScript.Shocker);
 
             UnitCardScript.Shocker = null;
         }
         else
             heldCard.GetComponent<EnemyPalCardScript>().StartCoroutine("GetShocked");
+    }
+
+    public void PlayerTurnRemoveStatuses()
+    {
+        statuses.shocked.Clear();
+
+        if(statuses.poisoned > 0)
+            statuses.poisoned--;
+        
+        if(heldCard != null)
+            heldCard.SendMessage("PlayerTurnRemoveStatuses");
+    }
+
+    public void EnemyTurnRemoveStatuses()
+    {
+        if(statuses.poisoned > 0)
+            statuses.poisoned--;
+        
+        statuses.burning = 0;
+        
+        if(heldCard != null)
+            heldCard.SendMessage("EnemyTurnRemoveStatuses");
     }
 
     public void SendRestEffect()
@@ -108,7 +129,7 @@ public class EnemyPalCardScript : MonoBehaviour
 
     public void Rest()
     {
-        if (heldCard == null)
+        if(heldCard == null)
             transform.rotation = Quaternion.Euler(0, 0, -90);
         else
             heldCard.SendMessage("Rest");
@@ -116,7 +137,7 @@ public class EnemyPalCardScript : MonoBehaviour
 
     public void Wake()
     {
-        if (heldCard == null)
+        if(heldCard == null)
             transform.rotation = Quaternion.Euler(0, 0, 0);
         else
             heldCard.SendMessage("Wake");
@@ -124,7 +145,7 @@ public class EnemyPalCardScript : MonoBehaviour
 
     public void Die()
     {
-        if (heldCard == null)
+        if(heldCard == null)
             Destroy(gameObject);
         else
             heldCard.SendMessage("Die");
@@ -158,9 +179,9 @@ public class EnemyPalCardScript : MonoBehaviour
     {
         viewButtonPressed = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
 
-        if ((Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt)) && !viewButtonPressed)
+        if((Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt)) && !viewButtonPressed)
         {
-            if (!Input.GetKey(KeyCode.LeftAlt) && !Input.GetKey(KeyCode.RightAlt))
+            if(!Input.GetKey(KeyCode.LeftAlt) && !Input.GetKey(KeyCode.RightAlt))
                 LargeCardViewScript.Instance.CloseZoom(gameObject);
         }
     }

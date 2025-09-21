@@ -81,12 +81,12 @@ public class FieldCardContextMenuScript : MonoBehaviour, IPointerEnterHandler, I
 
     public void ActivatePalSkillAbilities()
     {
-        StartCoroutine(activeCard.GetComponent<UnitCardScript>().UsePalSkills());
+        activeCard.GetComponent<PalCardScript>().UsePalSkill();
     }
 
     private bool CanUsePalSkills()
     {
-        return (pallSkillUses > 0 && !activeCard.GetComponent<UnitCardScript>().palSKillActive);
+        return (pallSkillUses > 0 && activeCard.GetComponent<UnitCardScript>().CanUsePalSkills());
     }
 
     private void ResetPalSkills()

@@ -22,13 +22,13 @@ public class PalSphereScript : CardHolderScript
 
     public void CheckForCard()
     {
-        if (GameManager.Instance.phase == "PlayerTurn" && !isBroken)
+        if(GameManager.Instance.phase == "PlayerTurn" && !isBroken)
         {
-            if (HandScript.Instance.selected != null && heldCard == null && HandScript.Instance.state == "default")
+            if(HandScript.Instance.selected != null && heldCard == null && HandScript.Instance.state == "default")
             {
-                if (HandScript.Instance.selected.GetComponent<CardScript>() != null)
+                if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
                 {
-                    if (HandScript.Instance.selected.GetComponent<CardScript>().cardData is PalCardData)
+                    if(HandScript.Instance.selected.GetComponent<CardScript>().cardData is PalCardData)
                     {
                         GameManager.Instance.ShowConfirmationButtons();
                         HandScript.Instance.state = "buildingPay";
@@ -43,14 +43,14 @@ public class PalSphereScript : CardHolderScript
 
                 }
             }
-            else if (HandScript.Instance.state == "lookingForSphere" && heldCard == null)
+            else if(HandScript.Instance.state == "lookingForSphere" && heldCard == null)
             {
                 HandScript.Instance.Select(gameObject);
             }
         }
-        else if (HandScript.Instance.selected != null)
+        else if(HandScript.Instance.selected != null)
         {
-            if (HandScript.Instance.selected.GetComponent<CardScript>() != null)
+            if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
             {
                 HandScript.Instance.selected.SendMessage("Deselect");
                 HandScript.Instance.selected = null;
@@ -65,7 +65,7 @@ public class PalSphereScript : CardHolderScript
         heldCard.transform.position = transform.position;
         heldCard.GetComponent<PalCardScript>().opponentMirror = opponentMirror;
 
-        if (waitingSpace.GetComponent<WaitingSpace>().readyCards.Contains(card))
+        if(waitingSpace.GetComponent<WaitingSpace>().readyCards.Contains(card))
         {
             opponentMirror.RPC("GetCardFromWaitingSpace", RpcTarget.Others, waitingSpace.GetComponent<WaitingSpace>().readyCards.IndexOf(card));
             waitingSpace.GetComponent<WaitingSpace>().readyCards.RemoveAt(waitingSpace.GetComponent<WaitingSpace>().readyCards.IndexOf(card));
@@ -85,7 +85,7 @@ public class PalSphereScript : CardHolderScript
         var data = (PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
         opponentMirror.RPC("CreateCard", RpcTarget.Others, data.originalData.cardID);
 
-        if (data.size <= 1)
+        if(data.size <= 1)
         {
             heldCard = Instantiate(cardPrefab, transform.position, transform.rotation);
             heldCard.SendMessage("SetUpCard", data);

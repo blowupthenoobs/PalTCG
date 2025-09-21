@@ -142,4 +142,22 @@ public class EnemyPlayerScript : MonoBehaviour
     {
         Rest();
     }
+    
+    [PunRPC]
+    public virtual void PlayerTurnRemoveStatuses()
+    {
+        // statuses.shocked.Clear();
+
+        // if(statuses.poisoned > 0)
+        //     statuses.poisoned--;
+    }
+
+    [PunRPC]
+    public virtual void EnemyTurnRemoveStatuses()
+    {
+        // if(statuses.poisoned > 0)
+        //     statuses.poisoned--;
+        
+        // statuses.burning = 0;
+    }
 }
