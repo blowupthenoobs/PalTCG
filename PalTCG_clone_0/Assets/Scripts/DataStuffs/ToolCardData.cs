@@ -23,6 +23,8 @@ public class ToolCardData : CardData
         currentAtk = originalData.attackPower;
         maxHp = originalData.maxHp;
         cardID = originalData.cardID;
+
+        CreateUsedAbilityTrackers();
     }
 
     public override bool Equals(object obj)

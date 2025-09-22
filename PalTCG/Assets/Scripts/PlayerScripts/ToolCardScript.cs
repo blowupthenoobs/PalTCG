@@ -27,10 +27,10 @@ public class ToolCardScript : UnitCardScript
     {
         if(HandScript.Instance.state == "default")
         {
-            GameManager.Instance.ShowConfirmationButtons();
+            GameManager.Instance.ShowConfirmationButtons("place on tool slot?");
             HandScript.Instance.state = "lookingForSlot";
             HandScript.Instance.Duck();
-            HandScript.Instance.updateSelection += VerifyButtons;
+            HandScript.Instance.updateSelection = VerifyButtons;
             ConfirmationButtons.Instance.Confirmed += PlaceOnToolSlot;
             ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
             ConfirmationButtons.Instance.Denied += StopLookingForSlot;
@@ -81,10 +81,10 @@ public class ToolCardScript : UnitCardScript
                     {
                         if(((PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData).traits.tags.Contains("rideable"))
                         {
-                            GameManager.Instance.ShowConfirmationButtons();
+                            GameManager.Instance.ShowConfirmationButtons("select cards for payment");
                             HandScript.Instance.state = "buildingPay";
                             HandScript.Instance.Raise();
-                            HandScript.Instance.updateSelection += VerifyButtonsForPalCardPurchase;
+                            HandScript.Instance.updateSelection = VerifyButtonsForPalCardPurchase;
                             ConfirmationButtons.Instance.Confirmed += PayForPalCard;
                             ConfirmationButtons.Instance.Denied += Disengage;
                             ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;

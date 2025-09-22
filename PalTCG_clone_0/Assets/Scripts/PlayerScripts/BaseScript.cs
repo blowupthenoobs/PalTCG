@@ -64,9 +64,9 @@ public class BaseScript : MonoBehaviour
             {
                 if(HandScript.Instance.selected.GetComponent<SchematicScript>() != null)
                 {
-                    GameManager.Instance.ShowConfirmationButtons();
+                    GameManager.Instance.ShowConfirmationButtons("Pay materials for building?");
                     HandScript.Instance.state = "awaitingDecision";
-                    HandScript.Instance.updateSelection += VerifyButtons;
+                    HandScript.Instance.updateSelection = VerifyButtons;
                     ConfirmationButtons.Instance.Confirmed += PayForCard;
                     ConfirmationButtons.Instance.Denied += DisengagePurchase;
                 }

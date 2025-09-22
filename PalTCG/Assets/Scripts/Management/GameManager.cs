@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space) && (phase == "PlayerTurn" || phase == "PlayerAttack")) //For Testing Purposes
-            PhotonView.Get(this).RPC("SwitchPhases", RpcTarget.All);
+            StartCoroutine(PreparePhaseSwitch());
     }
 
     [PunRPC]
@@ -99,17 +99,22 @@ public class GameManager : MonoBehaviour
     public IEnumerator PreparePhaseSwitch()
     {
         yield return null;
-        phase = "limbo";
 
-        FieldAbilityHandlerScript.Instance.RunEndOfTurnAbilities();
-        yield return new WaitUntil(() => readyForNextAttackAction);
-        readyForNextAttackAction = false;
+        if (phase == "PlayerAttack")
+        {
+            phase = "limbo";
+            FieldAbilityHandlerScript.Instance.RunEndOfTurnAbilities();
+            yield return new WaitUntil(() => readyForNextAttackAction);
+            readyForNextAttackAction = false;
+            phase = "PlayerAttack";
+        }
+        
 
         //Ask enemy if they have end of turn abilities
         // yield return new WaitUntil(readyForNextAttackAction);
         readyForNextAttackAction = false;
 
-        SwitchPhases();
+        PhotonView.Get(this).RPC("SwitchPhases", RpcTarget.All);
     }
 
 
@@ -118,9 +123,10 @@ public class GameManager : MonoBehaviour
         ConfirmationButtons.SetActive(false);
     }
 
-    public void ShowConfirmationButtons()
+    public void ShowConfirmationButtons(string message)
     {
         ConfirmationButtons.SetActive(true);
+        ConfirmationButtons.GetComponent<ConfirmationButtons>().MessageContainer.text = message;
     }
 
 

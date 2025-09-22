@@ -78,11 +78,14 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         SetUpBasicTurnEvents();
     }
 
-    public void Hurt(int dmg)
+    public void Hurt(int dmg, bool isAttacked = true)
     {
         if(heldCard == null)
         {
-            cardData.currentHp -= dmg + statuses.burning;
+            if(isAttacked)
+                cardData.currentHp -= dmg + statuses.burning;
+            else
+                cardData.currentHp -= dmg;
 
             if(cardData.currentHp <= 0)
                 Die();
@@ -275,6 +278,11 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             else
                 RemoveFromSelection();
         }
+        else if(HandScript.Instance.state == "selectingEffectForFriendly")
+        {
+            image.color = selectColor;
+            HandScript.Instance.Select(gameObject);
+        }
     }
 
     public void SelectForAttack()
@@ -439,7 +447,7 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         SendToPalBox();
     }
 
-    protected virtual void RemoveFromSphere()
+    public virtual void RemoveFromSphere()
     {
         transform.parent.gameObject.SendMessage("LoseHeldCard");
         RemoveCardEventsFromManager();

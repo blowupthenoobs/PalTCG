@@ -40,12 +40,12 @@ public class EnemyPalSphereScript : MonoBehaviour, IPointerEnterHandler, IPointe
             {
                 if(HandScript.Instance.selected.GetComponent<UnitCardScript>().statuses.shocked.Count == 0 || HandScript.Instance.selected.GetComponent<UnitCardScript>().statuses.shocked.Contains(heldCard))
                 { //Kinda works, at some point caused issues for unknown reasons (might be fixable when clearing statuses)
-                    GameManager.Instance.ShowConfirmationButtons();
+                    GameManager.Instance.ShowConfirmationButtons("select units for raid");
                     HandScript.Instance.state = "raiding";
                     HandScript.Instance.selection.Add(HandScript.Instance.selected);
                     HandScript.Instance.selected = heldCard;
                     heldCard.SendMessage("Select");
-                    HandScript.Instance.updateSelection += VerifyAttack;
+                    HandScript.Instance.updateSelection = VerifyAttack;
                     ConfirmationButtons.Instance.Confirmed += StartRaid;
                     ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.StartCoroutine(HandScript.Instance.Attack());
                     ConfirmationButtons.Instance.Denied += DisengageAttacks;

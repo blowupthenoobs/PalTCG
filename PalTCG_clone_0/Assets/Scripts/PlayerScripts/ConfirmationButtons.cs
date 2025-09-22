@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using TMPro;
 
 public class ConfirmationButtons : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class ConfirmationButtons : MonoBehaviour
 
    [SerializeField] GameObject confirmButton;
    [SerializeField] GameObject denyButton;
+    public TMP_Text MessageContainer;
 
    [SerializeField] float greyValue;
 

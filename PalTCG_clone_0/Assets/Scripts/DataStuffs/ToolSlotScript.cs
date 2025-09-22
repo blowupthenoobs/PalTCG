@@ -26,9 +26,9 @@ public class ToolSlotScript : CardHolderScript
             {
                 if(HandScript.Instance.selected.GetComponent<CardScript>().cardData is ToolCardData)
                 {
-                    GameManager.Instance.ShowConfirmationButtons();
+                    GameManager.Instance.ShowConfirmationButtons("Pay materials for tool?");
                     HandScript.Instance.state = "awaitingDecision";
-                    HandScript.Instance.updateSelection += VerifyButtons;
+                    HandScript.Instance.updateSelection = VerifyButtons;
                     ConfirmationButtons.Instance.Confirmed += PayForCard;
                     ConfirmationButtons.Instance.Denied += DisengagePurchase;
                 }
@@ -84,7 +84,7 @@ public class ToolSlotScript : CardHolderScript
         }
         else
         {
-            GameManager.Instance.ShowConfirmationButtons();
+            GameManager.Instance.ShowConfirmationButtons("remove current item from slot?");
             HandScript.Instance.state = "awaitingDecision";
             ConfirmationButtons.Instance.Confirmed += (() => heldCard.SendMessage("SendToPalBox"));
             ConfirmationButtons.Instance.Confirmed += (() => PlaceCard(card));

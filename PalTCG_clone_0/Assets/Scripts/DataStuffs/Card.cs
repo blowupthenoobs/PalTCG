@@ -20,7 +20,7 @@ public abstract class CardData : ScriptableObject
     public int currentHp;
     public int currentAtk;
 
-    
+
     public virtual void SetToGameObject()
     {
         image = gameObject.GetComponent<UnityEngine.UI.Image>();
@@ -29,5 +29,13 @@ public abstract class CardData : ScriptableObject
     public virtual void Discard()
     {
         Destroy(gameObject);
+    }
+
+    public virtual void CreateUsedAbilityTrackers()
+    {
+        foreach(string ability in traits.tags)
+        {
+            usedAbilities.Add(false);
+        }
     }
 }

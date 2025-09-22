@@ -59,7 +59,7 @@ public class FieldCardContextMenuScript : MonoBehaviour, IPointerEnterHandler, I
 
     public void AskToEjectCard()
     {
-        GameManager.Instance.ShowConfirmationButtons();
+        GameManager.Instance.ShowConfirmationButtons("Eject card?");
         HandScript.Instance.state = "awaitingDecision";
         ConfirmationButtons.Instance.Confirmed += () => EjectCardFromSpot(activeCard);
         ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ResetState;

@@ -185,7 +185,22 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 }
                 break;
             case "endOfTurnAbilities":
+                if(selected != null)
+                    selected.SendMessage("Deselect");
+                
                 selected = card;
+                updateSelection.Invoke();
+                break;
+            case "selectingEffectForFriendly":
+                if(!selection.Contains(card))
+                {
+                    selection.Add(card);
+                }
+                else
+                {
+                    selection.RemoveAt(selection.IndexOf(card));
+                    card.SendMessage("Deselect");
+                }
                 updateSelection.Invoke();
                 break;
             default:

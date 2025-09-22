@@ -169,10 +169,10 @@ public class WaitingSpace : MonoBehaviour
             {
                 if(HandScript.Instance.selected.GetComponent<CardScript>().cardData is PalCardData)
                 {
-                    GameManager.Instance.ShowConfirmationButtons();
+                    GameManager.Instance.ShowConfirmationButtons("select cards for payment");
                     HandScript.Instance.state = "buildingPay";
                     HandScript.Instance.Raise();
-                    HandScript.Instance.updateSelection += VerifyButtonsForPalCard;
+                    HandScript.Instance.updateSelection = VerifyButtonsForPalCard;
                     ConfirmationButtons.Instance.Confirmed += PlaceCard;
                     ConfirmationButtons.Instance.Denied += Disengage;
 
@@ -180,10 +180,10 @@ public class WaitingSpace : MonoBehaviour
                 }
                 else if(HandScript.Instance.selected.GetComponent<CardScript>().cardData is ToolCardData)
                 {
-                    GameManager.Instance.ShowConfirmationButtons();
+                    GameManager.Instance.ShowConfirmationButtons("Pay materials for tool?");
                     HandScript.Instance.state = "awaitingDecision";
                     HandScript.Instance.Raise();
-                    HandScript.Instance.updateSelection += VerifyButtonsForToolCard;
+                    HandScript.Instance.updateSelection = VerifyButtonsForToolCard;
                     ConfirmationButtons.Instance.Confirmed += PlaceCard;
                     ConfirmationButtons.Instance.Denied += Disengage;
 

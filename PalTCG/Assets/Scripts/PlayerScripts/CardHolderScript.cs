@@ -22,9 +22,9 @@ public class CardHolderScript : MonoBehaviour
     }
 
     [PunRPC]
-    public void HurtHeldCard(int damage)
+    public void HurtHeldCard(int damage, bool isAttacked = true)
     {
-        heldCard.SendMessage("Hurt", damage);
+        heldCard.GetComponent<UnitCardScript>().Hurt(damage, isAttacked);
     }
 
     [PunRPC]
@@ -36,7 +36,6 @@ public class CardHolderScript : MonoBehaviour
     [PunRPC]
     public void GainTokens(string tokenType, int tokenCount)
     {
-        Debug.Log("friendly gained token");
         heldCard.GetComponent<UnitCardScript>().GainTokens(tokenType, tokenCount);
     }
 

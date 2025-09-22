@@ -28,9 +28,10 @@ public class HandFunctions : MonoBehaviour
         //I think I can stop now
     }
 
-    public static void ChooseTargets()
+    public static void ReturnFieldCardToDeck(GameObject card)
     {
-        //This one will be used to tell the game which targets to ue an ability on
+        HandScript.Instance.playerDrawPile.GetComponent<DrawPileScript>().currentDeck.Insert(0, card.GetComponent<UnitCardScript>().cardData);
+        card.GetComponent<UnitCardScript>().RemoveFromSphere();
     }
 }
 
@@ -72,6 +73,7 @@ public class StatusEffectAbilities : MonoBehaviour
         GiveTokensToTarget("burning", power);
         AbilityActivation.readyForNextAttackAction = true;
     }
+
     public static void PoisonCard()
     {
         GiveTokensToTarget("poisoned", 2);
@@ -92,9 +94,9 @@ public class StatusEffectAbilities : MonoBehaviour
     public static void PutToSleep()
     {
         HandScript.Instance.selection.Clear();
-        GameManager.Instance.ShowConfirmationButtons();
+        GameManager.Instance.ShowConfirmationButtons("select target to rest?");
         HandScript.Instance.state = "settingAilment";
-        HandScript.Instance.updateSelection += AllowConfirmations.LookForSingleTarget;
+        HandScript.Instance.updateSelection = AllowConfirmations.LookForSingleTarget;
         ConfirmationButtons.Instance.Confirmed += RestTargets;
         ConfirmationButtons.Instance.Confirmed += () => AbilityActivation.readyForNextAttackAction = true;
         ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = "choosingAttack";
@@ -142,6 +144,11 @@ public class AllowConfirmations
         ConfirmationButtons.Instance.AllowConfirmation(HandScript.Instance.selection.Count == 1);
     }
 
+    public static void HaveSelectedCard()
+    {
+        ConfirmationButtons.Instance.AllowConfirmation(HandScript.Instance.selected != null);
+    }
+
     public static void ResetState()
     {
         HandScript.Instance.state = "default";
@@ -162,7 +169,7 @@ public class CardMovement : MonoBehaviour
     {
         GameObject cardToMove = FieldCardContextMenuScript.Instance.activeCard;
 
-        GameManager.Instance.ShowConfirmationButtons();
+        GameManager.Instance.ShowConfirmationButtons("equip pal as " + slotType + "(will remove current " + slotType +")");
         HandScript.Instance.state = "awaitingDecision";
         ConfirmationButtons.Instance.Confirmed += () => cardToMove.SendMessage("ActivatePalSkill");
         ConfirmationButtons.Instance.Confirmed += () => MoveToItemSlot(cardToMove, slotType);
@@ -188,9 +195,9 @@ public class AbilityActivation : MonoBehaviour
     {
         yield return null;
 
-        if(HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().statuses.poisoned == 0)
+        if (HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().statuses.poisoned == 0)
         {
-            if(traitList.Contains("daedream"))
+            if (traitList.Contains("daedream"))
             {
                 for (int i = 0; i < traitList.Count(n => n == "daedream"); i++)
                 {
@@ -206,13 +213,13 @@ public class AbilityActivation : MonoBehaviour
     public static IEnumerator RunOnAttackAbilities(List<string> traitList)
     {
         yield return null;
-        if(HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().statuses.poisoned == 0)
+        if (HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().statuses.poisoned == 0)
         {
-            if(traitList.Contains("burn"))
+            if (traitList.Contains("burn"))
                 StatusEffectAbilities.BurnCard(traitList.Count(n => n == "burn"));
-            if(traitList.Contains("toxic"))
+            if (traitList.Contains("toxic"))
                 StatusEffectAbilities.PoisonCard();
-            if(traitList.Contains("stun"))
+            if (traitList.Contains("stun"))
                 StatusEffectAbilities.ShockTarget();
         }
 
@@ -224,12 +231,48 @@ public class AbilityActivation : MonoBehaviour
     {
         yield return null;
 
-        if(new[] { "lamball", "foxsparks" }.Contains(palSkill))
+        if (new[] { "lamball", "foxsparks" }.Contains(palSkill))
         {
             CardMovement.EquipAsItemPalSkill("weapon");
             yield break;
         }
 
+    }
+}
+
+public class SpecificPalAbilities : MonoBehaviour
+{
+    public static void SelectFriendlyForChikipiAbility()
+    {
+        HandScript.Instance.selection.Clear();
+        GameManager.Instance.ShowConfirmationButtons("select friendly to use effect on");
+        HandScript.Instance.state = "selectingEffectForFriendly";
+
+        HandScript.Instance.updateSelection = AllowConfirmations.LookForSingleTarget;
+        ConfirmationButtons.Instance.Confirmed += SelectChikipiAbilityTarget;
+        ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
+        ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "endOfTurnAbilities";
+        ConfirmationButtons.Instance.Denied += HandScript.Instance.selected.GetComponent<UnitCardScript>().FinishEffect;
+        ConfirmationButtons.Instance.Denied += HandScript.Instance.selection.Clear;
+        ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
+    }
+
+    public static void SelectChikipiAbilityTarget()
+    {
+        GameObject selectedAlly = HandScript.Instance.selection[0];
+        GameManager.Instance.ShowConfirmationButtons("select enemy to target");
+        HandScript.Instance.state = "settingAilment";
+
+        HandScript.Instance.updateSelection = AllowConfirmations.LookForSingleTarget;
+        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = "endOfTurnAbilities";
+        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.selection[0].GetComponent<EnemyPalCardScript>().opponentMirror.RPC("HurtHeldCard", RpcTarget.Others, selectedAlly.GetComponent<UnitCardScript>().cardData.currentAtk, false);
+        ConfirmationButtons.Instance.Confirmed += () => HandFunctions.ReturnFieldCardToDeck(selectedAlly); //This is where you make the thing go back into the deck
+        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.selection.Clear();
+        ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
+        ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "endOfTurnAbilities";
+        ConfirmationButtons.Instance.Denied += HandScript.Instance.selected.GetComponent<UnitCardScript>().FinishEffect;
+        ConfirmationButtons.Instance.Denied += HandScript.Instance.selection.Clear;
+        ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
     }
 }
 

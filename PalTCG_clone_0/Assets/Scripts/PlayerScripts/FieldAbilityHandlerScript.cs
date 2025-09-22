@@ -19,7 +19,7 @@ public class FieldAbilityHandlerScript : MonoBehaviour
 
     public readonly static Dictionary<string, UnityAction> turnEndAbilities =  new Dictionary<string, UnityAction>
     {
-        { "chikipi", () => Debug.Log("Used Chikipi Ability")},
+        { "chikipi", () => SpecificPalAbilities.SelectFriendlyForChikipiAbility()},
     };
 
     void Awake()
@@ -47,8 +47,8 @@ public class FieldAbilityHandlerScript : MonoBehaviour
     public void ChooseBlocker()
     {
         HandScript.Instance.state = "blocking";
-        GameManager.Instance.ShowConfirmationButtons();
-        HandScript.Instance.updateSelection += AllowConfirmations.LookForSingleTarget;
+        GameManager.Instance.ShowConfirmationButtons("Select blocker?");
+        HandScript.Instance.updateSelection = AllowConfirmations.LookForSingleTarget;
         ConfirmationButtons.Instance.Confirmed += SetBlocker;
         ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.opponentMirror.RPC("PassAction", RpcTarget.Others);
         ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = "";
@@ -96,16 +96,17 @@ public class FieldAbilityHandlerScript : MonoBehaviour
 
     public void RunEndOfTurnAbilities()
     {
-        if(BoardHasEndOfTurnAbilities())
+        if (BoardHasEndOfTurnAbilities())
         {
-            foreach(GameObject space in cardSlots)
+            foreach (GameObject space in cardSlots)
             {
-                space.GetComponent<CardHolderScript>().heldCard?.GetComponent<UnitCardScript>().PrepareEndPhase();
+                if(space.GetComponent<CardHolderScript>().heldCard != null)
+                    space.GetComponent<CardHolderScript>().heldCard.GetComponent<UnitCardScript>().PrepareEndPhase();
             }
 
             HandScript.Instance.state = "endOfTurnAbilities";
-            GameManager.Instance.ShowConfirmationButtons();
-            HandScript.Instance.updateSelection += AllowConfirmations.LookForSingleTarget;
+            GameManager.Instance.ShowConfirmationButtons("select end of turn ability?");
+            HandScript.Instance.updateSelection = AllowConfirmations.HaveSelectedCard;
             ConfirmationButtons.Instance.Confirmed += () => StartCoroutine(HandScript.Instance.selected.GetComponent<UnitCardScript>().RunThroughTurnEndAbilities());
             ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
             ConfirmationButtons.Instance.Denied += () => GameManager.Instance.readyForNextAttackAction = true;

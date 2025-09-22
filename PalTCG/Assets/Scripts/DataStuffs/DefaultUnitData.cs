@@ -326,7 +326,7 @@ namespace DefaultUnitData
                 freezing: 0,
                 dragon: 0,
                 bird: false,
-                tags: new List<string> { }
+                tags: new List<string> {"chikipi"}
             ),
             size: 1,
             attackPower: 2,

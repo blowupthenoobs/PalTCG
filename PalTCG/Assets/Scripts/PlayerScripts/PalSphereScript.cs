@@ -30,10 +30,10 @@ public class PalSphereScript : CardHolderScript
                 {
                     if(HandScript.Instance.selected.GetComponent<CardScript>().cardData is PalCardData)
                     {
-                        GameManager.Instance.ShowConfirmationButtons();
+                        GameManager.Instance.ShowConfirmationButtons("select cards for payment");
                         HandScript.Instance.state = "buildingPay";
                         HandScript.Instance.Raise();
-                        HandScript.Instance.updateSelection += VerifyButtons;
+                        HandScript.Instance.updateSelection = VerifyButtons;
                         ConfirmationButtons.Instance.Confirmed += PayForCard;
                         ConfirmationButtons.Instance.Denied += Disengage;
                         ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;

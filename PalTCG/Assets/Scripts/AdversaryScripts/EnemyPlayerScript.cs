@@ -30,12 +30,12 @@ public class EnemyPlayerScript : MonoBehaviour
     {
         if(HandScript.Instance.state == "targeting")
         {
-            GameManager.Instance.ShowConfirmationButtons();
+            GameManager.Instance.ShowConfirmationButtons("select units for raid");
             HandScript.Instance.state = "raiding";
             HandScript.Instance.selection.Add(HandScript.Instance.selected);
             HandScript.Instance.selected = gameObject;
             Select();
-            HandScript.Instance.updateSelection += VerifyAttack;
+            HandScript.Instance.updateSelection = VerifyAttack;
             ConfirmationButtons.Instance.Confirmed += StartRaid;
             ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.StartCoroutine(HandScript.Instance.Attack());
             ConfirmationButtons.Instance.Denied += DisengageAttacks;

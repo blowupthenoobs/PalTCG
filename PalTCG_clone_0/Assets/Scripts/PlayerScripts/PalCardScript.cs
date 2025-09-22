@@ -31,10 +31,10 @@ public class PalCardScript : UnitCardScript
     {
         if(HandScript.Instance.state == "default")
         {
-            GameManager.Instance.ShowConfirmationButtons();
+            GameManager.Instance.ShowConfirmationButtons("place on sphere?");
             HandScript.Instance.state = "lookingForSphere";
             HandScript.Instance.Duck();
-            HandScript.Instance.updateSelection += VerifyButtons;
+            HandScript.Instance.updateSelection = VerifyButtons;
             ConfirmationButtons.Instance.Confirmed += PlaceOnPalSphere;
             ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
             ConfirmationButtons.Instance.Denied += StopLookingForSphere;

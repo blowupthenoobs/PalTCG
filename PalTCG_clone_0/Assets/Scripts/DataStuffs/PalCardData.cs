@@ -28,6 +28,8 @@ public class PalCardData : CardData
         cardID = originalData.cardID;
 
         palSkill = cardID.Split("/")[1];
+
+        CreateUsedAbilityTrackers();
     }
 
     public override bool Equals(object obj)
