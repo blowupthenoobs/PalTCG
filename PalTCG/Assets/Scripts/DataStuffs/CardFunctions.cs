@@ -249,17 +249,19 @@ public class SpecificPalAbilities : MonoBehaviour
         HandScript.Instance.state = "selectingEffectForFriendly";
 
         HandScript.Instance.updateSelection = AllowConfirmations.LookForSingleTarget;
-        ConfirmationButtons.Instance.Confirmed += SelectChikipiAbilityTarget;
         ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
+        ConfirmationButtons.Instance.Confirmed += SelectChikipiAbilityTarget;
         ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "endOfTurnAbilities";
         ConfirmationButtons.Instance.Denied += HandScript.Instance.selected.GetComponent<UnitCardScript>().FinishEffect;
-        ConfirmationButtons.Instance.Denied += HandScript.Instance.selection.Clear;
+        ConfirmationButtons.Instance.Denied += HandScript.Instance.UnselectSelection;
+        ConfirmationButtons.Instance.Denied += () => HandScript.Instance.selected.SendMessage("DontUseAbility");
         ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
     }
 
     public static void SelectChikipiAbilityTarget()
     {
         GameObject selectedAlly = HandScript.Instance.selection[0];
+        HandScript.Instance.selection.Clear();
         GameManager.Instance.ShowConfirmationButtons("select enemy to target");
         HandScript.Instance.state = "settingAilment";
 
@@ -267,11 +269,14 @@ public class SpecificPalAbilities : MonoBehaviour
         ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = "endOfTurnAbilities";
         ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.selection[0].GetComponent<EnemyPalCardScript>().opponentMirror.RPC("HurtHeldCard", RpcTarget.Others, selectedAlly.GetComponent<UnitCardScript>().cardData.currentAtk, false);
         ConfirmationButtons.Instance.Confirmed += () => HandFunctions.ReturnFieldCardToDeck(selectedAlly); //This is where you make the thing go back into the deck
-        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.selection.Clear();
+        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.UnselectSelection();
+        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.selected.SendMessage("UseAbility");
         ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
         ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "endOfTurnAbilities";
         ConfirmationButtons.Instance.Denied += HandScript.Instance.selected.GetComponent<UnitCardScript>().FinishEffect;
-        ConfirmationButtons.Instance.Denied += HandScript.Instance.selection.Clear;
+        ConfirmationButtons.Instance.Denied += HandScript.Instance.UnselectSelection;
+        ConfirmationButtons.Instance.Denied += () => selectedAlly.SendMessage("Deselect");
+        ConfirmationButtons.Instance.Denied += () => HandScript.Instance.selected.SendMessage("DontUseAbility");
         ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
     }
 }

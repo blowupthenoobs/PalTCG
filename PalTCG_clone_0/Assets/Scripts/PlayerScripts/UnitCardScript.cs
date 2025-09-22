@@ -248,8 +248,13 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             if(FieldAbilityHandlerScript.turnEndAbilities.Keys.Contains(cardData.traits.tags[i]) && !cardData.usedAbilities[i])
             {
                 FieldAbilityHandlerScript.turnEndAbilities[cardData.traits.tags[i]].Invoke();
-                yield return new WaitUntil(() => readyForNextAttackAction);
-                readyForNextAttackAction = false;
+                yield return new WaitUntil(() => moveRejected || movePassedThrough);
+
+                if(movePassedThrough)
+                    cardData.usedAbilities[i] = true;
+                
+                moveRejected = false;
+                movePassedThrough = false;
             }
         }
 
@@ -452,13 +457,13 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         transform.parent.gameObject.SendMessage("LoseHeldCard");
         RemoveCardEventsFromManager();
         RemoveTraitsFromBuilding();
+        opponentMirror.RPC("HeldUnitDeath", RpcTarget.Others);
         Destroy(gameObject);
     }
 
     public virtual void SendToPalBox()
     {
         HandScript.Instance.playerDiscardPile.SendMessage("DiscardCard", cardData);
-        opponentMirror.RPC("HeldUnitDeath", RpcTarget.Others);
         RemoveFromSphere();
     }
 
