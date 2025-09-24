@@ -16,6 +16,7 @@ public class FieldAbilityHandlerScript : MonoBehaviour
     public List<GameObject> cardSlots = new List<GameObject>();
     public GameObject playerDrawPile;
     public GameObject playerDiscardPile;
+    public GameObject waitingSpace;
 
     public readonly static Dictionary<string, UnityAction> turnEndAbilities =  new Dictionary<string, UnityAction>
     {

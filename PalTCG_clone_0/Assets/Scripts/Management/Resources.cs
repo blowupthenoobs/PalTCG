@@ -342,12 +342,12 @@ namespace Resources
 
     public class ResourceProcesses
     {
-        public static bool PalPaymentIsCorrect()
+        public static bool PalPaymentIsCorrect(int alteredCost = 0)
         {
             if(HandScript.Instance.selected.GetComponent<CardScript>().cardData is PalCardData)
             {
                 var data = (PalCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData;
-                var costAmount = data.cost;
+                var costAmount = data.cost + alteredCost;
 
                 if(data.element == Element.Basic && HandScript.Instance.selection.Count == costAmount)
                     return true;
@@ -372,6 +372,35 @@ namespace Resources
                 }
                 else
                     return false;
+            }
+            else
+                return false;
+        }
+        
+        public static bool PalPaymentIsCorrect(PalCardData data, int alteredCost = 0)
+        {
+            var costAmount = data.cost + alteredCost;
+
+            if(data.element == Element.Basic && HandScript.Instance.selection.Count == costAmount)
+                return true;
+            else if(HandScript.Instance.selection.Count == costAmount)
+            {
+                var typesAreCorrect = true;
+                var cardColor = data.element;
+
+                for(int i = 0; i < HandScript.Instance.selection.Count; i++)
+                {
+                    if(!(HandScript.Instance.selection[i].GetComponent<CardScript>().cardData is PalCardData))
+                        return false;
+                    
+                    var paymentColor = ((PalCardData)HandScript.Instance.selection[i].GetComponent<CardScript>().cardData).element;
+
+                    if(cardColor != paymentColor && paymentColor != Element.Basic)
+                        typesAreCorrect = false;
+
+                }
+
+                return typesAreCorrect;
             }
             else
                 return false;

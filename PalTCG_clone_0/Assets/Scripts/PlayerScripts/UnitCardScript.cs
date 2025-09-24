@@ -14,7 +14,7 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     protected Image image;
     protected Button button;
     public CardData cardData;
-    public Color normalColor; //Probably Temp
+    public Color normalColor;
     public Color selectColor;
     [SerializeField] protected TMP_Text health;
     [HideInInspector] public PhotonView opponentMirror;

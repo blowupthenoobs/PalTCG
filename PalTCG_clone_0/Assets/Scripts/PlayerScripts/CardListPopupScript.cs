@@ -1,20 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 using DefaultUnitData;
 
-public class CardListPopupScript : MonoBehaviour
+public class CardListPopupScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] GameObject IconPrefab;
     public List<CardData> defaultDeckTypes = new List<CardData>();
     List<GameObject> tempPileItems = new List<GameObject>();
     private bool cancelDissapear;
+    public static bool lookingAtDiscard;
+    private bool isHovered;
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
-            StartCoroutine(ClickOffMenu());
+        if(Input.GetMouseButtonDown(0) && !isHovered) //
+            HidePopUp();
     }
 
     public void GetDefaultData(string deck)
@@ -22,26 +25,26 @@ public class CardListPopupScript : MonoBehaviour
         string[] cards = deck.Split(",");
 
 
-        for(int i = 0; i < cards.Length; i++)
+        for (int i = 0; i < cards.Length; i++)
         {
             var data = Pals.ConvertToCardData(cards[i]);
 
-            if(!defaultDeckTypes.Contains(data))
+            if (!defaultDeckTypes.Contains(data))
                 defaultDeckTypes.Add(data);
 
         }
     }
 
-    public void CreateCardIcons(List<CardData> pileList)
+    public void CreateCardIcons(List<CardData> pileList, bool isDiscard = false)
     {
         gameObject.SetActive(true);
 
         List<CardData> cardTypes = new List<CardData>();
         List<int> cardCount = new List<int>();
 
-        for(int i = 0; i < pileList.Count; i++)
+        for (int i = 0; i < pileList.Count; i++)
         {
-            if(!cardTypes.Contains(pileList[i]))
+            if (!cardTypes.Contains(pileList[i]))
             {
                 cardTypes.Add(pileList[i]);
                 cardCount.Add(1);
@@ -51,7 +54,7 @@ public class CardListPopupScript : MonoBehaviour
 
         }
 
-        while(cardTypes.Count > 0)
+        while (cardTypes.Count > 0)
         {
             tempPileItems.Add(Instantiate(IconPrefab, transform.position, transform.rotation));
             tempPileItems[tempPileItems.Count - 1].GetComponent<PileViewCardIconScript>().SetUpIcon(cardTypes[0], cardCount[0]);
@@ -60,6 +63,8 @@ public class CardListPopupScript : MonoBehaviour
             cardTypes.RemoveAt(0);
             cardCount.RemoveAt(0);
         }
+
+        lookingAtDiscard = isDiscard;
     }
 
     public void LookAtRemainingDeck(List<CardData> pileList)
@@ -69,26 +74,26 @@ public class CardListPopupScript : MonoBehaviour
         List<CardData> cardTypes = new List<CardData>(defaultDeckTypes);
         List<int> cardCount = new List<int>();
 
-        for(int i = 0; i < cardTypes.Count; i++)
+        for (int i = 0; i < cardTypes.Count; i++)
         {
             cardCount.Add(0);
         }
 
-        for(int i = 0; i < defaultDeckTypes.Count; i++)
+        for (int i = 0; i < defaultDeckTypes.Count; i++)
         {
-            if(!pileList.Contains(defaultDeckTypes[i]))
+            if (!pileList.Contains(defaultDeckTypes[i]))
             {
                 cardCount.RemoveAt(cardTypes.IndexOf(defaultDeckTypes[i]));
                 cardTypes.RemoveAt(cardTypes.IndexOf(defaultDeckTypes[i]));
             }
         }
 
-        foreach(CardData card in pileList)
+        foreach (CardData card in pileList)
         {
             cardCount[cardTypes.IndexOf(card)]++;
         }
 
-        while(cardTypes.Count > 0)
+        while (cardTypes.Count > 0)
         {
             tempPileItems.Add(Instantiate(IconPrefab, transform.position, transform.rotation));
             tempPileItems[tempPileItems.Count - 1].GetComponent<PileViewCardIconScript>().SetUpIcon(cardTypes[0], cardCount[0]);
@@ -108,7 +113,7 @@ public class CardListPopupScript : MonoBehaviour
     {
         yield return new WaitForSeconds(.1f);
 
-        if(cancelDissapear)
+        if (cancelDissapear)
             cancelDissapear = false;
         else
             HidePopUp();
@@ -124,4 +129,27 @@ public class CardListPopupScript : MonoBehaviour
 
         gameObject.SetActive(false);
     }
+    
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        isHovered = true;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        isHovered = false;
+    }
+
+    public void DeselectItemOfDataType(CardData cardType)
+    {
+        foreach(GameObject card in tempPileItems)
+        {
+            if(card.GetComponent<PileViewCardIconScript>().cardData == cardType)
+            {
+                card.SendMessage("Deselect");
+                break;
+            }
+        }
+    }
+    
 }

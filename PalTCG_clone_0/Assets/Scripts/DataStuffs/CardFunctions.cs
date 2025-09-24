@@ -33,6 +33,49 @@ public class HandFunctions : MonoBehaviour
         HandScript.Instance.playerDrawPile.GetComponent<DrawPileScript>().currentDeck.Insert(0, card.GetComponent<UnitCardScript>().cardData);
         card.GetComponent<UnitCardScript>().RemoveFromSphere();
     }
+
+    public static void PlayCardFromPalBox()
+    {
+        if(HandScript.Instance.tempDataTypeRef is PalCardData cardData)
+        {
+            FieldAbilityHandlerScript.Instance.waitingSpace.GetComponent<WaitingSpace>().PlaceCard(cardData);
+            HandScript.Instance.playerDiscardPile.SendMessage("RemoveCard", cardData);
+        }
+    }
+
+    public static void PayForDiscardedPalCard(int alteredCost = 0)
+    {
+        GameManager.Instance.ShowConfirmationButtons("select cards for payment");
+        HandScript.Instance.state = "buildingPay";
+        HandScript.Instance.Raise();
+        HandScript.Instance.updateSelection = () => AllowConfirmations.CanPayForPalCard((PalCardData)HandScript.Instance.tempDataTypeRef, alteredCost);
+        ConfirmationButtons.Instance.Confirmed += PlayCardFromPalBox;
+        ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
+        ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
+
+        AllowConfirmations.CanPayForPalCard((PalCardData)HandScript.Instance.tempDataTypeRef, alteredCost);
+    }
+
+    public static void ChikipiPalSkill()
+    {
+        //First select the card from discard
+        //Second select payment for discarded card
+        //Third place card somewhere (putting in waitingspace might make this easier)
+        //Somehow track down the chikipi that used the ability to say it used the palskill
+
+        GameManager.Instance.ShowConfirmationButtons("select palcard from discard to play");
+        HandScript.Instance.state = "choosingCardInDiscard";
+        // HandScript.Instance.Raise(); //Make it open discard pile instead
+        HandScript.Instance.updateSelection = () => ConfirmationButtons.Instance.AllowConfirmation(HandScript.Instance.tempDataTypeRef != null && HandScript.Instance.tempDataTypeRef is PalCardData);
+        ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
+        ConfirmationButtons.Instance.Confirmed += () => PayForDiscardedPalCard(-1);
+        ConfirmationButtons.Instance.Confirmed += () => AbilityActivation.TrackActionsForPalSkill(FieldCardContextMenuScript.Instance.activeCard, 1);
+        ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "default";
+        ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
+        ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
+
+        ConfirmationButtons.Instance.AllowConfirmation(HandScript.Instance.tempDataTypeRef != null && HandScript.Instance.tempDataTypeRef is PalCardData);
+    }
 }
 
 public class TargetingMechanisms : MonoBehaviour
@@ -76,7 +119,7 @@ public class StatusEffectAbilities : MonoBehaviour
 
     public static void PoisonCard()
     {
-        GiveTokensToTarget("poisoned", 2);
+        GiveMinStatusToTarget("poisoned", 2);
         AbilityActivation.readyForNextAttackAction = true;
     }
 
@@ -161,6 +204,16 @@ public class AllowConfirmations
         HandScript.Instance.updateSelection = null;
         GameManager.Instance.HideConfirmationButtons();
     }
+
+    public static void CanPayForPalCard(int alteredCost = 0)
+    {
+        ConfirmationButtons.Instance.AllowConfirmation(ResourceProcesses.PalPaymentIsCorrect(alteredCost));
+    }
+
+    public static void CanPayForPalCard(PalCardData data, int alteredCost = 0)
+    {
+        ConfirmationButtons.Instance.AllowConfirmation(ResourceProcesses.PalPaymentIsCorrect(data, alteredCost));
+    }
 }
 
 public class CardMovement : MonoBehaviour
@@ -231,12 +284,23 @@ public class AbilityActivation : MonoBehaviour
     {
         yield return null;
 
-        if (new[] { "lamball", "foxsparks" }.Contains(palSkill))
+        if(new[] { "lamball", "foxsparks" }.Contains(palSkill))
         {
             CardMovement.EquipAsItemPalSkill("weapon");
             yield break;
         }
+        if(palSkill == "chikipi")
+        {
+            HandFunctions.ChikipiPalSkill();
+        }
+    }
 
+    public static void TrackActionsForPalSkill(GameObject card, int functionCount)
+    {
+        if(functionCount == 0)
+            card.SendMessage("ActivatePalSkill");
+        else
+            ConfirmationButtons.Instance.Confirmed += () => TrackActionsForPalSkill(card, functionCount--);
     }
 }
 

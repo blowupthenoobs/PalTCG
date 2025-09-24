@@ -55,6 +55,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     //Misc
     public resources GatheredItems;
+    public CardData tempDataTypeRef;
 
     void Awake()
     {
@@ -200,6 +201,22 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 {
                     selection.RemoveAt(selection.IndexOf(card));
                     card.SendMessage("Deselect");
+                }
+                updateSelection.Invoke();
+                break;
+            case "choosingCardInDiscard":
+                if(card.GetComponent<PileViewCardIconScript>().cardData == tempDataTypeRef)
+                {
+                    card.SendMessage("Deselect");
+                    tempDataTypeRef = null;
+                }
+                else
+                {
+                    if(tempDataTypeRef != null)
+                        playerDiscardPile.SendMessage("DeselectItemOfDataType", tempDataTypeRef);
+                    
+                    tempDataTypeRef = card.GetComponent<PileViewCardIconScript>().cardData;
+                    card.SendMessage("Select");
                 }
                 updateSelection.Invoke();
                 break;

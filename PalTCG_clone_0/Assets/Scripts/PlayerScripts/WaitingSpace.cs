@@ -229,6 +229,35 @@ public class WaitingSpace : MonoBehaviour
         HandScript.Instance.state = "default";
     }
 
+    public void PlaceCard(CardData data)
+    {
+        AllowConfirmations.ClearButtonEffects();
+        GameManager.Instance.HideConfirmationButtons();
+
+        if(data is PalCardData palData)
+        {
+            AddToWaitlist(palData);
+            opponentMirror.RPC("CreateCardForWaitlist", RpcTarget.Others, palData.originalData.cardID);
+
+            while(HandScript.Instance.selection.Count > 0)
+            {
+                var cardToDiscard = HandScript.Instance.selection[0];
+                HandScript.Instance.selection.RemoveAt(0);
+                HandScript.Instance.Discard(cardToDiscard);
+            }
+        }
+        if(data is ToolCardData toolData)
+        {
+            AddToWaitlist(toolData);
+            opponentMirror.RPC("CreateCardForWaitlist", RpcTarget.Others, toolData.originalData.cardID);
+
+            HandScript.Instance.GatheredItems -= toolData.cost;
+        }
+        
+
+        HandScript.Instance.state = "default";
+    }
+
     void Disengage()
     {
         AllowConfirmations.ClearButtonEffects();

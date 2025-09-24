@@ -4048,6 +4048,7 @@ MonoBehaviour:
   - {fileID: 751129135}
   playerDrawPile: {fileID: 322139904}
   playerDiscardPile: {fileID: 2110461707}
+  tempDataTypeRef: {fileID: 0}
 --- !u!114 &1004393408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4502,6 +4503,7 @@ MonoBehaviour:
   - {fileID: 751129135}
   playerDrawPile: {fileID: 0}
   playerDiscardPile: {fileID: 0}
+  waitingSpace: {fileID: 1375381342}
 --- !u!1 &1050453569
 GameObject:
   m_ObjectHideFlags: 0

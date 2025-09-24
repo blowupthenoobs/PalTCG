@@ -25,6 +25,11 @@ public class DiscardPileScript : MonoBehaviour
 
     public void Click()
     {
-        GameManager.Instance.CardPileBox.GetComponent<CardListPopupScript>().CreateCardIcons(discardPile);
+        GameManager.Instance.CardPileBox.GetComponent<CardListPopupScript>().CreateCardIcons(discardPile, true);
+    }
+
+    public void RemoveCard(CardData cardType)
+    {
+        discardPile.RemoveAt(discardPile.IndexOf(cardType));
     }
 }
