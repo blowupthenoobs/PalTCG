@@ -18,7 +18,7 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public Color selectColor;
     [SerializeField] protected TMP_Text health;
     [HideInInspector] public PhotonView opponentMirror;
-    protected GameObject heldCard;
+    public GameObject heldCard;
 
 
     protected UnityAction StartPlayerTurn;

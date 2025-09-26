@@ -169,6 +169,28 @@ public class ToolSlotScript : CardHolderScript
         return matchingSlot;
     }
 
+    public static GameObject GetHeldItemOnSlot(string slotName)
+    {
+        var slotToCheck = FindMatchingSlot(slotName);
+
+        GameObject topCard = slotToCheck.heldCard;
+
+        if(topCard != null)
+        {
+            bool foundTopCard = false;
+            while(!foundTopCard)
+            {
+                if(topCard.GetComponent<UnitCardScript>().heldCard != null)
+                    topCard = topCard.GetComponent<UnitCardScript>().heldCard;
+                else
+                    foundTopCard = true;
+                
+            }
+        }
+
+        return topCard;
+    }
+
     void DisengagePurchase()
     {
         HandScript.Instance.updateSelection -= VerifyButtons;

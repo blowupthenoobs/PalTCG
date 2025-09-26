@@ -19,6 +19,11 @@ public class PalCardScript : UnitCardScript
 
         HandScript.Instance.selected = null;
         HandScript.Instance.selection = new List<GameObject>();
+
+        if(GameManager.Instance.phase == "playerTurn")
+            PrepareMainPhase();
+        else if (GameManager.Instance.phase == "playerAttack")
+            PrepareAttackPhase();
     }
 
     public void ReadyToBePlaced()
@@ -98,7 +103,7 @@ public class PalCardScript : UnitCardScript
 
     public override bool CanUsePalSkills()
     {
-        return !palSKillActive;
+        return !palSKillActive && FieldAbilityHandlerScript.CanUseSpecificPalSkill(gameObject) && Pals.palSkill.ContainsKey(((PalCardData)cardData).palSkill); //Last part is just so u can't activate non-existent PalSkills
     }
 
     public void ResetPalSkill()

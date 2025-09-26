@@ -8,9 +8,42 @@ using Photon.Pun;
 using Resources;
 public class HandFunctions : MonoBehaviour
 {
-    public static void SendToDiscard()
+    public static void SelectRandomCards(int amount)
     {
-        //I think you'll get this one
+        HandScript.Instance.UnselectSelection();
+
+        while(HandScript.Instance.selection.Count < amount || HandScript.Instance.selection.Count == HandScript.Instance.Hand.Count)
+        {
+            int random = Random.Range(0, HandScript.Instance.Hand.Count);
+            if(!HandScript.Instance.selection.Contains(HandScript.Instance.Hand[random]))
+                HandScript.Instance.selection.Add(HandScript.Instance.Hand[random]);
+        }
+    }
+
+    public static void SendSelectionToDiscard()
+    {
+        while (HandScript.Instance.selection.Count > 0)
+        {
+            var cardToDiscard = HandScript.Instance.selection[0];
+            HandScript.Instance.selection.RemoveAt(0);
+            HandScript.Instance.Discard(cardToDiscard);
+        }
+    }
+
+    public static void DiscardCards(int amount = 1)
+    {
+        GameManager.Instance.ShowConfirmationButtons("Discard " + amount + " card(s)", false);
+        HandScript.Instance.state = "buildingPay";
+        HandScript.Instance.updateSelection = () => ConfirmationButtons.Instance.AllowConfirmation(HandScript.Instance.selection.Count == amount || HandScript.Instance.selection.Count == HandScript.Instance.Hand.Count);
+        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = "default";
+        ConfirmationButtons.Instance.Confirmed += SendSelectionToDiscard;
+        ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
+        ConfirmationButtons.Instance.Denied += () => SelectRandomCards(amount);
+        ConfirmationButtons.Instance.Denied += SendSelectionToDiscard;
+        ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "default";
+        ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
+
+        ConfirmationButtons.Instance.AllowConfirmation(true);
     }
 
     public static void SendToHand()
@@ -28,6 +61,15 @@ public class HandFunctions : MonoBehaviour
         //I think I can stop now
     }
 
+    public static void DrawCards(int amount)
+    {
+        while(amount > 0)
+        {
+            HandScript.Instance.playerDrawPile.SendMessage("Draw");
+            amount--;
+        }
+    }
+
     public static void ReturnFieldCardToDeck(GameObject card)
     {
         HandScript.Instance.playerDrawPile.GetComponent<DrawPileScript>().currentDeck.Insert(0, card.GetComponent<UnitCardScript>().cardData);
@@ -36,7 +78,7 @@ public class HandFunctions : MonoBehaviour
 
     public static void PlayCardFromPalBox()
     {
-        if(HandScript.Instance.tempDataTypeRef is PalCardData cardData)
+        if (HandScript.Instance.tempDataTypeRef is PalCardData cardData)
         {
             FieldAbilityHandlerScript.Instance.waitingSpace.GetComponent<WaitingSpace>().PlaceCard(cardData);
             HandScript.Instance.playerDiscardPile.SendMessage("RemoveCard", cardData);
@@ -58,23 +100,35 @@ public class HandFunctions : MonoBehaviour
 
     public static void ChikipiPalSkill()
     {
-        //First select the card from discard
-        //Second select payment for discarded card
-        //Third place card somewhere (putting in waitingspace might make this easier)
-        //Somehow track down the chikipi that used the ability to say it used the palskill
-
+        GameObject chikipiCard = FieldCardContextMenuScript.Instance.activeCard;
         GameManager.Instance.ShowConfirmationButtons("select palcard from discard to play");
         HandScript.Instance.state = "choosingCardInDiscard";
         // HandScript.Instance.Raise(); //Make it open discard pile instead
         HandScript.Instance.updateSelection = () => ConfirmationButtons.Instance.AllowConfirmation(HandScript.Instance.tempDataTypeRef != null && HandScript.Instance.tempDataTypeRef is PalCardData);
         ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
         ConfirmationButtons.Instance.Confirmed += () => PayForDiscardedPalCard(-1);
-        ConfirmationButtons.Instance.Confirmed += () => AbilityActivation.TrackActionsForPalSkill(FieldCardContextMenuScript.Instance.activeCard, 1);
+        ConfirmationButtons.Instance.Confirmed += () => AbilityActivation.TrackActionsForPalSkill(chikipiCard, 1);
         ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "default";
         ConfirmationButtons.Instance.Denied += HandScript.Instance.ClearSelection;
         ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
 
         ConfirmationButtons.Instance.AllowConfirmation(HandScript.Instance.tempDataTypeRef != null && HandScript.Instance.tempDataTypeRef is PalCardData);
+        HandScript.Instance.playerDiscardPile.SendMessage("Click");
+    }
+
+    public static void CattivaPalSkill()
+    {
+        GameObject cattivaCard = FieldCardContextMenuScript.Instance.activeCard;
+        GameManager.Instance.ShowConfirmationButtons("Use Cattiva Palskill?");
+        HandScript.Instance.state = "awaitingDecision";
+        ConfirmationButtons.Instance.Confirmed += () => DrawCards(2);
+        ConfirmationButtons.Instance.Confirmed += () => cattivaCard.SendMessage("ActivatePalSkill");
+        ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
+        ConfirmationButtons.Instance.Confirmed += () => DiscardCards(1);
+        ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "default";
+        ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
+
+        ConfirmationButtons.Instance.AllowConfirmation(true);
     }
 }
 
@@ -300,7 +354,7 @@ public class AbilityActivation : MonoBehaviour
         if(functionCount == 0)
             card.SendMessage("ActivatePalSkill");
         else
-            ConfirmationButtons.Instance.Confirmed += () => TrackActionsForPalSkill(card, functionCount--);
+            ConfirmationButtons.Instance.Confirmed += () => TrackActionsForPalSkill(card, functionCount - 1);
     }
 }
 

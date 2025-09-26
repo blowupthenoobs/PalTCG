@@ -7,22 +7,22 @@ using TMPro;
 
 public class ConfirmationButtons : MonoBehaviour
 {
-   public static ConfirmationButtons Instance;
+    public static ConfirmationButtons Instance;
 
-   public UnityAction Confirmed;
-   public UnityAction Denied;
-   private bool canConfirm;
+    public UnityAction Confirmed;
+    public UnityAction Denied;
+    private bool canConfirm;
 
-   [SerializeField] GameObject confirmButton;
-   [SerializeField] GameObject denyButton;
+    [SerializeField] GameObject confirmButton;
+    [SerializeField] GameObject denyButton;
     public TMP_Text MessageContainer;
 
-   [SerializeField] float greyValue;
+    [SerializeField] float greyValue;
 
     void Awake()
     {
-        if(Instance == null)
-            Instance=this;
+        if (Instance == null)
+            Instance = this;
         else
             Destroy(gameObject);
     }
@@ -37,13 +37,13 @@ public class ConfirmationButtons : MonoBehaviour
 
     public void Confirm()
     {
-        if(canConfirm)
+        if (canConfirm)
             Confirmed.Invoke();
     }
 
     public void Deny()
     {
-        if(Denied != null)
+        if (Denied != null)
             Denied.Invoke();
     }
 
@@ -62,6 +62,22 @@ public class ConfirmationButtons : MonoBehaviour
             Color newColor = confirmButton.GetComponent<Image>().color;
             newColor.a = 1;
             confirmButton.GetComponent<Image>().color = newColor;
+        }
+    }
+
+    public void CanDeny(bool isAllowed)
+    {
+        if(isAllowed)
+        {
+            Color newColor = confirmButton.GetComponent<Image>().color;
+            newColor.a = 1;
+            confirmButton.GetComponent<Image>().color = newColor;
+        }
+        else
+        {
+            Color newColor = denyButton.GetComponent<Image>().color;
+            newColor.a = greyValue;
+            denyButton.GetComponent<Image>().color = newColor;
         }
     }
 }

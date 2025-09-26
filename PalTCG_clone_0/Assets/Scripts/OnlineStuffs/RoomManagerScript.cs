@@ -47,7 +47,7 @@ public class RoomManagerScript : MonoBehaviourPunCallbacks
     public void ReadyForMatch()
     {
         waitingScreen.SetActive(false);
-        GameManager.Instance.DrawCards(5);
+        HandFunctions.DrawCards(5);
     }
 
     public void PlayerLockedIn()

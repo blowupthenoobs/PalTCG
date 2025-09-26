@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
         CardSprites = AccountManager.Instance.CardSprites;
 
         StartPlayerTurn += PlayerPhase;
-        StartPlayerTurn += () => DrawCards(2);
+        StartPlayerTurn += () => HandFunctions.DrawCards(2);
         StartEnemyTurn += EnemyPhase;
         StartPlayerAttack += PlayerAttackPhase;
         StartEnemyAttack += EnemyAttackPhase;
@@ -123,10 +123,11 @@ public class GameManager : MonoBehaviour
         ConfirmationButtons.SetActive(false);
     }
 
-    public void ShowConfirmationButtons(string message)
+    public void ShowConfirmationButtons(string message, bool canDeny = true)
     {
         ConfirmationButtons.SetActive(true);
         ConfirmationButtons.GetComponent<ConfirmationButtons>().MessageContainer.text = message;
+        ConfirmationButtons.GetComponent<ConfirmationButtons>().CanDeny(canDeny);
     }
 
 
@@ -187,12 +188,4 @@ public class GameManager : MonoBehaviour
         StartEnemyTurn.Invoke();
     }
 #endregion
-    public void DrawCards(int amount)
-    {
-        while(amount > 0)
-        {
-            HandScript.Instance.playerDrawPile.SendMessage("Draw");
-            amount--;
-        }
-    }
 }

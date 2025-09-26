@@ -18,14 +18,14 @@ public class FieldAbilityHandlerScript : MonoBehaviour
     public GameObject playerDiscardPile;
     public GameObject waitingSpace;
 
-    public readonly static Dictionary<string, UnityAction> turnEndAbilities =  new Dictionary<string, UnityAction>
+    public readonly static Dictionary<string, UnityAction> turnEndAbilities = new Dictionary<string, UnityAction>
     {
         { "chikipi", () => SpecificPalAbilities.SelectFriendlyForChikipiAbility()},
     };
 
     void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
@@ -37,7 +37,7 @@ public class FieldAbilityHandlerScript : MonoBehaviour
     [PunRPC]
     public void LookForBlockers()
     {
-        if(CheckBoardForTags("blocker", true) > 0)
+        if (CheckBoardForTags("blocker", true) > 0)
         {
             ChooseBlocker();
         }
@@ -71,9 +71,9 @@ public class FieldAbilityHandlerScript : MonoBehaviour
         int count = 0;
         foreach (GameObject space in cardSlots)
         {
-            if(space.GetComponent<PalSphereScript>().heldCard != null)
+            if (space.GetComponent<PalSphereScript>().heldCard != null)
             {
-                if((!space.GetComponent<PalSphereScript>().heldCard.GetComponent<UnitCardScript>().resting || !cannotRest) && space.GetComponent<PalSphereScript>().heldCard.GetComponent<UnitCardScript>().CanBlock())
+                if ((!space.GetComponent<PalSphereScript>().heldCard.GetComponent<UnitCardScript>().resting || !cannotRest) && space.GetComponent<PalSphereScript>().heldCard.GetComponent<UnitCardScript>().CanBlock())
                     count++;
             }
         }
@@ -83,11 +83,11 @@ public class FieldAbilityHandlerScript : MonoBehaviour
 
     public bool BoardHasEndOfTurnAbilities()
     {
-        foreach(GameObject space in cardSlots)
+        foreach (GameObject space in cardSlots)
         {
-            if(space.GetComponent<CardHolderScript>().heldCard != null)
+            if (space.GetComponent<CardHolderScript>().heldCard != null)
             {
-                if(space.GetComponent<CardHolderScript>().heldCard.GetComponent<UnitCardScript>().CheckForUsuableTraits(turnEndAbilities.Keys.ToList()))
+                if (space.GetComponent<CardHolderScript>().heldCard.GetComponent<UnitCardScript>().CheckForUsuableTraits(turnEndAbilities.Keys.ToList()))
                     return true;
             }
         }
@@ -101,7 +101,7 @@ public class FieldAbilityHandlerScript : MonoBehaviour
         {
             foreach (GameObject space in cardSlots)
             {
-                if(space.GetComponent<CardHolderScript>().heldCard != null)
+                if (space.GetComponent<CardHolderScript>().heldCard != null)
                     space.GetComponent<CardHolderScript>().heldCard.GetComponent<UnitCardScript>().PrepareEndPhase();
             }
 
@@ -117,6 +117,15 @@ public class FieldAbilityHandlerScript : MonoBehaviour
         }
         else
             GameManager.Instance.readyForNextAttackAction = true;
-        
+
+    }
+
+    public static bool CanUseSpecificPalSkill(GameObject card)
+    {
+        var palSkill = ((PalCardData)card.GetComponent<PalCardScript>().cardData).palSkill;
+        if (new List<string>{ "lamball", "firesparks" }.Contains(palSkill))
+            return !(card == ToolSlotScript.GetHeldItemOnSlot("weapon"));
+
+        return true;
     }
 }

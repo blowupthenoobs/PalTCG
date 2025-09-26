@@ -945,6 +945,7 @@ namespace DefaultUnitData
         public static Dictionary<string, UnityAction> palSkill = new Dictionary<string, UnityAction>
         {
             { "lamball", () => CardMovement.EquipAsItemPalSkill("weapon")},
+            { "cattiva", () => HandFunctions.CattivaPalSkill()},
             { "chikipi", () => HandFunctions.ChikipiPalSkill()},
             { "foxsparks", () => CardMovement.EquipAsItemPalSkill("weapon")},
             { "lifmunk", () => CardMovement.EquipAsItemPalSkill("weapon")},

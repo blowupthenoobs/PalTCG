@@ -37,6 +37,7 @@ public class CardListPopupScript : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public void CreateCardIcons(List<CardData> pileList, bool isDiscard = false)
     {
+        lookingAtDiscard = isDiscard;
         gameObject.SetActive(true);
 
         List<CardData> cardTypes = new List<CardData>();
@@ -64,7 +65,6 @@ public class CardListPopupScript : MonoBehaviour, IPointerEnterHandler, IPointer
             cardCount.RemoveAt(0);
         }
 
-        lookingAtDiscard = isDiscard;
     }
 
     public void LookAtRemainingDeck(List<CardData> pileList)
