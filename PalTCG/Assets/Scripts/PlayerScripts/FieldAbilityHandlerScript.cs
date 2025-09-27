@@ -39,7 +39,7 @@ public class FieldAbilityHandlerScript : MonoBehaviour
     [PunRPC]
     public void LookForBlockers()
     {
-        if (CheckBoardForTags("blocker", true) > 0)
+        if (CheckBoardForAvailableBlockers("blocker", true) > 0)
         {
             ChooseBlocker();
         }
@@ -68,15 +68,30 @@ public class FieldAbilityHandlerScript : MonoBehaviour
         HandScript.Instance.selection[0].GetComponent<UnitCardScript>().opponentMirror.RPC("Block", RpcTarget.Others);
     }
 
-    public int CheckBoardForTags(string tag, bool cannotRest = false)
+    public int CheckBoardForAvailableBlockers(string tag, bool cannotRest = false)
     {
         int count = 0;
         foreach (GameObject space in cardSlots)
         {
             if (space.GetComponent<PalSphereScript>().heldCard != null)
             {
-                if ((!space.GetComponent<PalSphereScript>().heldCard.GetComponent<UnitCardScript>().resting || !cannotRest) && space.GetComponent<PalSphereScript>().heldCard.GetComponent<UnitCardScript>().CanBlock())
+                if (!space.GetComponent<CardHolderScript>().heldCard.GetComponent<UnitCardScript>().resting && space.GetComponent<CardHolderScript>().heldCard.GetComponent<UnitCardScript>().CanBlock())
                     count++;
+            }
+        }
+
+        return count;
+    }
+
+    public int CheckTagCountOnBoard(string tag, bool cannotRest = false)
+    {
+        int count = 0;
+        foreach (GameObject space in cardSlots)
+        {
+            if (space.GetComponent<PalSphereScript>().heldCard != null)
+            {
+                if ((!space.GetComponent<CardHolderScript>().heldCard.GetComponent<UnitCardScript>().resting || !cannotRest) && space.GetComponent<CardHolderScript>().heldCard.GetComponent<UnitCardScript>().cardData.traits.tags.Contains(tag))
+                    count += space.GetComponent<CardHolderScript>().heldCard.GetComponent<UnitCardScript>().cardData.traits.tags.Count(x => x == tag);
             }
         }
 
@@ -126,9 +141,9 @@ public class FieldAbilityHandlerScript : MonoBehaviour
     {
         int extraDamage = 0;
 
-        if (tags.Contains("burn"))
+        if(tags.Contains("burn"))
             extraDamage += fieldPalEffects.Count(x => x == "rooby");
-        
+
         return extraDamage;
     }
 
@@ -143,5 +158,11 @@ public class FieldAbilityHandlerScript : MonoBehaviour
 
 #region miscSpecificAbilities
 
+    [PunRPC]
+    public void BurnTriggered()
+    {
+        // if(CheckTagCountOnBoard("rooby") >= 0)
+        //     HandFunctions.DrawCards(CheckTagCountOnBoard("rooby"));
+    }
 #endregion
 }

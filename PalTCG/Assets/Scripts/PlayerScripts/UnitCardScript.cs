@@ -83,7 +83,12 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         if(heldCard == null)
         {
             if(isAttacked)
+            {
                 cardData.currentHp -= dmg + statuses.burning;
+
+                if(statuses.burning > 0)
+                    FieldAbilityHandlerScript.Instance.enemyHandler.RPC("BurnTriggered", RpcTarget.Others);
+            }
             else
                 cardData.currentHp -= dmg;
 
@@ -156,8 +161,8 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         if(target != null)
         {
-            target.GetComponent<EnemyPalCardScript>()?.Hurt(cardData.currentAtk + FieldAbilityHandlerScript.Instance.ExtraAbilityAttackDamage(cardData.tags), true);
-            target.GetComponent<EnemyPlayerScript>()?.Hurt(cardData.currentAtk + FieldAbilityHandlerScript.Instance.ExtraAbilityAttackDamage(cardData.tags), true);
+            target.GetComponent<EnemyPalCardScript>()?.Hurt(cardData.currentAtk + FieldAbilityHandlerScript.Instance.ExtraAbilityAttackDamage(cardData.traits.tags), true);
+            target.GetComponent<EnemyPlayerScript>()?.Hurt(cardData.currentAtk + FieldAbilityHandlerScript.Instance.ExtraAbilityAttackDamage(cardData.traits.tags), true);
         }
         else
             HandScript.Instance.targetWasNull = true;

@@ -38,6 +38,7 @@ namespace DefaultUnitData
         public List<Sprite> lifmunk;
         public List<Sprite> tanzee;
         public List<Sprite> foxsparks;
+        public List<Sprite> rooby;
         public List<Sprite> sparkit;
         public List<Sprite> depresso;
         public List<Sprite> daedream;
@@ -423,6 +424,34 @@ namespace DefaultUnitData
             maxHp: 7,
             cardArt: AccountManager.Instance.CardSprites.foxsparks
         );
+
+        public DefaultPal rooby = new DefaultPal
+        (
+            cost: 1,
+            element: Element.Fire,
+            traits: new Traits
+            (
+                ranch: 0,
+                handyWork: 0,
+                foraging: 0,
+                gardening: 0,
+                watering: 0,
+                mining: 0,
+                lumber: 0,
+                transportation: 0,
+                medicine: 0,
+                kindling: 1,
+                electric: 0,
+                freezing: 0,
+                dragon: 0,
+                bird: false,
+                tags: new List<string> { "burn", "rooby" }
+            ),
+            size: 1,
+            attackPower: 2,
+            maxHp: 8,
+            cardArt: AccountManager.Instance.CardSprites.rooby
+        );
         #endregion FirePals
 
         #region WaterPals
@@ -762,12 +791,14 @@ namespace DefaultUnitData
                     return new PalData(chikipi, artIndex, cardID);
                 case "lifmunk":
                     return new PalData(lifmunk, artIndex, cardID);
-                case "tanzee":
-                    return new PalData(tanzee, artIndex, cardID);
                 case "foxsparks":
                     return new PalData(foxsparks, artIndex, cardID);
                 case "sparkit":
                     return new PalData(sparkit, artIndex, cardID);
+                case "tanzee":
+                    return new PalData(tanzee, artIndex, cardID);
+                case "rooby":
+                    return new PalData(rooby, artIndex, cardID);
                 case "depresso":
                     return new PalData(depresso, artIndex, cardID);
                 case "daedream":
