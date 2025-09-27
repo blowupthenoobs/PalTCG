@@ -27,9 +27,9 @@ public class PlayerCardScript : UnitCardScript
     }
 
     [PunRPC]
-    public void HurtHeldCard(int damage)
+    public void HurtHeldCard(int damage, bool isAttacked)
     {
-        Hurt(damage);
+        Hurt(damage, isAttacked);
     }
 
     [PunRPC]

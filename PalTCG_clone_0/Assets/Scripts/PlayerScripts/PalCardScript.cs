@@ -119,7 +119,9 @@ public class PalCardScript : UnitCardScript
 
     protected override void Die()
     {
-        transform.parent.gameObject.SendMessage("BreakSphere");
+        if(!cardData.traits.tags.Contains("mercy"))
+            transform.parent.gameObject.SendMessage("BreakSphere");
+        
         base.Die();
     }
 
@@ -127,5 +129,10 @@ public class PalCardScript : UnitCardScript
     {
         SendToPalBox();
     }
-
+    
+    public virtual void EnemyTurnRemoveStatuses()
+    {
+        palSKillActive = false;
+        base.EnemyTurnRemoveStatuses();
+    }
 }

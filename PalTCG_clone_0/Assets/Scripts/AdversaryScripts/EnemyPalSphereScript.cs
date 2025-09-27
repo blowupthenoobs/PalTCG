@@ -242,7 +242,8 @@ public class EnemyPalSphereScript : MonoBehaviour, IPointerEnterHandler, IPointe
     [PunRPC]
     public void EnemyTurnRemoveStatuses()
     {
-        heldCard.SendMessage("EnemyTurnRemoveStatuses");
+        if(heldCard != null)
+            heldCard.SendMessage("EnemyTurnRemoveStatuses");
     }
 
     [PunRPC]

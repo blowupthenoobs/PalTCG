@@ -29,6 +29,9 @@ public class PileViewCardIconScript : MonoBehaviour
         counter.text = currentCount.ToString();
 
         GetComponent<Button>().interactable = CardListPopupScript.lookingAtDiscard && HandScript.Instance.state == "choosingCardInDiscard";
+
+        if(HandScript.Instance.tempDataTypeRef == cardData && CardListPopupScript.lookingAtDiscard && HandScript.Instance.state == "choosingCardInDiscard")
+            Select();
     }
 
     public void Click()

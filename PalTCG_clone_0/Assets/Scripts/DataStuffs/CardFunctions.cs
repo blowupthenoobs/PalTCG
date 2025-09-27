@@ -181,7 +181,8 @@ public class StatusEffectAbilities : MonoBehaviour
     {
         var target = TargetingMechanisms.TargetAttackedEnemy();
         
-        target.transform.GetComponent<EnemyPalCardScript>().opponentMirror.RPC("GetShocked", RpcTarget.Others);
+        target.transform.GetComponent<EnemyPlayerScript>()?.opponentMirror.RPC("GetShocked", RpcTarget.Others);
+        target.transform.GetComponent<EnemyPalCardScript>()?.opponentMirror.RPC("GetShocked", RpcTarget.Others);
 
         HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().opponentMirror.RPC("ShockOtherCard", RpcTarget.Others);
 
@@ -385,7 +386,8 @@ public class SpecificPalAbilities : MonoBehaviour
 
         HandScript.Instance.updateSelection = AllowConfirmations.LookForSingleTarget;
         ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = "endOfTurnAbilities";
-        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.selection[0].GetComponent<EnemyPalCardScript>().opponentMirror.RPC("HurtHeldCard", RpcTarget.Others, selectedAlly.GetComponent<UnitCardScript>().cardData.currentAtk, false);
+        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.selection[0].GetComponent<EnemyPlayerScript>()?.opponentMirror.RPC("HurtHeldCard", RpcTarget.Others, selectedAlly.GetComponent<UnitCardScript>().cardData.currentAtk, false);
+        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.selection[0].GetComponent<EnemyPalCardScript>()?.opponentMirror.RPC("HurtHeldCard", RpcTarget.Others, selectedAlly.GetComponent<UnitCardScript>().cardData.currentAtk, false);
         ConfirmationButtons.Instance.Confirmed += () => HandFunctions.ReturnFieldCardToDeck(selectedAlly); //This is where you make the thing go back into the deck
         ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.UnselectSelection();
         ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.selected.SendMessage("UseAbility");

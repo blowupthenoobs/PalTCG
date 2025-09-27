@@ -18,6 +18,8 @@ public class FieldAbilityHandlerScript : MonoBehaviour
     public GameObject playerDiscardPile;
     public GameObject waitingSpace;
 
+    public List<string> fieldPalEffects = new List<string>();
+
     public readonly static Dictionary<string, UnityAction> turnEndAbilities = new Dictionary<string, UnityAction>
     {
         { "chikipi", () => SpecificPalAbilities.SelectFriendlyForChikipiAbility()},
@@ -120,12 +122,26 @@ public class FieldAbilityHandlerScript : MonoBehaviour
 
     }
 
+    public int ExtraAbilityAttackDamage(List<string> tags)
+    {
+        int extraDamage = 0;
+
+        if (tags.Contains("burn"))
+            extraDamage += fieldPalEffects.Count(x => x == "rooby");
+        
+        return extraDamage;
+    }
+
     public static bool CanUseSpecificPalSkill(GameObject card)
     {
         var palSkill = ((PalCardData)card.GetComponent<PalCardScript>().cardData).palSkill;
-        if (new List<string>{ "lamball", "firesparks" }.Contains(palSkill))
+        if (new List<string> { "lamball", "firesparks" }.Contains(palSkill))
             return !(card == ToolSlotScript.GetHeldItemOnSlot("weapon"));
 
         return true;
     }
+
+#region miscSpecificAbilities
+
+#endregion
 }

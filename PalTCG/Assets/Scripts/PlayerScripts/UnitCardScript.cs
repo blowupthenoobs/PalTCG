@@ -155,7 +155,10 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
 
         if(target != null)
-            target.SendMessage("Hurt", cardData.currentAtk);
+        {
+            target.GetComponent<EnemyPalCardScript>()?.Hurt(cardData.currentAtk + FieldAbilityHandlerScript.Instance.ExtraAbilityAttackDamage(cardData.tags), true);
+            target.GetComponent<EnemyPlayerScript>()?.Hurt(cardData.currentAtk + FieldAbilityHandlerScript.Instance.ExtraAbilityAttackDamage(cardData.tags), true);
+        }
         else
             HandScript.Instance.targetWasNull = true;
 
@@ -419,6 +422,11 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         if(statuses.poisoned > 0)
             statuses.poisoned--;
+        
+        for(int i = 0; i < cardData.usedAbilities.Count; i++)
+        {
+            cardData.usedAbilities[i] = false;
+        }
 
         opponentMirror.RPC("PlayerTurnRemoveStatuses", RpcTarget.Others);
     }
@@ -429,6 +437,11 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             statuses.poisoned--;
 
         statuses.burning = 0;
+
+        for(int i = 0; i < cardData.usedAbilities.Count; i++)
+        {
+            cardData.usedAbilities[i] = false;
+        }
 
         opponentMirror.RPC("EnemyTurnRemoveStatuses", RpcTarget.Others);
     }
@@ -535,10 +548,11 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void RemoveCardEventsFromManager()
     {
-        GameManager.Instance.StartPlayerTurn -= StartPlayerTurn;
-        GameManager.Instance.StartPlayerAttack -= PrepareAttackPhase;
-        GameManager.Instance.StartEnemyTurn -= StartPlayerAttack;
-        GameManager.Instance.StartEnemyTurn -= StartEnemyTurn;
+        GameManager.Instance.StartPlayerTurn -= CallStartPlayerTurnFunctions;
+        GameManager.Instance.StartPlayerAttack -= CallStartPlayerAttackFunctions;
+        GameManager.Instance.EndPlayerTurn -= CallPlayerTurnEndFunctions;
+        GameManager.Instance.StartEnemyTurn -= CallEnemyTurnStartFunctions;
+        GameManager.Instance.EndEnemyTurn -= CallEnemyTurnEndFunctions;
     }
 
     public void GiveTraitsToBuildings()

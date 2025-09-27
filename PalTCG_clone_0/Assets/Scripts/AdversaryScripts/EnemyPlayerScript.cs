@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using TMPro;
 
+using Resources;
 using DefaultUnitData;
 public class EnemyPlayerScript : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class EnemyPlayerScript : MonoBehaviour
     public Color normalColor; //Probably Temp
     public Color targetColor;
     public TMP_Text health;
+
+    public StatusEffects statuses;
 
     void Awake()
     {
@@ -86,9 +89,9 @@ public class EnemyPlayerScript : MonoBehaviour
     }
 
     [PunRPC]
-    public void Hurt(int damage)
+    public void Hurt(int damage, bool isAttacked = true)
     {
-        opponentMirror.RPC("HurtHeldCard", RpcTarget.Others, damage);
+        opponentMirror.RPC("HurtHeldCard", RpcTarget.Others, damage, isAttacked);
     }
 
     [PunRPC]
@@ -123,6 +126,39 @@ public class EnemyPlayerScript : MonoBehaviour
     public void SendRestEffect()
     {
         opponentMirror.RPC("EffectRest", RpcTarget.Others);
+    }
+    
+    [PunRPC]
+    public void GainTokens(string tokenType, int tokenCount)
+    {
+        var token = typeof(StatusEffects).GetField(tokenType);
+
+        StatusEffects result = new StatusEffects();
+        token.SetValueDirect(__makeref(result), tokenCount);
+        statuses += result;
+
+    }
+
+    [PunRPC]
+    public void GetShocked()
+    {
+        StartCoroutine("ShockCoroutine");
+    }
+    
+    public IEnumerator ShockCoroutine()
+    {
+        yield return new WaitUntil(() => UnitCardScript.Shocker != null);
+
+        if(!statuses.shocked.Contains(UnitCardScript.Shocker))
+            statuses.shocked.Add(UnitCardScript.Shocker);
+
+        UnitCardScript.Shocker = null;
+    }
+
+    [PunRPC]
+    public void ShockOtherCard()
+    {
+        EnemyPalCardScript.Shocker = gameObject;
     }
 
     [PunRPC]

@@ -54,9 +54,9 @@ public class EnemyPalCardScript : MonoBehaviour
         image.color = normalColor;
     }
 
-    public void Hurt(int damage)
+    public void Hurt(int damage, bool isAttacked = true)
     {
-        opponentMirror.RPC("HurtHeldCard", RpcTarget.Others, damage);
+        opponentMirror.RPC("HurtHeldCard", RpcTarget.Others, damage, isAttacked);
     }
 
     public void UpdateHealth(int newHealth)
@@ -70,19 +70,14 @@ public class EnemyPalCardScript : MonoBehaviour
             heldCard.SendMessage("UpdateHealth", newHealth);
     }
 
+    [PunRPC]
     public void GainTokens(string tokenType, int tokenCount)
     {
-        if(heldCard == null)
-        {
-            var token = typeof(StatusEffects).GetField(tokenType);
+        var token = typeof(StatusEffects).GetField(tokenType);
 
-            StatusEffects result = new StatusEffects();
-            token.SetValueDirect(__makeref(result), tokenCount);
-            statuses += result;
-        }
-        else
-            heldCard.GetComponent<UnitCardScript>().GainTokens(tokenType, tokenCount);
-        
+        StatusEffects result = new StatusEffects();
+        token.SetValueDirect(__makeref(result), tokenCount);
+        statuses += result;
     }
 
     public IEnumerator GetShocked()
