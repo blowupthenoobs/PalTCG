@@ -14,7 +14,7 @@ public class CardHolderScript : MonoBehaviour
     [SerializeField] protected GameObject cardPrefab;
     public GameObject heldCard;
 
-    #region cardDelegation
+#region cardDelegation
     [PunRPC]
     public void Rest()
     {

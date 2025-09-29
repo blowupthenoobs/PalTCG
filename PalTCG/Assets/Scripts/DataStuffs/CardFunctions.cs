@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Photon.Pun;
 
 using Resources;
@@ -12,10 +13,10 @@ public class HandFunctions : MonoBehaviour
     {
         HandScript.Instance.UnselectSelection();
 
-        while(HandScript.Instance.selection.Count < amount || HandScript.Instance.selection.Count == HandScript.Instance.Hand.Count)
+        while (HandScript.Instance.selection.Count < amount || HandScript.Instance.selection.Count == HandScript.Instance.Hand.Count)
         {
             int random = Random.Range(0, HandScript.Instance.Hand.Count);
-            if(!HandScript.Instance.selection.Contains(HandScript.Instance.Hand[random]))
+            if (!HandScript.Instance.selection.Contains(HandScript.Instance.Hand[random]))
                 HandScript.Instance.selection.Add(HandScript.Instance.Hand[random]);
         }
     }
@@ -32,15 +33,16 @@ public class HandFunctions : MonoBehaviour
 
     public static void DiscardCards(int amount = 1)
     {
+        string previousState = HandScript.Instance.state;
         GameManager.Instance.ShowConfirmationButtons("Discard " + amount + " card(s)", false);
         HandScript.Instance.state = "buildingPay";
         HandScript.Instance.updateSelection = () => ConfirmationButtons.Instance.AllowConfirmation(HandScript.Instance.selection.Count == amount || HandScript.Instance.selection.Count == HandScript.Instance.Hand.Count);
-        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = "default";
+        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = previousState;
         ConfirmationButtons.Instance.Confirmed += SendSelectionToDiscard;
         ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
         ConfirmationButtons.Instance.Denied += () => SelectRandomCards(amount);
         ConfirmationButtons.Instance.Denied += SendSelectionToDiscard;
-        ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "default";
+        ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = previousState;
         ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
 
         ConfirmationButtons.Instance.AllowConfirmation(true);
@@ -63,7 +65,7 @@ public class HandFunctions : MonoBehaviour
 
     public static void DrawCards(int amount)
     {
-        while(amount > 0)
+        while (amount > 0)
         {
             HandScript.Instance.playerDrawPile.SendMessage("Draw");
             amount--;
@@ -123,9 +125,27 @@ public class HandFunctions : MonoBehaviour
         HandScript.Instance.state = "awaitingDecision";
         ConfirmationButtons.Instance.Confirmed += () => DrawCards(2);
         ConfirmationButtons.Instance.Confirmed += () => cattivaCard.SendMessage("ActivatePalSkill");
+        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = "default";
         ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
         ConfirmationButtons.Instance.Confirmed += () => DiscardCards(1);
         ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "default";
+        ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
+
+        ConfirmationButtons.Instance.AllowConfirmation(true);
+    }
+
+    public static void RoobyAbility()
+    {
+        string previousState = HandScript.Instance.state;
+        GameManager.Instance.ShowConfirmationButtons("Draw card to discard card?");
+        HandScript.Instance.state = "awaitingDecision";
+        ConfirmationButtons.Instance.Confirmed += () => DrawCards(1);
+        ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = previousState;
+        ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
+        ConfirmationButtons.Instance.Confirmed += () => DiscardCards(1);
+        ConfirmationButtons.Instance.Confirmed += () => AbilityActivation.DelayActions(FieldAbilityHandlerScript.Instance.AbilityPassedThrough, 1);
+        ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = previousState;
+        ConfirmationButtons.Instance.Denied += FieldAbilityHandlerScript.Instance.AbilityRejected;
         ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
 
         ConfirmationButtons.Instance.AllowConfirmation(true);
@@ -281,13 +301,11 @@ public class CardMovement : MonoBehaviour
         HandScript.Instance.state = "awaitingDecision";
         ConfirmationButtons.Instance.Confirmed += () => cardToMove.SendMessage("ActivatePalSkill");
         ConfirmationButtons.Instance.Confirmed += () => MoveToItemSlot(cardToMove, slotType);
-        ConfirmationButtons.Instance.Confirmed += () => cardToMove.SendMessage("UseAbility");
         ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = "default";
         ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
-        ConfirmationButtons.Instance.Denied += () => cardToMove.SendMessage("UseAbility");
         ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "default";
         ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
-}
+    }
 
     public static void MoveToItemSlot(GameObject cardToMove, string slotType)
     {
@@ -335,27 +353,34 @@ public class AbilityActivation : MonoBehaviour
         HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect();
     }
 
-    public static IEnumerator UsePalSkills(string palSkill)
+    public static void AddPalSkillToField(string palSkill)
     {
-        yield return null;
+        GameObject cardToActivate = FieldCardContextMenuScript.Instance.activeCard;
 
-        if(new[] { "lamball", "foxsparks" }.Contains(palSkill))
-        {
-            CardMovement.EquipAsItemPalSkill("weapon");
-            yield break;
-        }
-        if(palSkill == "chikipi")
-        {
-            HandFunctions.ChikipiPalSkill();
-        }
+        GameManager.Instance.ShowConfirmationButtons("activate " + palSkill + "'s palskill");
+        HandScript.Instance.state = "awaitingDecision";
+        ConfirmationButtons.Instance.Confirmed += () => cardToActivate.SendMessage("ActivatePalSkill");
+        ConfirmationButtons.Instance.Confirmed += () => FieldAbilityHandlerScript.Instance.fieldPalEffects.Add(palSkill);
+        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = "default";
+        ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
+        ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "default";
+        ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
     }
 
     public static void TrackActionsForPalSkill(GameObject card, int functionCount)
     {
-        if(functionCount == 0)
+        if (functionCount == 0)
             card.SendMessage("ActivatePalSkill");
         else
             ConfirmationButtons.Instance.Confirmed += () => TrackActionsForPalSkill(card, functionCount - 1);
+    }
+    
+    public static void DelayActions(UnityAction delayedAction, int functionCount)
+    {
+        if(functionCount == 0)
+            delayedAction.Invoke();
+        else
+            ConfirmationButtons.Instance.Confirmed += () => DelayActions(delayedAction, functionCount - 1);
     }
 }
 

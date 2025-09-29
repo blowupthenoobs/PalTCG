@@ -69,9 +69,9 @@ public class ConfirmationButtons : MonoBehaviour
     {
         if(isAllowed)
         {
-            Color newColor = confirmButton.GetComponent<Image>().color;
+            Color newColor = denyButton.GetComponent<Image>().color;
             newColor.a = 1;
-            confirmButton.GetComponent<Image>().color = newColor;
+            denyButton.GetComponent<Image>().color = newColor;
         }
         else
         {

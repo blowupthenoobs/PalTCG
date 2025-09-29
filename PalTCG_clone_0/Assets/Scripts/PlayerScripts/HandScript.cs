@@ -248,6 +248,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public IEnumerator Attack()
     {
+        GameManager.Instance.cannotSwitchPhases = true;
         raid = new List<GameObject>(selection);
         attackers = new List<GameObject>(raid);
         var blockList = new List<GameObject>();
@@ -291,6 +292,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         selected = null;
         state = "choosingAttack";
+        GameManager.Instance.cannotSwitchPhases = false;
     }
 
     [PunRPC]

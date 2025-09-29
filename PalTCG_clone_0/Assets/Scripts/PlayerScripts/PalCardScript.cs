@@ -130,7 +130,7 @@ public class PalCardScript : UnitCardScript
         SendToPalBox();
     }
     
-    public virtual void EnemyTurnRemoveStatuses()
+    public override void EnemyTurnRemoveStatuses()
     {
         palSKillActive = false;
         base.EnemyTurnRemoveStatuses();

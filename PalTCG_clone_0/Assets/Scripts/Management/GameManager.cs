@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     public UnityAction testAction;
 
     public string phase = "PlayerTurn";
+    public bool cannotSwitchPhases;
     public bool readyForNextAttackAction;
 
     void Awake()
@@ -99,22 +100,25 @@ public class GameManager : MonoBehaviour
     public IEnumerator PreparePhaseSwitch()
     {
         yield return null;
-
-        if (phase == "PlayerAttack")
-        {
-            phase = "limbo";
-            FieldAbilityHandlerScript.Instance.RunEndOfTurnAbilities();
-            yield return new WaitUntil(() => readyForNextAttackAction);
-            readyForNextAttackAction = false;
-            phase = "PlayerAttack";
-        }
         
+        if(!cannotSwitchPhases)
+        {
+            if(phase == "PlayerAttack")
+            {
+                phase = "limbo";
+                FieldAbilityHandlerScript.Instance.RunEndOfTurnAbilities();
+                yield return new WaitUntil(() => readyForNextAttackAction);
+                readyForNextAttackAction = false;
+                phase = "PlayerAttack";
+            }
 
-        //Ask enemy if they have end of turn abilities
-        // yield return new WaitUntil(readyForNextAttackAction);
-        readyForNextAttackAction = false;
 
-        PhotonView.Get(this).RPC("SwitchPhases", RpcTarget.All);
+            //Ask enemy if they have end of turn abilities
+            // yield return new WaitUntil(readyForNextAttackAction);
+            readyForNextAttackAction = false;
+
+            PhotonView.Get(this).RPC("SwitchPhases", RpcTarget.All);
+        }
     }
 
 

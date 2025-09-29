@@ -20,6 +20,10 @@ public class FieldAbilityHandlerScript : MonoBehaviour
 
     public List<string> fieldPalEffects = new List<string>();
 
+    public bool stalling;
+    private bool actionPassedThrough;
+    private bool actionRejected;
+
     public readonly static Dictionary<string, UnityAction> turnEndAbilities = new Dictionary<string, UnityAction>
     {
         { "chikipi", () => SpecificPalAbilities.SelectFriendlyForChikipiAbility()},
@@ -34,6 +38,7 @@ public class FieldAbilityHandlerScript : MonoBehaviour
 
         playerCard = gameObject;
         enemyHandler = gameObject.GetComponent<PhotonView>();
+        GameManager.Instance.EndEnemyTurn += TurnOffPalSkills;
     }
 
     [PunRPC]
@@ -97,6 +102,8 @@ public class FieldAbilityHandlerScript : MonoBehaviour
 
         return count;
     }
+    
+#region broadAbilityTriggers
 
     public bool BoardHasEndOfTurnAbilities()
     {
@@ -141,7 +148,7 @@ public class FieldAbilityHandlerScript : MonoBehaviour
     {
         int extraDamage = 0;
 
-        if(tags.Contains("burn"))
+        if (tags.Contains("burn"))
             extraDamage += fieldPalEffects.Count(x => x == "rooby");
 
         return extraDamage;
@@ -156,13 +163,51 @@ public class FieldAbilityHandlerScript : MonoBehaviour
         return true;
     }
 
-#region miscSpecificAbilities
+    public void TurnOffPalSkills()
+    {
+        fieldPalEffects.Clear();
+    }
+
+    public void AbilityPassedThrough()
+    {
+        actionPassedThrough = true;
+    }
+
+    public void AbilityRejected()
+    {
+        actionRejected = true;
+    }
+#endregion broadAbilityTriggers
+
+    #region miscSpecificAbilities
 
     [PunRPC]
     public void BurnTriggered()
     {
-        // if(CheckTagCountOnBoard("rooby") >= 0)
-        //     HandFunctions.DrawCards(CheckTagCountOnBoard("rooby"));
+        stalling = true;
+        StartCoroutine(RunOnBurningEffects());
+    }
+
+    private IEnumerator RunOnBurningEffects()
+    {
+        if(CheckTagCountOnBoard("rooby") >= 0)
+        {
+            for(int i = 0; i < CheckTagCountOnBoard("rooby"); i++)
+            {
+                HandFunctions.RoobyAbility();
+                yield return new WaitUntil(() => actionPassedThrough || actionRejected);
+                
+                if(actionRejected)
+                {
+                    actionRejected = false;
+                    break;
+                }
+                
+                actionPassedThrough = false;
+            }  
+        }
+
+        stalling = false;
     }
 #endregion
 }

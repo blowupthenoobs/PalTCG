@@ -250,7 +250,7 @@ namespace DefaultUnitData
     public class Pals
     {
 
-        #region BasicPals
+#region BasicPals
         public DefaultPal lamball = new DefaultPal
         (
             cost: 1,
@@ -337,7 +337,7 @@ namespace DefaultUnitData
 
         #endregion BasicPals
 
-        #region GrassPals
+#region GrassPals
         public DefaultPal lifmunk = new DefaultPal
         (
             cost: 1,
@@ -396,7 +396,7 @@ namespace DefaultUnitData
 
         #endregion GrassPals
 
-        #region FirePals
+#region FirePals
         public DefaultPal foxsparks = new DefaultPal
         (
             cost: 1,
@@ -454,11 +454,11 @@ namespace DefaultUnitData
         );
         #endregion FirePals
 
-        #region WaterPals
+#region WaterPals
 
         #endregion WaterPals
 
-        #region ElectricPals
+#region ElectricPals
         public DefaultPal sparkit = new DefaultPal
             (
                 cost: 1,
@@ -488,7 +488,7 @@ namespace DefaultUnitData
             );
         #endregion ElectricPals
 
-        #region DarkPals
+#region DarkPals
         public DefaultPal depresso = new DefaultPal
         (
             cost: 1,
@@ -575,7 +575,7 @@ namespace DefaultUnitData
 
         #endregion DarkPals
 
-        #region EarthPals
+#region EarthPals
         public DefaultPal fuddler = new DefaultPal
         (
             cost: 1,
@@ -634,7 +634,7 @@ namespace DefaultUnitData
 
         #endregion EarthPals
 
-        #region Tools
+#region Tools
         public DefaultTool pickaxe = new DefaultTool
         (
             cost: new resources { wood = 2, stone = 2 },
@@ -720,7 +720,7 @@ namespace DefaultUnitData
         );
         #endregion
 
-        #region Buildings
+#region Buildings
         public BuildingPreset craftingBench = new BuildingPreset
         (
             cardArt: AccountManager.Instance.CardSprites.craftingBench,
@@ -980,6 +980,7 @@ namespace DefaultUnitData
             { "chikipi", () => HandFunctions.ChikipiPalSkill()},
             { "foxsparks", () => CardMovement.EquipAsItemPalSkill("weapon")},
             { "lifmunk", () => CardMovement.EquipAsItemPalSkill("weapon")},
+            { "rooby", () => AbilityActivation.AddPalSkillToField("rooby")},
         };
     }
 }

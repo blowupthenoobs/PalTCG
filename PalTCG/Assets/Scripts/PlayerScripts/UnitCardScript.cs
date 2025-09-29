@@ -143,10 +143,13 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         else
             target = HandScript.Instance.blocker;
 
+        yield return new WaitUntil(() => !FieldAbilityHandlerScript.Instance.stalling);
+
         StartCoroutine(AbilityActivation.RunWhenAttackAbilities(cardData.traits.tags));
         yield return new WaitUntil(() => readyForNextAttackAction);
         readyForNextAttackAction = false;
 
+        yield return new WaitUntil(() => !FieldAbilityHandlerScript.Instance.stalling);
 
         // if(cardData.WhenSkillAttack != null && palSKillActive)
         // {
@@ -167,11 +170,13 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         else
             HandScript.Instance.targetWasNull = true;
 
+        yield return new WaitUntil(() => !FieldAbilityHandlerScript.Instance.stalling);
 
         StartCoroutine(AbilityActivation.RunOnAttackAbilities(cardData.traits.tags));
         yield return new WaitUntil(() => readyForNextAttackAction);
         readyForNextAttackAction = false;
 
+        yield return new WaitUntil(() => !FieldAbilityHandlerScript.Instance.stalling);
 
         // if(cardData.OnSkillAttack != null && palSKillActive)
         // {
