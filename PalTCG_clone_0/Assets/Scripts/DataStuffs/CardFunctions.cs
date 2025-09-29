@@ -102,6 +102,7 @@ public class HandFunctions : MonoBehaviour
 
     public static void ChikipiPalSkill()
     {
+        HandScript.Instance.tempDataTypeRef = null;
         GameObject chikipiCard = FieldCardContextMenuScript.Instance.activeCard;
         GameManager.Instance.ShowConfirmationButtons("select palcard from discard to play");
         HandScript.Instance.state = "choosingCardInDiscard";
@@ -136,6 +137,7 @@ public class HandFunctions : MonoBehaviour
 
     public static void RoobyAbility()
     {
+        Debug.Log("Activating rooby");
         string previousState = HandScript.Instance.state;
         GameManager.Instance.ShowConfirmationButtons("Draw card to discard card?");
         HandScript.Instance.state = "awaitingDecision";
@@ -200,7 +202,7 @@ public class StatusEffectAbilities : MonoBehaviour
     public static void ShockTarget()
     {
         var target = TargetingMechanisms.TargetAttackedEnemy();
-        
+
         target.transform.GetComponent<EnemyPlayerScript>()?.opponentMirror.RPC("GetShocked", RpcTarget.Others);
         target.transform.GetComponent<EnemyPalCardScript>()?.opponentMirror.RPC("GetShocked", RpcTarget.Others);
 
@@ -238,20 +240,52 @@ public class StatusEffectAbilities : MonoBehaviour
     {
 
         GameObject target = TargetingMechanisms.TargetAttackedEnemy();
-        
-        if(target.transform.parent.GetComponent<EnemyPalSphereScript>() != null)
-            target.transform.parent.GetComponent<EnemyPalSphereScript>().opponentMirror.RPC("GainTokens", RpcTarget.Others, tokenType, tokenCount);
+
+        target.transform.GetComponent<EnemyPlayerScript>()?.opponentMirror.RPC("GainTokens", RpcTarget.Others, tokenType, tokenCount);
+        target.transform.parent.GetComponent<EnemyPalSphereScript>()?.opponentMirror.RPC("GainTokens", RpcTarget.Others, tokenType, tokenCount);
         //Give the token to targeted enemy
     }
-    
+
     public static void GiveMinStatusToTarget(string tokenType, int tokenCount)
     {
 
         GameObject target = TargetingMechanisms.TargetAttackedEnemy();
-        
-        if(target.transform.parent.GetComponent<EnemyPalSphereScript>() != null)
+
+        if (target.transform.parent.GetComponent<EnemyPalSphereScript>() != null)
             target.transform.parent.GetComponent<EnemyPalSphereScript>().opponentMirror.RPC("GainTokens", RpcTarget.Others, tokenType, tokenCount);
         //Give the token to targeted enemy
+    }
+
+    public static void IncineramActiveAbility()
+    {
+        Debug.Log("Activating Incineram");
+        string previousState = HandScript.Instance.state;
+        HandScript.Instance.selection.Clear();
+        GameManager.Instance.ShowConfirmationButtons("select enemy with burning to hurt");
+        HandScript.Instance.state = "settingAilment";
+
+        HandScript.Instance.updateSelection = AllowConfirmations.LookForSingleTarget;
+        HandScript.Instance.updateSelection += AllowConfirmations.MustBeBurning;
+        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = previousState;
+        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.selection[0].GetComponent<EnemyPlayerScript>()?.opponentMirror.RPC("HurtHeldCard", RpcTarget.Others, 1, true);
+        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.selection[0].GetComponent<EnemyPalCardScript>()?.opponentMirror.RPC("HurtHeldCard", RpcTarget.Others, 1, true);
+        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.UnselectSelection();
+        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.selected.GetComponent<PalCardScript>()?.UseAbility();
+        ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
+        ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = previousState;
+        ConfirmationButtons.Instance.Denied += () => HandScript.Instance.selected.GetComponent<PalCardScript>()?.FinishEffect();
+        ConfirmationButtons.Instance.Denied += HandScript.Instance.UnselectSelection;
+        ConfirmationButtons.Instance.Denied += () => HandScript.Instance.selected.GetComponent<PalCardScript>()?.DontUseAbility();
+        ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
+    }
+
+    public static void AskForIncineramPalskill()
+    {
+        IncineramActiveAbility();
+        ConfirmationButtons.Instance.Confirmed += HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().ClearAbilityUse;
+        ConfirmationButtons.Instance.Confirmed += () => AbilityActivation.readyForNextAttackAction = true;
+        ConfirmationButtons.Instance.Denied += HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().ClearAbilityUse;
+        ConfirmationButtons.Instance.Denied += () => AbilityActivation.readyForNextAttackAction = true;
     }
 }
 
@@ -289,6 +323,19 @@ public class AllowConfirmations
     {
         ConfirmationButtons.Instance.AllowConfirmation(ResourceProcesses.PalPaymentIsCorrect(data, alteredCost));
     }
+
+    //Modifiers
+    public static void MustBeBurning()
+    {
+        foreach(GameObject target in HandScript.Instance.selection)
+        {
+            if(target.GetComponent<EnemyPalCardScript>()?.statuses.burning <= 0 || target.GetComponent<EnemyPlayerScript>()?.statuses.burning <= 0)
+            {
+                ConfirmationButtons.Instance.AllowConfirmation(false);
+                break;    
+            }
+        }
+    }
 }
 
 public class CardMovement : MonoBehaviour
@@ -316,7 +363,13 @@ public class CardMovement : MonoBehaviour
 
 public class AbilityActivation : MonoBehaviour
 {
+    public readonly static Dictionary<string, UnityAction> onAttackPalskills = new Dictionary<string, UnityAction>
+    {
+        { "incineram", () => StatusEffectAbilities.AskForIncineramPalskill()},
+    };
+
     public static bool readyForNextAttackAction;
+
     public static IEnumerator RunWhenAttackAbilities(List<string> traitList)
     {
         yield return null;
@@ -332,6 +385,8 @@ public class AbilityActivation : MonoBehaviour
                 }
             }
         }
+
+        readyForNextAttackAction = false;
 
         HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect();
     }
@@ -349,6 +404,18 @@ public class AbilityActivation : MonoBehaviour
                 StatusEffectAbilities.ShockTarget();
         }
 
+        readyForNextAttackAction = false;
+
+        if (HandScript.Instance.currentAttacker.GetComponent<PalCardScript>())
+        {
+            var componentRef = HandScript.Instance.currentAttacker.GetComponent<PalCardScript>();
+
+            if(componentRef.palSkillActive && onAttackPalskills.Keys.Contains(((PalCardData)componentRef.cardData).palSkill))
+            {
+                onAttackPalskills[((PalCardData)componentRef.cardData).palSkill].Invoke();
+                yield return new WaitUntil(() => readyForNextAttackAction);
+            }
+        }
 
         HandScript.Instance.currentAttacker.GetComponent<UnitCardScript>().FinishEffect();
     }
@@ -365,6 +432,21 @@ public class AbilityActivation : MonoBehaviour
         ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
         ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "default";
         ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
+        ConfirmationButtons.Instance.AllowConfirmation(true);
+    }
+
+    public static void ActivateSequencedPalSkill(string palSkill)
+    {
+        GameObject cardToActivate = FieldCardContextMenuScript.Instance.activeCard;
+
+        GameManager.Instance.ShowConfirmationButtons("activate " + palSkill + "'s palskill");
+        HandScript.Instance.state = "awaitingDecision";
+        ConfirmationButtons.Instance.Confirmed += () => cardToActivate.SendMessage("ActivatePalSkill");
+        ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = "default";
+        ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
+        ConfirmationButtons.Instance.Denied += () => HandScript.Instance.state = "default";
+        ConfirmationButtons.Instance.Denied += AllowConfirmations.ClearButtonEffects;
+        ConfirmationButtons.Instance.AllowConfirmation(true);
     }
 
     public static void TrackActionsForPalSkill(GameObject card, int functionCount)

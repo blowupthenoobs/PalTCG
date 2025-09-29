@@ -125,7 +125,10 @@ public class WaitingSpace : MonoBehaviour
         while(TurnsTillReady1.Count > 0)
         {
             TurnsTillReady1[0].transform.SetParent(readyspot.transform);
-            TurnsTillReady1[0].SendMessage("ReadyToBePlaced");
+            
+            if(isPlayerSide)
+                TurnsTillReady1[0].SendMessage("ReadyToBePlaced");
+            
             readyCards.Add(TurnsTillReady1[0]);
             TurnsTillReady1.RemoveAt(0);
         }

@@ -7,7 +7,7 @@ using Photon.Pun;
 using DefaultUnitData;
 public class PalCardScript : UnitCardScript
 {
-    public bool palSKillActive;
+    public bool palSkillActive;
 
     public void PlaceOnPalSphere()
     {
@@ -20,9 +20,9 @@ public class PalCardScript : UnitCardScript
         HandScript.Instance.selected = null;
         HandScript.Instance.selection = new List<GameObject>();
 
-        if(GameManager.Instance.phase == "playerTurn")
+        if(GameManager.Instance.phase == "PlayerTurn")
             PrepareMainPhase();
-        else if (GameManager.Instance.phase == "playerAttack")
+        else if (GameManager.Instance.phase == "PlayerAttack")
             PrepareAttackPhase();
     }
 
@@ -68,15 +68,6 @@ public class PalCardScript : UnitCardScript
         }
     }
 
-    public override void GiveCardEventActions()
-    {
-        base.GiveCardEventActions();
-        StartPlayerTurn += PrepareMainPhase;
-
-        if(GameManager.Instance.phase == "PlayerTurn")
-            PrepareMainPhase();
-    }
-
     void VerifyButtons()
     {
         ConfirmationButtons.Instance.AllowConfirmation(SphereSelected());
@@ -93,6 +84,10 @@ public class PalCardScript : UnitCardScript
     public override void SetUpBasicTurnEvents()
     {
         base.SetUpBasicTurnEvents();
+        StartPlayerTurn += PrepareMainPhase;
+
+        if(GameManager.Instance.phase == "PlayerTurn")
+            PrepareMainPhase();
         StartPlayerTurn += ResetPalSkill;
     }
 
@@ -103,17 +98,17 @@ public class PalCardScript : UnitCardScript
 
     public override bool CanUsePalSkills()
     {
-        return !palSKillActive && FieldAbilityHandlerScript.CanUseSpecificPalSkill(gameObject) && Pals.palSkill.ContainsKey(((PalCardData)cardData).palSkill); //Last part is just so u can't activate non-existent PalSkills
+        return !palSkillActive && FieldAbilityHandlerScript.CanUseSpecificPalSkill(gameObject) && Pals.palSkill.ContainsKey(((PalCardData)cardData).palSkill); //Last part is just so u can't activate non-existent PalSkills
     }
 
     public void ResetPalSkill()
     {
-        palSKillActive = false;
+        palSkillActive = false;
     }
 
     public void ActivatePalSkill()
     {
-        palSKillActive = true;
+        palSkillActive = true;
         FieldCardContextMenuScript.Instance.pallSkillUses--;
     }
 
@@ -132,7 +127,7 @@ public class PalCardScript : UnitCardScript
     
     public override void EnemyTurnRemoveStatuses()
     {
-        palSKillActive = false;
+        palSkillActive = false;
         base.EnemyTurnRemoveStatuses();
     }
 }

@@ -25,6 +25,7 @@ public class FieldCardContextMenuScript : MonoBehaviour, IPointerEnterHandler, I
             Destroy(gameObject);
 
         GameManager.Instance.StartPlayerTurn += ResetPalSkills;
+        ResetPalSkills();
     }
 
     void Update()

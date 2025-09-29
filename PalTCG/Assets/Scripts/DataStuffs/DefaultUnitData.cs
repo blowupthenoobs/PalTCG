@@ -44,7 +44,9 @@ namespace DefaultUnitData
         public List<Sprite> daedream;
         public List<Sprite> fuddler;
         public List<Sprite> dumud;
+        public List<Sprite> incineram;
         public List<Sprite> loupmoon;
+        public List<Sprite> flambell;
 
         [Header("Tools")]
         public List<Sprite> pickaxe;
@@ -452,13 +454,69 @@ namespace DefaultUnitData
             maxHp: 8,
             cardArt: AccountManager.Instance.CardSprites.rooby
         );
-        #endregion FirePals
+        
+        public DefaultPal incineram = new DefaultPal
+        (
+            cost: 2,
+            element: Element.Fire,
+            traits: new Traits
+            (
+                ranch: 0,
+                handyWork: 2,
+                foraging: 0,
+                gardening: 0,
+                watering: 0,
+                mining: 1,
+                lumber: 0,
+                transportation: 2,
+                medicine: 0,
+                kindling: 1,
+                electric: 0,
+                freezing: 0,
+                dragon: 0,
+                bird: false,
+                tags: new List<string> { "burn", "incineram" }
+            ),
+            size: 2,
+            attackPower: 4,
+            maxHp: 9,
+            cardArt: AccountManager.Instance.CardSprites.incineram
+        );
 
-#region WaterPals
+        public DefaultPal flambell = new DefaultPal
+        (
+            cost: 1,
+            element: Element.Fire,
+            traits: new Traits
+            (
+                ranch: 1,
+                handyWork: 1,
+                foraging: 0,
+                gardening: 0,
+                watering: 0,
+                mining: 0,
+                lumber: 0,
+                transportation: 1,
+                medicine: 0,
+                kindling: 1,
+                electric: 0,
+                freezing: 0,
+                dragon: 0,
+                bird: false,
+                tags: new List<string> { "burn", "mercy" }
+            ),
+            size: 1,
+            attackPower: 1,
+            maxHp: 7,
+            cardArt: AccountManager.Instance.CardSprites.flambell
+        );
+#endregion FirePals
+
+        #region WaterPals
 
         #endregion WaterPals
 
-#region ElectricPals
+        #region ElectricPals
         public DefaultPal sparkit = new DefaultPal
             (
                 cost: 1,
@@ -807,8 +865,12 @@ namespace DefaultUnitData
                     return new PalData(fuddler, artIndex, cardID);
                 case "dumud":
                     return new PalData(dumud, artIndex, cardID);
+                case "incineram":
+                    return new PalData(incineram, artIndex, cardID);
                 case "loupmoon":
                     return new PalData(loupmoon, artIndex, cardID);
+                case "flambell":
+                    return new PalData(flambell, artIndex, cardID);
                 default:
                     Debug.Log("doesn't have assigned pal");
                     return new PalData(cattiva, artIndex, "p/cattiva/" + artIndex.ToString());
@@ -981,6 +1043,7 @@ namespace DefaultUnitData
             { "foxsparks", () => CardMovement.EquipAsItemPalSkill("weapon")},
             { "lifmunk", () => CardMovement.EquipAsItemPalSkill("weapon")},
             { "rooby", () => AbilityActivation.AddPalSkillToField("rooby")},
+            { "incineram", () => AbilityActivation.ActivateSequencedPalSkill("incineram")},
         };
     }
 }

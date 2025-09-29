@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Photon.Pun;
 
+using Resources;
 public class FieldAbilityHandlerScript : MonoBehaviour
 {
     public static FieldAbilityHandlerScript Instance;
@@ -27,6 +28,7 @@ public class FieldAbilityHandlerScript : MonoBehaviour
     public readonly static Dictionary<string, UnityAction> turnEndAbilities = new Dictionary<string, UnityAction>
     {
         { "chikipi", () => SpecificPalAbilities.SelectFriendlyForChikipiAbility()},
+        { "incineram", () => StatusEffectAbilities.IncineramActiveAbility()},
     };
 
     void Awake()
@@ -102,7 +104,7 @@ public class FieldAbilityHandlerScript : MonoBehaviour
 
         return count;
     }
-    
+
 #region broadAbilityTriggers
 
     public bool BoardHasEndOfTurnAbilities()
@@ -129,9 +131,11 @@ public class FieldAbilityHandlerScript : MonoBehaviour
                     space.GetComponent<CardHolderScript>().heldCard.GetComponent<UnitCardScript>().PrepareEndPhase();
             }
 
+            string previousState = HandScript.Instance.state;
             HandScript.Instance.state = "endOfTurnAbilities";
             GameManager.Instance.ShowConfirmationButtons("select end of turn ability?");
             HandScript.Instance.updateSelection = AllowConfirmations.HaveSelectedCard;
+            ConfirmationButtons.Instance.Confirmed += () => HandScript.Instance.state = previousState;
             ConfirmationButtons.Instance.Confirmed += () => StartCoroutine(HandScript.Instance.selected.GetComponent<UnitCardScript>().RunThroughTurnEndAbilities());
             ConfirmationButtons.Instance.Confirmed += AllowConfirmations.ClearButtonEffects;
             ConfirmationButtons.Instance.Denied += () => GameManager.Instance.readyForNextAttackAction = true;
@@ -179,7 +183,7 @@ public class FieldAbilityHandlerScript : MonoBehaviour
     }
 #endregion broadAbilityTriggers
 
-    #region miscSpecificAbilities
+#region miscSpecificAbilities
 
     [PunRPC]
     public void BurnTriggered()
@@ -190,21 +194,22 @@ public class FieldAbilityHandlerScript : MonoBehaviour
 
     private IEnumerator RunOnBurningEffects()
     {
-        if(CheckTagCountOnBoard("rooby") >= 0)
+        if (CheckTagCountOnBoard("rooby") >= 0)
         {
-            for(int i = 0; i < CheckTagCountOnBoard("rooby"); i++)
+            for (int i = 0; i < CheckTagCountOnBoard("rooby"); i++)
             {
                 HandFunctions.RoobyAbility();
                 yield return new WaitUntil(() => actionPassedThrough || actionRejected);
-                
+
                 if(actionRejected)
                 {
+                    Debug.Log("broken");
                     actionRejected = false;
                     break;
                 }
-                
+
                 actionPassedThrough = false;
-            }  
+            }
         }
 
         stalling = false;

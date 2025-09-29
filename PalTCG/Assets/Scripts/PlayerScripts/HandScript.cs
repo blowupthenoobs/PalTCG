@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -158,7 +159,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             case "settingAilment":
                 if(!selection.Contains(card))
                 {
-                    if(updateSelection == AllowConfirmations.LookForSingleTarget && selection.Count > 0)
+                    if(HasMethod(updateSelection, AllowConfirmations.LookForSingleTarget) && selection.Count > 0)
                     {
                         selection[0].SendMessage("Deselect");
 
@@ -470,6 +471,20 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void Raise()
     {
         targetPos = originalPos;
+    }
+#endregion
+
+#region Misc
+    bool HasMethod(UnityAction unityAction, UnityAction targetMethod)
+    {
+        if (unityAction == null) return false;
+
+        foreach (Delegate d in unityAction.GetInvocationList())
+        {
+            if (d.Method == targetMethod.Method && d.Target == targetMethod.Target)
+                return true;
+        }
+        return false;
     }
 #endregion
 }

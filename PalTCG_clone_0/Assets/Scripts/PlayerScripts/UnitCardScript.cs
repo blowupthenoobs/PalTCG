@@ -52,6 +52,7 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         image = gameObject.GetComponent<Image>();
 
         GiveCardEventActions();
+        statuses.shocked = new List<GameObject>();
     }
 
     void Update()
@@ -134,7 +135,7 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         button.onClick.AddListener(SelectForEndPhaseAbility);
     }
 
-    public IEnumerator Attack()
+    public virtual IEnumerator Attack() //Remember that the Palcards have it overriden
     {
         GameObject target;
 
@@ -151,7 +152,7 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         yield return new WaitUntil(() => !FieldAbilityHandlerScript.Instance.stalling);
 
-        // if(cardData.WhenSkillAttack != null && palSKillActive)
+        // if(cardData.WhenSkillAttack != null && palSkillActive)
         // {
         //     for(int i = 0; i < cardData.WhenSkillAttack.Count; i++)
         //     {
@@ -178,7 +179,7 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         yield return new WaitUntil(() => !FieldAbilityHandlerScript.Instance.stalling);
 
-        // if(cardData.OnSkillAttack != null && palSKillActive)
+        // if(cardData.OnSkillAttack != null && palSkillActive)
         // {
         //     for(int i = 0; i < cardData.OnSkillAttack.Count; i++)
         //     {
@@ -228,6 +229,12 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public void UseAbility()
     {
         movePassedThrough = true;
+    }
+
+    public void ClearAbilityUse()
+    {
+        movePassedThrough = false;
+        moveRejected = false;
     }
 
     public bool CanUseAbilities()
@@ -384,7 +391,8 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             heldCard.SendMessage("Wake");
     }
 
-    public void GainTokens(string tokenType, int tokenCount)
+    [PunRPC]
+    public virtual void GainTokens(string tokenType, int tokenCount)
     {
         if(heldCard == null)
         {
@@ -398,7 +406,6 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         }
         else
             heldCard.GetComponent<UnitCardScript>().GainTokens(tokenType, tokenCount);
-
     }
 
     public IEnumerator GetShocked()
@@ -428,7 +435,7 @@ public class UnitCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public virtual void PlayerTurnRemoveStatuses()
     {
-        statuses.shocked.Clear();
+        statuses.shocked = new List<GameObject>();
 
         if(statuses.poisoned > 0)
             statuses.poisoned--;

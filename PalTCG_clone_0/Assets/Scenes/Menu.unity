@@ -1217,8 +1217,12 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 9666d354da221a649bb652c001d07498, type: 3}
     dumud:
     - {fileID: 21300000, guid: 96aee98dbe11e384e9020a545e12f345, type: 3}
+    incineram:
+    - {fileID: 21300000, guid: 00a10d135855f024293bd3a8eff628e6, type: 3}
     loupmoon:
     - {fileID: 21300000, guid: a3ee8de9716bccf4897c2b10768947f0, type: 3}
+    flambell:
+    - {fileID: 21300000, guid: 348199d4a967dc04ab7e9d289e2c5dec, type: 3}
     pickaxe:
     - {fileID: 21300000, guid: e43b195f41e2ba449b2db0543db0b9f8, type: 3}
     axe:
