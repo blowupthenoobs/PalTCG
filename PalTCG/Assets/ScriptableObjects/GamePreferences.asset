@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: GamePreferences
   m_EditorClassIdentifier: 
   barTransTime: 0
-  spacing: 130
+  maxIndividualSpacing: 130
+  maxTotalSpace: 500
   cardMoveSpeed: 100
   tempDeck: p/lifmunk/0,p/depresso/0,p/cattiva/0,p/cattiva/0,p/cattiva/0,p/lamball/0,p/daedream/0,p/daedream/0,p/depresso/1

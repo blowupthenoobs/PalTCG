@@ -13,13 +13,14 @@ public class GameManager : MonoBehaviour
     public bool readyToFinishEndPhase;
     public static GameManager Instance;
     [SerializeField] GameObject CraftingMenu;
+    [SerializeField] GameObject PauseMenu;
     public Sprites CardSprites;
 
 
     //Visuals and Confirmation
     public GameObject CardPileBox;
     public GameObject ConfirmationButtons;
-    public TextMeshProUGUI TurnText; 
+    public TextMeshProUGUI TurnText;
 
     //Game References
 
@@ -38,7 +39,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
@@ -71,14 +72,14 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && (phase == "PlayerTurn" || phase == "PlayerAttack")) //For Testing Purposes
+        if (Input.GetKeyDown(KeyCode.Space) && (phase == "PlayerTurn" || phase == "PlayerAttack")) //For Testing Purposes
             StartCoroutine(PreparePhaseSwitch());
     }
 
     [PunRPC]
     void SwitchPhases()
     {
-        switch(phase)
+        switch (phase)
         {
             case "PlayerTurn":
                 StartPlayerAttack.Invoke();
@@ -100,12 +101,13 @@ public class GameManager : MonoBehaviour
     public IEnumerator PreparePhaseSwitch()
     {
         yield return null;
-        
-        if(!cannotSwitchPhases)
+
+        if (!cannotSwitchPhases)
         {
-            if(phase == "PlayerAttack")
+            if (phase == "PlayerAttack")
             {
                 phase = "limbo";
+                TurnText.text = "End Phase";
                 FieldAbilityHandlerScript.Instance.RunEndOfTurnAbilities();
                 yield return new WaitUntil(() => readyForNextAttackAction);
                 readyForNextAttackAction = false;
@@ -135,7 +137,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-#region GameStates
+    #region GameStates
     void PlayerPhase()
     {
         HandScript.Instance.state = "default";
@@ -168,7 +170,7 @@ public class GameManager : MonoBehaviour
     {
         int chance = Random.Range(0, 2);
 
-        if(chance == 0)
+        if (chance == 0)
         {
             StartWithPlayer();
             PhotonView.Get(this).RPC("StartWithOpponent", RpcTarget.Others);
@@ -190,6 +192,11 @@ public class GameManager : MonoBehaviour
     void StartWithOpponent()
     {
         StartEnemyTurn.Invoke();
+    }
+
+    public void StartGame()
+    {
+        PauseMenu.GetComponent<PauseMenuScript>().GameStarted = true;
     }
 #endregion
 }
