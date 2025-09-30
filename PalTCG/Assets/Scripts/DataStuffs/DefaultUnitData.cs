@@ -664,16 +664,16 @@ namespace DefaultUnitData
 
         public DefaultPal dumud = new DefaultPal
         (
-            cost: 1,
+            cost: 2,
             element: Element.Earth,
             traits: new Traits
             (
                 ranch: 0,
-                handyWork: 1,
-                foraging: 1,
+                handyWork: 0,
+                foraging: 0,
                 gardening: 0,
-                watering: 0,
-                mining: 0,
+                watering: 1,
+                mining: 1,
                 lumber: 0,
                 transportation: 1,
                 medicine: 0,
@@ -684,9 +684,9 @@ namespace DefaultUnitData
                 bird: false,
                 tags: new List<string> { "blocker", "tank" }
             ),
-            size: 1,
-            attackPower: 2,
-            maxHp: 7,
+            size: 2,
+            attackPower: 4,
+            maxHp: 9,
             cardArt: AccountManager.Instance.CardSprites.dumud
         );
 

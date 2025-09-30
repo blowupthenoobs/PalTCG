@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
 
         HideConfirmationButtons();
 
-        CardSprites = AccountManager.Instance.CardSprites;
+        // CardSprites = AccountManager.Instance.CardSprites;
 
         StartPlayerTurn += PlayerPhase;
         StartPlayerTurn += () => HandFunctions.DrawCards(2);
