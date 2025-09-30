@@ -25,12 +25,33 @@ public class WaitingSpace : MonoBehaviour
     [SerializeField] GameObject PalCardPrefab;
     [SerializeField] GameObject ToolCardPrefab;
 
+    //For sliding WaitingSpace sections
+    [HideInInspector] public GameObject hoveredSlide;
+    List<Vector3> originalPositions = new List<Vector3>();
+    [SerializeField] float slideAmount;
+    private int direction;
+
     void Start() //Do this first to garuentee that GameManager has a value as start happens after awake
     {
-        if(isPlayerSide)
+        if (isPlayerSide)
             GameManager.Instance.StartPlayerTurn += MoveWaitlist;
         else
             GameManager.Instance.StartEnemyTurn += MoveWaitlist;
+
+        originalPositions.Add(readyspot.GetComponent<RectTransform>().localPosition);
+        originalPositions.Add(waiting1.GetComponent<RectTransform>().localPosition);
+        originalPositions.Add(waiting2.GetComponent<RectTransform>().localPosition);
+        originalPositions.Add(waiting3.GetComponent<RectTransform>().localPosition);
+        
+        if(isPlayerSide)
+            direction = 1;
+        else
+            direction = -1;
+    }
+
+    void Update()
+    {
+        SlideSections();
     }
 
     [PunRPC]
@@ -38,11 +59,11 @@ public class WaitingSpace : MonoBehaviour
     {
         var data = Pals.ConvertToCardData(cardType);
 
-        if(data is PalCardData)
+        if (data is PalCardData)
             AddToWaitlist((PalCardData)data);
-        if(data is ToolCardData)
+        if (data is ToolCardData)
             AddToWaitlist((ToolCardData)data);
-            
+
         //RemoveCards from opponent hand?
     }
 
@@ -52,28 +73,28 @@ public class WaitingSpace : MonoBehaviour
 
         var heldCard = Instantiate(PalCardPrefab, transform.position, transform.rotation);
 
-        if(size <= 1)
+        if (size <= 1)
         {
             heldCard.transform.position = readyspot.transform.position;
             heldCard.transform.SetParent(readyspot.transform);
             readyCards.Add(heldCard);
 
-            if(isPlayerSide)
+            if (isPlayerSide)
                 heldCard.SendMessage("ReadyToBePlaced");
         }
-        else if(size == 2)
+        else if (size == 2)
         {
             heldCard.transform.position = waiting1.transform.position;
             heldCard.transform.SetParent(waiting1.transform);
             TurnsTillReady1.Add(heldCard);
         }
-        else if(size == 3)
+        else if (size == 3)
         {
             heldCard.transform.position = waiting2.transform.position;
             heldCard.transform.SetParent(waiting2.transform);
             TurnsTillReady2.Add(heldCard);
         }
-        else if(size == 4)
+        else if (size == 4)
         {
             heldCard.transform.position = waiting3.transform.position;
             heldCard.transform.SetParent(waiting3.transform);
@@ -89,28 +110,28 @@ public class WaitingSpace : MonoBehaviour
 
         var heldCard = Instantiate(ToolCardPrefab, transform.position, transform.rotation);
 
-        if(size <= 1)
+        if (size <= 1)
         {
             heldCard.transform.position = readyspot.transform.position;
             heldCard.transform.SetParent(readyspot.transform);
             readyCards.Add(heldCard);
 
-            if(isPlayerSide)
+            if (isPlayerSide)
                 heldCard.SendMessage("ReadyToBePlaced");
         }
-        else if(size == 2)
+        else if (size == 2)
         {
             heldCard.transform.position = waiting1.transform.position;
             heldCard.transform.SetParent(waiting1.transform);
             TurnsTillReady1.Add(heldCard);
         }
-        else if(size == 3)
+        else if (size == 3)
         {
             heldCard.transform.position = waiting2.transform.position;
             heldCard.transform.SetParent(waiting2.transform);
             TurnsTillReady2.Add(heldCard);
         }
-        else if(size == 4)
+        else if (size == 4)
         {
             heldCard.transform.position = waiting3.transform.position;
             heldCard.transform.SetParent(waiting3.transform);
@@ -122,25 +143,25 @@ public class WaitingSpace : MonoBehaviour
 
     void MoveWaitlist()
     {
-        while(TurnsTillReady1.Count > 0)
+        while (TurnsTillReady1.Count > 0)
         {
             TurnsTillReady1[0].transform.SetParent(readyspot.transform);
-            
-            if(isPlayerSide)
+
+            if (isPlayerSide)
                 TurnsTillReady1[0].SendMessage("ReadyToBePlaced");
-            
+
             readyCards.Add(TurnsTillReady1[0]);
             TurnsTillReady1.RemoveAt(0);
         }
 
-        while(TurnsTillReady2.Count > 0)
+        while (TurnsTillReady2.Count > 0)
         {
             TurnsTillReady2[0].transform.SetParent(waiting1.transform);
             TurnsTillReady1.Add(TurnsTillReady2[0]);
             TurnsTillReady2.RemoveAt(0);
         }
 
-        while(TurnsTillReady3.Count > 0)
+        while (TurnsTillReady3.Count > 0)
         {
             TurnsTillReady3[0].transform.SetParent(waiting2.transform);
             TurnsTillReady2.Add(TurnsTillReady3[0]);
@@ -153,11 +174,11 @@ public class WaitingSpace : MonoBehaviour
         newCard.transform.position = readyspot.transform.position;
         newCard.transform.SetParent(readyspot.transform);
 
-        if(!readyCards.Contains(newCard))
+        if (!readyCards.Contains(newCard))
         {
             readyCards.Add(newCard);
 
-            if(isPlayerSide)
+            if (isPlayerSide)
                 newCard.SendMessage("ReadyToBePlaced");
         }
 
@@ -166,11 +187,11 @@ public class WaitingSpace : MonoBehaviour
 
     public void CheckForCard()
     {
-        if(HandScript.Instance.selected != null && HandScript.Instance.state == "default")
+        if (HandScript.Instance.selected != null && HandScript.Instance.state == "default")
         {
-            if(HandScript.Instance.selected.GetComponent<CardScript>() != null)
+            if (HandScript.Instance.selected.GetComponent<CardScript>() != null)
             {
-                if(HandScript.Instance.selected.GetComponent<CardScript>().cardData is PalCardData)
+                if (HandScript.Instance.selected.GetComponent<CardScript>().cardData is PalCardData)
                 {
                     GameManager.Instance.ShowConfirmationButtons("select cards for payment");
                     HandScript.Instance.state = "buildingPay";
@@ -181,7 +202,7 @@ public class WaitingSpace : MonoBehaviour
 
                     VerifyButtonsForPalCard();
                 }
-                else if(HandScript.Instance.selected.GetComponent<CardScript>().cardData is ToolCardData)
+                else if (HandScript.Instance.selected.GetComponent<CardScript>().cardData is ToolCardData)
                 {
                     GameManager.Instance.ShowConfirmationButtons("Pay materials for tool?");
                     HandScript.Instance.state = "awaitingDecision";
@@ -192,7 +213,7 @@ public class WaitingSpace : MonoBehaviour
 
                     VerifyButtonsForToolCard();
                 }
-                
+
             }
         }
     }
@@ -202,7 +223,7 @@ public class WaitingSpace : MonoBehaviour
         AllowConfirmations.ClearButtonEffects();
         GameManager.Instance.HideConfirmationButtons();
 
-        if(HandScript.Instance.selected.GetComponent<CardScript>().cardData is PalCardData palData)
+        if (HandScript.Instance.selected.GetComponent<CardScript>().cardData is PalCardData palData)
         {
             AddToWaitlist(palData);
             opponentMirror.RPC("CreateCardForWaitlist", RpcTarget.Others, palData.originalData.cardID);
@@ -210,14 +231,14 @@ public class WaitingSpace : MonoBehaviour
             HandScript.Instance.Hand.RemoveAt(HandScript.Instance.Hand.IndexOf(HandScript.Instance.selected));
             Destroy(HandScript.Instance.selected);
 
-            while(HandScript.Instance.selection.Count > 0)
+            while (HandScript.Instance.selection.Count > 0)
             {
                 var cardToDiscard = HandScript.Instance.selection[0];
                 HandScript.Instance.selection.RemoveAt(0);
                 HandScript.Instance.Discard(cardToDiscard);
             }
         }
-        if(HandScript.Instance.selected.GetComponent<CardScript>().cardData is ToolCardData toolData)
+        if (HandScript.Instance.selected.GetComponent<CardScript>().cardData is ToolCardData toolData)
         {
             AddToWaitlist(toolData);
             opponentMirror.RPC("CreateCardForWaitlist", RpcTarget.Others, toolData.originalData.cardID);
@@ -227,7 +248,7 @@ public class WaitingSpace : MonoBehaviour
 
             HandScript.Instance.GatheredItems -= toolData.cost;
         }
-        
+
 
         HandScript.Instance.state = "default";
     }
@@ -237,26 +258,26 @@ public class WaitingSpace : MonoBehaviour
         AllowConfirmations.ClearButtonEffects();
         GameManager.Instance.HideConfirmationButtons();
 
-        if(data is PalCardData palData)
+        if (data is PalCardData palData)
         {
             AddToWaitlist(palData);
             opponentMirror.RPC("CreateCardForWaitlist", RpcTarget.Others, palData.originalData.cardID);
 
-            while(HandScript.Instance.selection.Count > 0)
+            while (HandScript.Instance.selection.Count > 0)
             {
                 var cardToDiscard = HandScript.Instance.selection[0];
                 HandScript.Instance.selection.RemoveAt(0);
                 HandScript.Instance.Discard(cardToDiscard);
             }
         }
-        if(data is ToolCardData toolData)
+        if (data is ToolCardData toolData)
         {
             AddToWaitlist(toolData);
             opponentMirror.RPC("CreateCardForWaitlist", RpcTarget.Others, toolData.originalData.cardID);
 
             HandScript.Instance.GatheredItems -= toolData.cost;
         }
-        
+
 
         HandScript.Instance.state = "default";
     }
@@ -276,9 +297,36 @@ public class WaitingSpace : MonoBehaviour
     {
         ConfirmationButtons.Instance.AllowConfirmation(ResourceProcesses.PalPaymentIsCorrect());
     }
-    
+
     void VerifyButtonsForToolCard()
     {
         ConfirmationButtons.Instance.AllowConfirmation(HandScript.Instance.GatheredItems >= ((ToolCardData)HandScript.Instance.selected.GetComponent<CardScript>().cardData).cost);
+    }
+
+    void SlideSections()
+    {
+        Vector3 spacing = new Vector3(slideAmount * ScreenCalculations.GetScale(gameObject), 0f, 0f);
+
+        float speed = HandScript.Instance.Preferences.cardMoveSpeed * ScreenCalculations.GetScale(gameObject);
+
+        if(hoveredSlide == readyspot)
+            readyspot.GetComponent<RectTransform>().localPosition = Vector3.MoveTowards(readyspot.GetComponent<RectTransform>().localPosition, originalPositions[0] + (spacing * direction), speed * Time.deltaTime);
+        else
+            readyspot.GetComponent<RectTransform>().localPosition = Vector3.MoveTowards(readyspot.GetComponent<RectTransform>().localPosition, originalPositions[0], speed * Time.deltaTime);
+
+        if(hoveredSlide == waiting1)
+            waiting1.GetComponent<RectTransform>().localPosition = Vector3.MoveTowards(waiting1.GetComponent<RectTransform>().localPosition, originalPositions[1] + (spacing * direction), speed * Time.deltaTime);
+        else
+            waiting1.GetComponent<RectTransform>().localPosition = Vector3.MoveTowards(waiting1.GetComponent<RectTransform>().localPosition, originalPositions[1], speed * Time.deltaTime);
+            
+        if(hoveredSlide == waiting2)
+            waiting2.GetComponent<RectTransform>().localPosition = Vector3.MoveTowards(waiting2.GetComponent<RectTransform>().localPosition, originalPositions[2] + (spacing * direction), speed * Time.deltaTime);
+        else
+            waiting2.GetComponent<RectTransform>().localPosition = Vector3.MoveTowards(waiting2.GetComponent<RectTransform>().localPosition, originalPositions[2], speed * Time.deltaTime);
+        
+        if(hoveredSlide == waiting3)
+            waiting3.GetComponent<RectTransform>().localPosition = Vector3.MoveTowards(waiting3.GetComponent<RectTransform>().localPosition, originalPositions[3] + (spacing * direction), speed * Time.deltaTime);
+        else
+            waiting3.GetComponent<RectTransform>().localPosition = Vector3.MoveTowards(waiting3.GetComponent<RectTransform>().localPosition, originalPositions[3], speed * Time.deltaTime);
     }
 }

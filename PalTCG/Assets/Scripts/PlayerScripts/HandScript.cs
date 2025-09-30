@@ -11,7 +11,7 @@ using Resources;
 using DefaultUnitData;
 public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] public GamePreferences Preferences; //Temporarilly set to public
+    [SerializeField] public GamePreferences Preferences;
 
     public static HandScript Instance;
     public PhotonView opponentMirror;

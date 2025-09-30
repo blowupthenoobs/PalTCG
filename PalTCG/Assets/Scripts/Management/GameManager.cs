@@ -74,6 +74,9 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && (phase == "PlayerTurn" || phase == "PlayerAttack")) //For Testing Purposes
             StartCoroutine(PreparePhaseSwitch());
+
+        if (Input.GetKeyDown(KeyCode.P) && !PauseMenu.GetComponent<PauseMenuScript>().GameEnded)
+            TogglePauseMenu();
     }
 
     [PunRPC]
@@ -197,6 +200,26 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         PauseMenu.GetComponent<PauseMenuScript>().GameStarted = true;
+    }
+
+    public void TogglePauseMenu()
+    {
+        PauseMenu.SetActive(!PauseMenu.activeSelf);
+    }
+
+    public void LoseGame()
+    {
+        PauseMenu.GetComponent<PauseMenuScript>().LoseGame();
+        PhotonView.Get(this).RPC("WinGame", RpcTarget.Others);
+        AccountManager.Instance.SaveAccountInfo();
+    }
+
+    [PunRPC]
+    public void WinGame()
+    {
+        PauseMenu.GetComponent<PauseMenuScript>().WinGame();
+        AllowConfirmations.ClearButtonEffects();
+        AccountManager.Instance.SaveAccountInfo();
     }
 #endregion
 }

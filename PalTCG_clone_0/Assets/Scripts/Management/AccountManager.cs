@@ -37,6 +37,11 @@ public class AccountManager : MonoBehaviour
         ES3.Save("account", player);
     }
 
+    public void SaveAccountInfo()
+    {
+        ES3.Save("account", player);
+    }
+
 #region structs
     [System.Serializable]
     public class Account

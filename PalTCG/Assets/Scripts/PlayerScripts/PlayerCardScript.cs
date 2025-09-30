@@ -22,7 +22,7 @@ public class PlayerCardScript : UnitCardScript
 
     protected override void Die()
     {
-        Debug.Log("You lose");
+        GameManager.Instance.LoseGame();
         opponentMirror.RPC("OpponentDeath", RpcTarget.Others);
     }
 
