@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class CardScript : MonoBehaviour
+public class CardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public CardData cardData;
     private bool cancelSelect;
@@ -22,10 +23,10 @@ public class CardScript : MonoBehaviour
     {
         image.sprite = cardData.cardArt;
     }
-    
+
     public void Select()
     {
-        if(!cancelSelect && (HandScript.Instance.state == "default" || HandScript.Instance.state == "buildingPay"))
+        if (!cancelSelect && (HandScript.Instance.state == "default" || HandScript.Instance.state == "buildingPay"))
         {
             image.color = selectColor;
             HandScript.Instance.Select(gameObject);
@@ -43,5 +44,16 @@ public class CardScript : MonoBehaviour
     {
         yield return new WaitForSeconds(.15f);
         cancelSelect = false;
+    }
+    
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        HandScript.Instance.hoveredHandCard = gameObject;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if(HandScript.Instance.hoveredHandCard == gameObject)
+            HandScript.Instance.hoveredHandCard = null;
     }
 }

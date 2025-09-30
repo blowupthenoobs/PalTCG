@@ -7,10 +7,8 @@ public class GamePreferences : ScriptableObject
 {
     public float barTransTime;
 
-    public float spacing;
-
+    public float maxIndividualSpacing;
+    public float maxTotalSpace;
     public float cardMoveSpeed;
-
     public string tempDeck;
-    
 }

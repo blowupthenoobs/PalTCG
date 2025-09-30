@@ -22,6 +22,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public List<GameObject> Hand = new List<GameObject>();
     public List<GameObject> BuildingDeck = new List<GameObject>();
+    public GameObject hoveredHandCard;
     private bool holdingBuildings;
 
     //Card Stuff
@@ -347,7 +348,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void CenterNormalCards()
     {
-        float spacing = DetermineCardSpacing();
+        float spacing = DetermineCardSpacing(Hand.Count);
 
         float speed = Preferences.cardMoveSpeed * ScreenCalculations.GetScale(gameObject);
 
@@ -356,6 +357,16 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             RectTransform rectTransform = Hand[i].GetComponent<RectTransform>();
             Vector3 newPosition = rectTransform.localPosition;
             newPosition.x = spacing * ((i + 1) - (float)(Hand.Count + 1) / 2);
+
+            if(hoveredHandCard != null)
+            {
+                if(i > Hand.IndexOf(hoveredHandCard))
+                {
+                    var rt = Hand[Hand.IndexOf(hoveredHandCard)].GetComponent<RectTransform>();
+                    newPosition.x += rt.rect.width * rt.lossyScale.x * .5f;
+                }
+            }
+
             newPosition.x = Mathf.Lerp(Hand[i].GetComponent<RectTransform>().localPosition.x, newPosition.x, speed * Time.deltaTime);
             rectTransform.localPosition = newPosition;
         }
@@ -363,7 +374,7 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void CenterBuildingCards()
     {
-        float spacing = DetermineCardSpacing();
+        float spacing = DetermineCardSpacing(BuildingDeck.Count);
 
         float speed = Preferences.cardMoveSpeed * ScreenCalculations.GetScale(gameObject);
 
@@ -415,9 +426,13 @@ public class HandScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         holdingBuildings = false;
     }
 
-    private float DetermineCardSpacing()
+    private float DetermineCardSpacing(int cardCount)
     {
-        return (Preferences.spacing * ScreenCalculations.GetScale(gameObject));
+        float spacing = Preferences.maxIndividualSpacing * ScreenCalculations.GetScale(gameObject);
+        float maxTakenArea = Preferences.maxTotalSpace * ScreenCalculations.GetScale(gameObject);
+        if(spacing * cardCount > maxTakenArea)
+            spacing -= ((spacing * cardCount) - maxTakenArea) / cardCount;
+        return spacing;
     }
 
     public void Draw(CardData data)
