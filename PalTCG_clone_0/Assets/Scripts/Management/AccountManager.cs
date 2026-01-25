@@ -20,7 +20,7 @@ public class AccountManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-        if (ES3.KeyExists("account"))
+        if(ES3.KeyExists("account"))
             player = ES3.Load<Account>("account");
         else
         {
